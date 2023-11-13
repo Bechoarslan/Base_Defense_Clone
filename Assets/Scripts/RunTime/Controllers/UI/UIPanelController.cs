@@ -64,7 +64,7 @@ namespace RunTime.Controllers.UI
         private void OnOpenPanel(UIPanelTypes panel, short layerValue)
         {
             CoreUISignals.Instance.onClosePanel?.Invoke(layerValue);
-             Instantiate(Resources.Load<GameObject>($"Data/UIPanels/{panel}Panel"), layers[layerValue].transform);
+             Instantiate(Resources.Load<GameObject>($"UIPanels/{panel}Panel"), layers[layerValue].transform);
 
 
         }

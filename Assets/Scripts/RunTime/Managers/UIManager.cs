@@ -27,9 +27,10 @@ namespace RunTime.Managers
 
         public void OnPlay()
         {
+            CoreUISignals.Instance.onOpenPanel?.Invoke(UIPanelTypes.Level,1);
             CoreGameSignals.Instance.onPlay?.Invoke();
             CoreUISignals.Instance.onClosePanel?.Invoke(0);
-            CoreUISignals.Instance.onOpenPanel?.Invoke(UIPanelTypes.Level,1);
+           
         }
 
 

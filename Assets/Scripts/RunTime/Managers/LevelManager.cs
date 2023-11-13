@@ -38,10 +38,8 @@ namespace RunTime.Managers
             _levelData = GetLevelData();
         }
 
-        private CD_LevelData GetLevelData()
-        {
-            return Resources.Load<CD_LevelData>(_levelDataPath);
-        }
+        private CD_LevelData GetLevelData() => Resources.Load<CD_LevelData>(_levelDataPath);
+        
 
         private int CalculateLevelId()
         {

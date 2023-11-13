@@ -12,7 +12,7 @@ namespace RunTime.Commands.LevelCommands
 
         public void Execute(int calculateLevelId)
         {
-            Object.Instantiate(Resources.Load<GameObject>($"Datas/LevelPrefabs/Level {calculateLevelId}"),_levelHolder.transform);
+            Object.Instantiate(Resources.Load<GameObject>($"LevelPrefabs/Level {calculateLevelId}"),_levelHolder.transform);
         }
     }
 }
