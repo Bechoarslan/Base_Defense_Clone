@@ -18,7 +18,6 @@ namespace RunTime.Commands.Input
         {
             _joystickPosition = new Vector3(joysStick.Horizontal,0, joysStick.Vertical);
             _moveVector = _joystickPosition;
-            Debug.LogWarning(_moveVector);
             InputSignals.Instance.onInputDragged?.Invoke(new HorizontalInputParams
             {
                 Values = _moveVector

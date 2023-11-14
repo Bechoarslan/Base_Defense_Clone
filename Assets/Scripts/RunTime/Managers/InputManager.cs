@@ -95,7 +95,7 @@ namespace RunTime.Managers
 
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.LogWarning("GetMouseButtondown");
+                
                 _isTouching = true;
                 _inputStartedDraggedCommand.Execute();
             }
@@ -105,7 +105,7 @@ namespace RunTime.Managers
                 if (_isTouching)
                 {
                     
-                    Debug.LogWarning("GetMouseButton");
+                    
                     _inputJoystickDraggingCommand.Execute(_joysStick);
                 }
                 
