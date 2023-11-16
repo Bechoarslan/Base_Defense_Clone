@@ -14,6 +14,7 @@ namespace RunTime.Managers
         #region Self Variables
 
         [SerializeField] private PlayerMovementController playerMovementController;
+        [SerializeField] private PlayerAnimationController playerAnimationController;
 
         #region Private Variables
         
@@ -52,6 +53,7 @@ namespace RunTime.Managers
         private void OnInputDragged(HorizontalInputParams inputParams)
         {
             playerMovementController.UpdateInputValue(inputParams);
+            playerAnimationController.UpdateInputParams(inputParams);
         }
 
         private void UnSubscribeEvents()

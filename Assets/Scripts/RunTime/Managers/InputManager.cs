@@ -105,7 +105,6 @@ namespace RunTime.Managers
                 if (_isTouching)
                 {
                     
-                    
                     _inputJoystickDraggingCommand.Execute(_joysStick);
                 }
                 

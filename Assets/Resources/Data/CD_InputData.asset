@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CD_InputData
   m_EditorClassIdentifier: 
   Data:
-    HorizontalInputSpeed: 2
+    HorizontalInputSpeed: 1

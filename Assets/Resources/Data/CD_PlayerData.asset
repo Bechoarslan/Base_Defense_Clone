@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: CD_PlayerData
   m_EditorClassIdentifier: 
   movementData:
-    JoystickSpeed: 5
+    JoystickSpeed: 2
