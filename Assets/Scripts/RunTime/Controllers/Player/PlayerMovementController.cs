@@ -3,10 +3,12 @@ using DG.Tweening;
 using RunTime.Commands.PlayerMovement;
 using RunTime.Data.ValueObject;
 using RunTime.Enums;
+using RunTime.Enums.Camera;
 using RunTime.Keys;
 using RunTime.Signals;
 using Sirenix.OdinInspector;
 using Unity.Mathematics;
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 namespace RunTime.Controllers.Player
@@ -18,6 +20,7 @@ namespace RunTime.Controllers.Player
         #region Private Variables
 
         [ShowInInspector] private Rigidbody _rigidbody;
+        [SerializeField] private CapsuleCollider capsuleCollider;
         private PlayerMovementData _playerMovementData;
         private HorizontalInputParams _inputParams;
         [ShowInInspector]private bool _isReadyToMove, _isReadyToPlay,_isTurretPlay;
@@ -100,22 +103,21 @@ namespace RunTime.Controllers.Player
             
         }
 
-        internal void OnPlayerInteractWithTurret(GameObject turretObj)
+        internal void InteractWithTurret(GameObject turretObj)
         {
             _isTurretPlay = true;
+            CameraSignals.Instance.onChangeCameraState?.Invoke(CameraEnums.Turret);
             var playerManagerTransform = _rigidbody.transform;
             Transform turretTransform = turretObj.transform;
             _playerLookAtTurretCommand.Execute(ref playerManagerTransform, ref turretTransform);
             _emptyObject = turretObj;
             
-            
-            
-            
         }
 
-        internal void OnPlayerExitInteractWithTurret()
+        internal void ExitInteractWithTurret()
         {
             _isTurretPlay = false;
+            CameraSignals.Instance.onChangeCameraState?.Invoke(CameraEnums.Start);
         } 
         
     }

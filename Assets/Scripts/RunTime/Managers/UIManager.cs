@@ -30,6 +30,7 @@ namespace RunTime.Managers
             CoreUISignals.Instance.onOpenPanel?.Invoke(UIPanelTypes.Level,1);
             CoreGameSignals.Instance.onPlay?.Invoke();
             CoreUISignals.Instance.onClosePanel?.Invoke(0);
+            CameraSignals.Instance.onSetCinemachineTarget?.Invoke();
            
         }
 

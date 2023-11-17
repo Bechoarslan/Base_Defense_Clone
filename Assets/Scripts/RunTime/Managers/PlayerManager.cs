@@ -60,7 +60,7 @@ namespace RunTime.Managers
         private void OnPlayerExitInteractWithTurret()
         {
             PlayerSignals.Instance.onSetPlayerAnimationState?.Invoke(PlayerAnimationState.Run);
-            playerMovementController.OnPlayerExitInteractWithTurret();
+            playerMovementController.ExitInteractWithTurret();
             PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
         }
 
@@ -69,7 +69,7 @@ namespace RunTime.Managers
         {
             PlayerSignals.Instance.onSetPlayerAnimationState?.Invoke(PlayerAnimationState.Hold);
             PlayerSignals.Instance.onPlayConditionChanged?.Invoke(false);
-            playerMovementController.OnPlayerInteractWithTurret(turretObj);
+            playerMovementController.InteractWithTurret(turretObj);
             
             
         }

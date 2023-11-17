@@ -16,10 +16,10 @@ namespace RunTime.Commands.PlayerMovement
             var playerMovement = new Vector3(inputParams.Values.x * playerMovementData.JoystickSpeed, 0,
                 inputParams.Values.z * playerMovementData.JoystickSpeed);
             rigidbody.velocity = playerMovement;
-            if (playerMovement != Vector3.zero)
+            if(playerMovement != Vector3.zero)
             {
-                Quaternion _newDirect = Quaternion.Euler(rigidbody.rotation.y, Mathf.Atan2(playerMovement.x, playerMovement.z) * Mathf.Rad2Deg, rigidbody.rotation.z);
-                rigidbody.rotation = _newDirect;
+                Quaternion _newDirect = Quaternion.LookRotation(playerMovement);
+                rigidbody.transform.rotation = _newDirect;
             }
         }
     }

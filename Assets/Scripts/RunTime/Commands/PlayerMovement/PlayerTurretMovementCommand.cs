@@ -19,8 +19,8 @@ namespace RunTime.Commands.PlayerMovement
             var newRotation = inputParams.Values.x * 25;
             if(newRotation == 0) return;
             emptyObject.transform.parent.gameObject.transform.rotation = Quaternion.Euler(0,newRotation,0);
-       
-            
+
+
             var transform = rigidbody.transform;
             var newPos = new Vector3(emptyObject.transform.position.x, transform.position.y,
                 emptyObject.transform.position.z);
@@ -28,8 +28,7 @@ namespace RunTime.Commands.PlayerMovement
             
             
             Quaternion newDirect = Quaternion.Euler(rigidbody.rotation.x,emptyObject.transform.parent.gameObject.transform.eulerAngles.y,transform.rotation.z);
-            rigidbody.rotation = newDirect;
-            
+            transform.rotation = newDirect;
             
             
             

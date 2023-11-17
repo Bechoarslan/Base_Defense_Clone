@@ -10,6 +10,7 @@ namespace Runtime.Extentions
             if (stage == CinemachineCore.Stage.Body)
             {
                 var pos = state.RawPosition;
+                
                 pos.x = XPosition;
                 state.RawPosition = pos;
 
