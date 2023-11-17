@@ -1,7 +1,9 @@
 using System;
+using DG.Tweening;
 using RunTime.Controllers.Player;
 using RunTime.Data.UnityObject;
 using RunTime.Data.ValueObject;
+using RunTime.Enums;
 using RunTime.Keys;
 using RunTime.Signals;
 using Sirenix.OdinInspector;
@@ -20,6 +22,8 @@ namespace RunTime.Managers
         
         private PlayerMovementData _playerMovementData;
         private readonly string _playerDataPath = "Data/CD_PlayerData";
+
+        private Transform _emptyTransform;
         #endregion
 
         #endregion
@@ -29,7 +33,7 @@ namespace RunTime.Managers
             _playerMovementData = GetPlayerData();
             SendDataToMovementController(_playerMovementData);
         }
-
+        
         private void SendDataToMovementController(PlayerMovementData playerMovementData)
         {
             playerMovementController.GetMovementDataFromManager(playerMovementData);
@@ -48,7 +52,28 @@ namespace RunTime.Managers
             InputSignals.Instance.onInputTaken += () => PlayerSignals.Instance.onMoveConditionChanged?.Invoke(true);
             InputSignals.Instance.onInputReleased += () => PlayerSignals.Instance.onMoveConditionChanged?.Invoke(false);
             CoreGameSignals.Instance.onPlay += () => PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
+            PlayerSignals.Instance.onSetPlayerAnimationState += playerAnimationController.SetPlayerAnimationState;
+            PlayerSignals.Instance.onPLayerInteractWithTurret += OnPlayerInteractWithTurret;
+            PlayerSignals.Instance.onPlayerExitInteractWithTurret += OnPlayerExitInteractWithTurret;
         }
+
+        private void OnPlayerExitInteractWithTurret()
+        {
+            PlayerSignals.Instance.onSetPlayerAnimationState?.Invoke(PlayerAnimationState.Run);
+            playerMovementController.OnPlayerExitInteractWithTurret();
+            PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
+        }
+
+
+        private void OnPlayerInteractWithTurret(GameObject turretObj)
+        {
+            PlayerSignals.Instance.onSetPlayerAnimationState?.Invoke(PlayerAnimationState.Hold);
+            PlayerSignals.Instance.onPlayConditionChanged?.Invoke(false);
+            playerMovementController.OnPlayerInteractWithTurret(turretObj);
+            
+            
+        }
+
 
         private void OnInputDragged(HorizontalInputParams inputParams)
         {
@@ -62,6 +87,9 @@ namespace RunTime.Managers
             InputSignals.Instance.onInputTaken -= () => PlayerSignals.Instance.onMoveConditionChanged?.Invoke(true);
             InputSignals.Instance.onInputReleased -= () => PlayerSignals.Instance.onMoveConditionChanged?.Invoke(false);
             CoreGameSignals.Instance.onPlay -= () => PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
+            PlayerSignals.Instance.onSetPlayerAnimationState -= playerAnimationController.SetPlayerAnimationState;
+            PlayerSignals.Instance.onPLayerInteractWithTurret -= OnPlayerInteractWithTurret;
+            PlayerSignals.Instance.onPlayerExitInteractWithTurret -= OnPlayerExitInteractWithTurret;
         }
 
         private void OnDisable()

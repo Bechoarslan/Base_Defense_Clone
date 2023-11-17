@@ -1,6 +1,8 @@
 using System;
+using DG.Tweening;
 using RunTime.Commands.PlayerMovement;
 using RunTime.Data.ValueObject;
+using RunTime.Enums;
 using RunTime.Keys;
 using RunTime.Signals;
 using Sirenix.OdinInspector;
@@ -18,9 +20,14 @@ namespace RunTime.Controllers.Player
         [ShowInInspector] private Rigidbody _rigidbody;
         private PlayerMovementData _playerMovementData;
         private HorizontalInputParams _inputParams;
-        [ShowInInspector]private bool _isReadyToMove, _isReadyToPlay;
+        [ShowInInspector]private bool _isReadyToMove, _isReadyToPlay,_isTurretPlay;
+        
 
         private PlayerJoystickMovementCommand _playerJoystickMovementCommand;
+        private PlayerTurretMovementCommand _playerTurretMovementCommand;
+        private PlayerLookAtTurretCommand _playerLookAtTurretCommand;
+        private GameObject _emptyObject;
+        private Transform _playerTransform;
         #endregion
 
         private void Awake()
@@ -37,6 +44,8 @@ namespace RunTime.Controllers.Player
         private void Init()
         {
             _playerJoystickMovementCommand = new PlayerJoystickMovementCommand();
+            _playerTurretMovementCommand = new PlayerTurretMovementCommand();
+            _playerLookAtTurretCommand = new PlayerLookAtTurretCommand();
         }
 
         #endregion
@@ -78,13 +87,36 @@ namespace RunTime.Controllers.Player
 
         private void FixedUpdate()
         {
+            
             if (_isReadyToPlay)
             {
                 _playerJoystickMovementCommand.Execute(ref _playerMovementData, ref _inputParams, ref _rigidbody);
             }
+
+            if (_isTurretPlay)
+            {
+                _playerTurretMovementCommand.Execute(ref _playerMovementData, ref _inputParams, ref _rigidbody,ref _emptyObject);
+            }
             
         }
 
+        internal void OnPlayerInteractWithTurret(GameObject turretObj)
+        {
+            _isTurretPlay = true;
+            var playerManagerTransform = _rigidbody.transform;
+            Transform turretTransform = turretObj.transform;
+            _playerLookAtTurretCommand.Execute(ref playerManagerTransform, ref turretTransform);
+            _emptyObject = turretObj;
+            
+            
+            
+            
+        }
+
+        internal void OnPlayerExitInteractWithTurret()
+        {
+            _isTurretPlay = false;
+        } 
         
     }
 }

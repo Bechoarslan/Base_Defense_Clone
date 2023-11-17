@@ -1,3 +1,4 @@
+using RunTime.Enums;
 using RunTime.Keys;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -24,15 +25,21 @@ namespace RunTime.Controllers.Player
 
         #endregion
 
-        private void SetIdleRunState(float posX)
+        private void SetIdleRunState(float posX,float posZ)
         {
                 playerAnimator.SetFloat("PosX",posX);
+                playerAnimator.SetFloat("PosZ",posZ);
         }
 
         public void UpdateInputParams(HorizontalInputParams inputParams)
         {
             _inputParams = inputParams;
-            SetIdleRunState(_inputParams.Values.x);
+            SetIdleRunState(_inputParams.Values.x,_inputParams.Values.z);
+        }
+
+        public void SetPlayerAnimationState(PlayerAnimationState animState)
+        {
+            playerAnimator.SetTrigger(animState.ToString());
         }
     }
 }
