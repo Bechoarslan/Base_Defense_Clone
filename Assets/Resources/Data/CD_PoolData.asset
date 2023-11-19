@@ -13,7 +13,17 @@ MonoBehaviour:
   m_Name: CD_PoolData
   m_EditorClassIdentifier: 
   Data:
-  - ObjName: Level
-    Prefab: {fileID: 3504768101745187004, guid: 6cf76cd3c751b45ab9c50e61fde0fe32,
+  - ObjName: Money
+    Prefab: {fileID: 1475042806165908003, guid: 9f451ea6f83cb4a05b265d2583f3b18f,
       type: 3}
-    ObjectCount: 5
+    ObjectCount: 10
+  - ObjName: Bullet
+    Prefab: {fileID: 2880825888596843042, guid: e860d237cd78d40009409fe739794e6b,
+      type: 3}
+    ObjectCount: 20
+  - ObjName: Projectile
+    Prefab: {fileID: 0}
+    ObjectCount: 0
+  - ObjName: Enemy
+    Prefab: {fileID: 0}
+    ObjectCount: 0

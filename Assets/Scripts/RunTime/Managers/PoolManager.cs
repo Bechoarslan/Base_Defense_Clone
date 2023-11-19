@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using RunTime.Commands.Pool;
 using RunTime.Data.UnityObject;
 using RunTime.Enums.Pool;
 using RunTime.Signals;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace RunTime.Managers
@@ -25,6 +27,7 @@ namespace RunTime.Managers
         private GameObject _emptyObject;
         private PoolGenerateCommand _poolGenerateCommand;
         private PoolResetCommand _poolResetCommand;
+        private List<GameObject> _emptyList = new List<GameObject>();
         private readonly string _poolDataPath = "Data/CD_PoolData";
 
         #endregion
@@ -68,22 +71,21 @@ namespace RunTime.Managers
             PoolSignals.Instance.onSendPool += OnSendPool;
             PoolSignals.Instance.onGetPoolObject += OnGetPoolObject;
         }
+        
 
-        private GameObject OnGetPoolObject(PoolType poolType, Transform newHolderTransform)
+        private GameObject OnGetPoolObject(PoolType poolType)
         {
-            var parent = transform.GetChild((int)poolType);
+            
+            var parent = poolHolder.transform.GetChild((int)poolType);
             
             if (parent.childCount > 0)
             {
                 var obj = parent.transform.GetChild(0).gameObject;
-                obj.transform.parent = newHolderTransform;
-                obj.SetActive(true);
                 return obj;
             }
             else
             {
-                var obj = Instantiate(_poolData.Data[(int)poolType].Prefab,Vector3.zero,Quaternion.identity,newHolderTransform);
-                obj.SetActive(true);
+                var obj = Instantiate(_poolData.Data[(int)poolType].Prefab,Vector3.zero,Quaternion.identity,poolHolder.GetChild((int)poolType));
                 return obj;
             }
         }

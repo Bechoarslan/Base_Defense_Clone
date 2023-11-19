@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Turret
+  - BulletArea
+  - TurretBulletArea
+  - Money
   layers:
   - Default
   - TransparentFX
