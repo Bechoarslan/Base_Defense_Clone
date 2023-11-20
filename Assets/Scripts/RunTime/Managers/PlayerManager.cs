@@ -70,8 +70,6 @@ namespace RunTime.Managers
             PlayerSignals.Instance.onSetPlayerAnimationState?.Invoke(PlayerAnimationState.Hold);
             PlayerSignals.Instance.onPlayConditionChanged?.Invoke(false);
             playerMovementController.InteractWithTurret(turretObj);
-            
-            
         }
 
 

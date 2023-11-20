@@ -18,7 +18,7 @@ namespace RunTime.Controllers.Player
 
             if (other.CompareTag("BulletArea"))
             {
-                StackSignals.Instance.onPlayerInteractWithBulletArea?.Invoke(other.transform.parent.gameObject.transform,itemHolder);
+                StackSignals.Instance.onPlayerInteractWithBulletArea?.Invoke(other.transform,itemHolder);
             }
             
         }

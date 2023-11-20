@@ -20,4 +20,4 @@ MonoBehaviour:
   - DataName: Bullet
     StackLimit: 5
     StackAnimDuration: 0
-    StackOffSet: 0.1
+    StackOffSet: 0.5

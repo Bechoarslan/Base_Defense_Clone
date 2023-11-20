@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using RunTime.Commands.StackManager;
 using RunTime.Data.UnityObject;
 using RunTime.Enums.Pool;
 using RunTime.Signals;
@@ -18,6 +19,8 @@ namespace RunTime.Managers
         private CD_StackData _stackData;
         private CD_PoolData _poolData;
         private readonly string _stackDataPath = "Data/CD_StackData";
+        private StackAddBulletToPlayerCommand _stackAddBulletToPlayerCommand;
+        
      
         [ShowInInspector] private List<GameObject> _bulletList = new List<GameObject>();
         [ShowInInspector] private List<GameObject> _moneyList = new List<GameObject>();
@@ -31,6 +34,12 @@ namespace RunTime.Managers
         {
             _stackData = GetStackData();
             _poolData = GetPoolData();
+            Init();
+        }
+
+        private void Init()
+        {
+            _stackAddBulletToPlayerCommand = new StackAddBulletToPlayerCommand(ref _bulletList,ref _stackData );
         }
 
         private CD_PoolData GetPoolData() => Resources.Load<CD_PoolData>("Data/CD_PoolData");
@@ -50,45 +59,15 @@ namespace RunTime.Managers
 
         private void OnPlayerInteractWithBulletArea(Transform bulletArea, Transform playerManager)
         {
+            _stackAddBulletToPlayerCommand.Execute(bulletArea, playerManager);
             
-
-            for (int i = 0; i < _stackData.Data[(int)PoolType.Bullet].StackLimit; i++)
-            {
-                
-                if (i == 0)
-                {
-                    _bulletList[i].transform.position = bulletArea.position;
-                    _bulletList[i].gameObject.SetActive(true);
-                    _bulletList[i].transform.parent = playerManager;
-                    _bulletList[i].transform.position = playerManager.transform.position;
-                    continue;
-                }
-                Debug.LogWarning(i);
-                _bulletList[i].transform.position = bulletArea.position;
-                _bulletList[i].gameObject.SetActive(true);
-                var newPos = new Vector3(_bulletList[i-1].transform.position.x,
-                    _bulletList[i-1].transform.position.y + 
-                    0.30f,_bulletList[i-1].transform.position.z);
-                _bulletList[i].transform.parent = playerManager;
-                _bulletList[i].transform.position = newPos;
-
-            }
         }
 
         private void OnPlay()
         {
-            for (int i = 0; i < _poolData.Data[(int)PoolType.Bullet].ObjectCount ; i++)
-            {
-              var obj = PoolSignals.Instance.onGetPoolObject(PoolType.Bullet);
-              obj.transform.parent = transform;
-              _bulletList.Add(obj);
-            }
-           
-           
+            
         }
-
         
-
         private void UnSubscribeEvents()
         {
             CoreGameSignals.Instance.onPlay -= OnPlay;
@@ -98,6 +77,11 @@ namespace RunTime.Managers
         private void OnDisable()
         {
             UnSubscribeEvents();
+        }
+
+        private void Update()
+        {
+            
         }
     }
 }

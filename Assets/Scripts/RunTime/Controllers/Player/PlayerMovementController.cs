@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using DG.Tweening;
 using RunTime.Commands.PlayerMovement;
 using RunTime.Data.ValueObject;
@@ -17,13 +18,19 @@ namespace RunTime.Controllers.Player
     {
         #region Self Variables
 
+        #region Serialized Variables
+
+        [SerializeField] private Transform itemHolder;
+
+        #endregion
+
         #region Private Variables
 
         [ShowInInspector] private Rigidbody _rigidbody;
-        [SerializeField] private CapsuleCollider capsuleCollider;
         private PlayerMovementData _playerMovementData;
         private HorizontalInputParams _inputParams;
         [ShowInInspector]private bool _isReadyToMove, _isReadyToPlay,_isTurretPlay;
+        
         
 
         private PlayerJoystickMovementCommand _playerJoystickMovementCommand;
@@ -31,6 +38,7 @@ namespace RunTime.Controllers.Player
         private PlayerLookAtTurretCommand _playerLookAtTurretCommand;
         private GameObject _emptyObject;
         private Transform _playerTransform;
+        private bool _isCollected;
         #endregion
 
         private void Awake()
@@ -69,6 +77,7 @@ namespace RunTime.Controllers.Player
         {
             PlayerSignals.Instance.onMoveConditionChanged += OnMoveConditionChanged;
             PlayerSignals.Instance.onPlayConditionChanged += OnPlayConditionChanged;
+            StackSignals.Instance.onPlayerInteractWithBulletArea += OnPlayerInteractWithBulletArea;
         }
 
         private void OnPlayConditionChanged(bool condition) => _isReadyToPlay = condition;
@@ -81,6 +90,12 @@ namespace RunTime.Controllers.Player
         {
             PlayerSignals.Instance.onMoveConditionChanged -= OnMoveConditionChanged;
             PlayerSignals.Instance.onPlayConditionChanged -= OnPlayConditionChanged;
+            StackSignals.Instance.onPlayerInteractWithBulletArea -= OnPlayerInteractWithBulletArea;
+        }
+
+        private void OnPlayerInteractWithBulletArea(Transform arg0, Transform arg1)
+        {
+            _isCollected = true;
         }
 
         private void OnDisable()
@@ -93,7 +108,7 @@ namespace RunTime.Controllers.Player
             
             if (_isReadyToPlay)
             {
-                _playerJoystickMovementCommand.Execute(ref _playerMovementData, ref _inputParams, ref _rigidbody);
+                _playerJoystickMovementCommand.Execute(ref _playerMovementData, ref _inputParams, ref _rigidbody, itemHolder, ref _isCollected);
             }
 
             if (_isTurretPlay)
@@ -118,7 +133,9 @@ namespace RunTime.Controllers.Player
         {
             _isTurretPlay = false;
             CameraSignals.Instance.onChangeCameraState?.Invoke(CameraEnums.Start);
-        } 
+        }
+
+       
         
     }
 }
