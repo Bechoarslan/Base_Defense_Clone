@@ -22,8 +22,9 @@ MonoBehaviour:
       type: 3}
     ObjectCount: 20
   - ObjName: Projectile
-    Prefab: {fileID: 0}
-    ObjectCount: 0
+    Prefab: {fileID: 8236405845775729224, guid: efcf19556173a48d6ae8dcdca9b09f27,
+      type: 3}
+    ObjectCount: 50
   - ObjName: Enemy
     Prefab: {fileID: 0}
     ObjectCount: 0
