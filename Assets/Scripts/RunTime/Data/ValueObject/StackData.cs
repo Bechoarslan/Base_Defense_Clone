@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using Unity.Mathematics;
+using UnityEngine;
 
 namespace RunTime.Data.ValueObject
 {
@@ -10,5 +13,9 @@ namespace RunTime.Data.ValueObject
         public float StackAnimDuration;
         public float StackOffSet;
 
+
+        public List<Vector3> _bulletData;
+
     }
+    
 }

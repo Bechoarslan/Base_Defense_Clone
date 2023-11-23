@@ -37,8 +37,6 @@ namespace RunTime.Controllers.Player
         private PlayerTurretMovementCommand _playerTurretMovementCommand;
         private PlayerLookAtTurretCommand _playerLookAtTurretCommand;
         private GameObject _emptyObject;
-        private Transform _playerTransform;
-        private bool _isCollected;
         #endregion
 
         private void Awake()
@@ -77,7 +75,6 @@ namespace RunTime.Controllers.Player
         {
             PlayerSignals.Instance.onMoveConditionChanged += OnMoveConditionChanged;
             PlayerSignals.Instance.onPlayConditionChanged += OnPlayConditionChanged;
-            StackSignals.Instance.onPlayerInteractWithBulletArea += OnPlayerInteractWithBulletArea;
         }
 
         private void OnPlayConditionChanged(bool condition) => _isReadyToPlay = condition;
@@ -90,13 +87,9 @@ namespace RunTime.Controllers.Player
         {
             PlayerSignals.Instance.onMoveConditionChanged -= OnMoveConditionChanged;
             PlayerSignals.Instance.onPlayConditionChanged -= OnPlayConditionChanged;
-            StackSignals.Instance.onPlayerInteractWithBulletArea -= OnPlayerInteractWithBulletArea;
         }
 
-        private void OnPlayerInteractWithBulletArea(Transform arg0, Transform arg1)
-        {
-            _isCollected = true;
-        }
+       
 
         private void OnDisable()
         {
@@ -108,7 +101,7 @@ namespace RunTime.Controllers.Player
             
             if (_isReadyToPlay)
             {
-                _playerJoystickMovementCommand.Execute(ref _playerMovementData, ref _inputParams, ref _rigidbody, itemHolder, ref _isCollected);
+                _playerJoystickMovementCommand.Execute(ref _playerMovementData, ref _inputParams, ref _rigidbody);
             }
 
             if (_isTurretPlay)

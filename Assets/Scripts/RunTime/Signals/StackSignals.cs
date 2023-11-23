@@ -6,6 +6,7 @@ namespace RunTime.Signals
 {
     public class StackSignals : MonoSingleton<StackSignals>
     {
-        public UnityAction<Transform,Transform> onPlayerInteractWithBulletArea = delegate { };
+        public UnityAction<Transform> onPlayerInteractWithBulletArea = delegate { };
+        public UnityAction<Transform> onPlayerInteractWithTurretBulletArea = delegate {  };
     }
 }

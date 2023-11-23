@@ -8,7 +8,6 @@ namespace RunTime.Controllers.Player
    
     public class PlayerPhysicController : MonoBehaviour
     {
-        [SerializeField] private Transform itemHolder;
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Turret"))
@@ -18,7 +17,13 @@ namespace RunTime.Controllers.Player
 
             if (other.CompareTag("BulletArea"))
             {
-                StackSignals.Instance.onPlayerInteractWithBulletArea?.Invoke(other.transform,itemHolder);
+                StackSignals.Instance.onPlayerInteractWithBulletArea?.Invoke(other.transform);
+            }
+
+            if (other.CompareTag("TurretBulletArea"))
+            {
+                
+                StackSignals.Instance.onPlayerInteractWithTurretBulletArea?.Invoke(other.transform);
             }
             
         }

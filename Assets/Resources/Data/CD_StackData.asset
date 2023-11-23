@@ -17,7 +17,13 @@ MonoBehaviour:
     StackLimit: 10
     StackAnimDuration: 0
     StackOffSet: 0
+    _bulletData: []
   - DataName: Bullet
     StackLimit: 5
     StackAnimDuration: 0
     StackOffSet: 0.5
+    _bulletData:
+    - {x: -0.1, y: 0.125, z: -0.5}
+    - {x: -0.1, y: 0.125, z: 0.1}
+    - {x: 0.6, y: 0.125, z: 0.1}
+    - {x: 0.6, y: 0.125, z: -0.5}
