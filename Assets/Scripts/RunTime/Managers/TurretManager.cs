@@ -1,11 +1,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using RunTime.Enums.Pool;
 using RunTime.Keys;
 using RunTime.Signals;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RunTime.Managers
 {
@@ -16,13 +18,17 @@ namespace RunTime.Managers
         #region Serialized Variables
 
         [SerializeField] private Transform stackBullets;
-        [SerializeField] private Transform turretAim;
-        private int xx = 0;
+        [SerializeField] private Transform bulletHolder;
+        [SerializeField] private GameObject laser;
+        
         
 
         #endregion
 
         #region Private Variables
+        
+        private int _bulletCounter = 0;
+        private bool _isPlayerInTurret;
         
 
         
@@ -38,18 +44,24 @@ namespace RunTime.Managers
         private void SubscribeEvents()
         {
             PlayerSignals.Instance.onPLayerInteractWithTurret += OnPlayerInteractWithTurret;
+            PlayerSignals.Instance.onPlayerExitInteractWithTurret += OnPlayerExitInteractWithTurret;
         }
+
+        private void OnPlayerExitInteractWithTurret() => _isPlayerInTurret = false;
+        
 
         private void OnPlayerInteractWithTurret(GameObject turretObj)
         {
+            laser.SetActive(true);
+            _isPlayerInTurret = true;
             var countOfBullets = stackBullets.childCount;
             if (countOfBullets <= 0) return;
             var initBulletCount = countOfBullets * 5;
             for (var i = 0; i < initBulletCount; i++)
             {
                 var bulletObj = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Projectile);
-                bulletObj.transform.parent = turretAim;
-                bulletObj.transform.position = turretAim.position;
+                bulletObj.transform.parent = bulletHolder;
+                bulletObj.transform.position = bulletHolder.position;
                 
 
             }
@@ -58,34 +70,35 @@ namespace RunTime.Managers
 
         private IEnumerator PlayBullet( )
         {
-            for (int i = turretAim.childCount; i > 0; i--)
+            for (int i = bulletHolder.childCount; i > 0; i--)
             {
-                
-                var bulletObj = turretAim.GetChild(i - 1).gameObject;
-                yield return new WaitForSeconds(0.5f); // Adjust the delay as needed
+                if (!_isPlayerInTurret) yield break;
+                var bulletObj = bulletHolder.GetChild(i - 1).gameObject; // Adjust the delay as needed
                 StartCoroutine(BulletPlay(bulletObj));
+                yield return new WaitForSeconds(0.3f);
             }
         }
 
         private IEnumerator BulletPlay(GameObject bulletObj)
         {
-            xx++;
-            if (xx == 5)
+            _bulletCounter++;
+            if (_bulletCounter == 5)
             {
                 var obj = stackBullets.GetChild(stackBullets.childCount - 1).gameObject;
                 obj.SetActive(false);
                 PoolSignals.Instance.onSendPool?.Invoke(obj,PoolType.Bullet);
-                
-                xx = 0;
+                _bulletCounter = 0;
             }
-            
           
             bulletObj.SetActive(true);
-            bulletObj.GetComponent<Rigidbody>().velocity = bulletObj.transform.forward * 40 ;
-            yield return new WaitForSeconds(3f);
-            bulletObj.SetActive(false);
+             bulletObj.GetComponent<Rigidbody>().AddForce(bulletObj.transform.forward * 25, ForceMode.VelocityChange);
             
-            PoolSignals.Instance.onSendPool?.Invoke(bulletObj, PoolType.Projectile);
+             yield return new WaitForSeconds(0.5f);
+             PoolSignals.Instance.onSendPool?.Invoke(bulletObj,PoolType.Projectile);
+            
+            
+            yield return null;
+
         }
 
 

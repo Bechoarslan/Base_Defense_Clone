@@ -65,6 +65,7 @@ namespace RunTime.Managers
                     stackOffset += 0.500f;
                 }
                 
+                
                 var obj = _bulletList[^1];
                 var index = turretArea.childCount % data.Count;
                 obj.transform.parent = turretArea;
