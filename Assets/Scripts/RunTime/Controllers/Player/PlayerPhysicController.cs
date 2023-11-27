@@ -17,17 +17,23 @@ namespace RunTime.Controllers.Player
 
             if (other.CompareTag("BulletArea"))
             {
-                StackSignals.Instance.onPlayerInteractWithBulletArea?.Invoke(other.transform);
+                PlayerSignals.Instance.onPlayerInteractWithBulletArea?.Invoke(other.transform);
             }
 
             if (other.CompareTag("TurretBulletArea"))
             {
                 
-                StackSignals.Instance.onPlayerInteractWithTurretBulletArea?.Invoke(other.transform);
+                PlayerSignals.Instance.onPlayerInteractWithTurretBulletArea?.Invoke(other.transform);
             }
             
         }
 
-      
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Turret"))
+            {
+                PlayerSignals.Instance.onPlayerExitInteractWithTurret?.Invoke();
+            }
+        }
     }
 }

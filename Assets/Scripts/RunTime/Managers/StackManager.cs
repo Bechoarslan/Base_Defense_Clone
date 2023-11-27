@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using RunTime.Commands.StackManager;
 using RunTime.Data.UnityObject;
+using RunTime.Data.ValueObject;
 using RunTime.Enums.Pool;
 using RunTime.Signals;
 using Sirenix.OdinInspector;
@@ -15,13 +16,10 @@ namespace RunTime.Managers
         #region Self Variables
         
         #region Private Variables
-
-        private CD_StackData _stackData;
-        private CD_PoolData _poolData;
-        private readonly string _stackDataPath = "Data/CD_StackData";
+        
         private StackAddBulletToPlayerCommand _stackAddBulletToPlayerCommand;
         [ShowInInspector] private List<GameObject> _bulletList = new List<GameObject>();
-        private float stackOffset = 0;
+        private PlayerData _stackData;
 
         #endregion
 
@@ -30,19 +28,18 @@ namespace RunTime.Managers
         private void Awake()
         {
             _stackData = GetStackData();
-            _poolData = GetPoolData();
             Init();
         }
+
+        private PlayerData GetStackData() => Resources.Load<CD_PlayerData>("Data/CD_PlayerData").data;
+        
 
         private void Init()
         {
             _stackAddBulletToPlayerCommand = new StackAddBulletToPlayerCommand(ref _stackData,transform,ref _bulletList);
         }
-
-        private CD_PoolData GetPoolData() => Resources.Load<CD_PoolData>("Data/CD_PoolData");
-
-        private CD_StackData GetStackData() => Resources.Load<CD_StackData>(_stackDataPath);
-
+        
+        
         private void OnEnable()
         {
             SubscribeEvents();
@@ -51,25 +48,24 @@ namespace RunTime.Managers
         private void SubscribeEvents()
         {
             CoreGameSignals.Instance.onPlay += OnPlay;
-            StackSignals.Instance.onPlayerInteractWithBulletArea += OnPlayerInteractWithBulletArea;
-            StackSignals.Instance.onPlayerInteractWithTurretBulletArea += OnPlayerInteractWithTurretBulletArea;
+            PlayerSignals.Instance.onPlayerInteractWithBulletArea += OnPlayerInteractWithBulletArea;
+            PlayerSignals.Instance.onPlayerInteractWithTurretBulletArea += OnPlayerInteractWithTurretBulletArea;
         }
 
         private void OnPlayerInteractWithTurretBulletArea(Transform turretArea)
         {
-            var data = _stackData.Data[(int)PoolType.Bullet]._bulletData;
+            var data = _stackData.StackData[(int)PoolType.Bullet].BulletData;
+            
             for (int i =  _bulletList.Count; i > 0 ; i--)
             {
-                if ( turretArea.childCount > 0 && turretArea.childCount % 4 <= 0)
-                {
-                    stackOffset += 0.500f;
-                }
-                
-                
+                var areaChildCount = turretArea.childCount;
+                var stackValue = areaChildCount / 4;
                 var obj = _bulletList[^1];
-                var index = turretArea.childCount % data.Count;
+                var index = areaChildCount % data.Count;
+                
+                
                 obj.transform.parent = turretArea;
-                var newPos = new Vector3(data[index].x, data[index].y + stackOffset , data[index].z);
+                var newPos = new Vector3(data[index].x, data[index].y + stackValue * 0.500f, data[index].z);
                 obj.transform.DOLocalMove(newPos, 1f);
                 obj.transform.DORotate(Vector3.zero, 1f);
                 _bulletList.Remove(obj);
@@ -86,8 +82,8 @@ namespace RunTime.Managers
         private void UnSubscribeEvents()
         {
             CoreGameSignals.Instance.onPlay -= OnPlay;
-            StackSignals.Instance.onPlayerInteractWithBulletArea -= OnPlayerInteractWithBulletArea;
-            StackSignals.Instance.onPlayerInteractWithTurretBulletArea -= OnPlayerInteractWithTurretBulletArea;
+            PlayerSignals.Instance.onPlayerInteractWithBulletArea -= OnPlayerInteractWithBulletArea;
+            PlayerSignals.Instance.onPlayerInteractWithTurretBulletArea -= OnPlayerInteractWithTurretBulletArea;
         }
 
         private void OnDisable()
@@ -100,6 +96,7 @@ namespace RunTime.Managers
         {
             
         }
+
         
     }
 }

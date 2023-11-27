@@ -17,12 +17,12 @@ namespace RunTime.Managers
 
         [SerializeField] private PlayerMovementController playerMovementController;
         [SerializeField] private PlayerAnimationController playerAnimationController;
+        [SerializeField] private StackManager stackManager;
 
         #region Private Variables
         
-        private PlayerMovementData _playerMovementData;
+        private PlayerData _playerData;
         private readonly string _playerDataPath = "Data/CD_PlayerData";
-
         private Transform _emptyTransform;
         #endregion
 
@@ -30,16 +30,17 @@ namespace RunTime.Managers
 
         private void Awake()
         {
-            _playerMovementData = GetPlayerData();
-            SendDataToMovementController(_playerMovementData);
+            _playerData = GetPlayerData();
+            SendDataToMovementController(_playerData);
+  
         }
         
-        private void SendDataToMovementController(PlayerMovementData playerMovementData)
+        private void SendDataToMovementController(PlayerData playerData)
         {
-            playerMovementController.GetMovementDataFromManager(playerMovementData);
+            playerMovementController.GetMovementDataFromManager(playerData);
         }
-
-        private PlayerMovementData GetPlayerData() => Resources.Load<CD_PlayerData>(_playerDataPath).movementData;
+        
+        private PlayerData GetPlayerData() => Resources.Load<CD_PlayerData>(_playerDataPath).data;
         
         private void OnEnable()
         {

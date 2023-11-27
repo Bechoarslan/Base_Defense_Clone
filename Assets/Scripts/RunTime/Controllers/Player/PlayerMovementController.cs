@@ -19,15 +19,14 @@ namespace RunTime.Controllers.Player
         #region Self Variables
 
         #region Serialized Variables
-
-        [SerializeField] private Transform itemHolder;
+        
 
         #endregion
 
         #region Private Variables
 
         [ShowInInspector] private Rigidbody _rigidbody;
-        private PlayerMovementData _playerMovementData;
+        private PlayerData _playerData;
         private HorizontalInputParams _inputParams;
         [ShowInInspector]private bool _isReadyToMove, _isReadyToPlay,_isTurretPlay;
         
@@ -61,9 +60,9 @@ namespace RunTime.Controllers.Player
 
         public void UpdateInputValue(HorizontalInputParams inputParams) => _inputParams = inputParams;
 
-        public void GetMovementDataFromManager(PlayerMovementData playerMovementData)
+        public void GetMovementDataFromManager(PlayerData playerData)
         {
-            _playerMovementData = playerMovementData;
+            _playerData = playerData;
         } 
 
         private void OnEnable()
@@ -101,12 +100,12 @@ namespace RunTime.Controllers.Player
             
             if (_isReadyToPlay)
             {
-                _playerJoystickMovementCommand.Execute(ref _playerMovementData, ref _inputParams, ref _rigidbody);
+                _playerJoystickMovementCommand.Execute(ref _playerData, ref _inputParams, ref _rigidbody);
             }
 
             if (_isTurretPlay)
             {
-                _playerTurretMovementCommand.Execute(ref _playerMovementData, ref _inputParams, ref _rigidbody,ref _emptyObject);
+                _playerTurretMovementCommand.Execute(ref _playerData, ref _inputParams, ref _rigidbody,ref _emptyObject,ref _isTurretPlay);
             }
             
         }
@@ -115,9 +114,7 @@ namespace RunTime.Controllers.Player
         {
             _isTurretPlay = true;
             CameraSignals.Instance.onChangeCameraState?.Invoke(CameraEnums.Turret);
-            var playerManagerTransform = _rigidbody.transform;
-            Transform turretTransform = turretObj.transform;
-            _playerLookAtTurretCommand.Execute(ref playerManagerTransform, ref turretTransform);
+            _playerLookAtTurretCommand.Execute(ref _rigidbody, ref turretObj);
             _emptyObject = turretObj;
             
         }

@@ -65,21 +65,21 @@ namespace RunTime.Managers
                 
 
             }
-            StartCoroutine(PlayBullet());
+            StartCoroutine(ReadyToBulletFire());
         }
 
-        private IEnumerator PlayBullet( )
+        private IEnumerator ReadyToBulletFire( )
         {
             for (int i = bulletHolder.childCount; i > 0; i--)
             {
                 if (!_isPlayerInTurret) yield break;
                 var bulletObj = bulletHolder.GetChild(i - 1).gameObject; // Adjust the delay as needed
-                StartCoroutine(BulletPlay(bulletObj));
+                StartCoroutine(FireBullet(bulletObj));
                 yield return new WaitForSeconds(0.3f);
             }
         }
 
-        private IEnumerator BulletPlay(GameObject bulletObj)
+        private IEnumerator FireBullet(GameObject bulletObj)
         {
             _bulletCounter++;
             if (_bulletCounter == 5)
@@ -104,7 +104,8 @@ namespace RunTime.Managers
 
         private void UnSubscribeEvents()
         {
-            
+            PlayerSignals.Instance.onPLayerInteractWithTurret += OnPlayerInteractWithTurret;
+            PlayerSignals.Instance.onPlayerExitInteractWithTurret += OnPlayerExitInteractWithTurret;
         }
 
         private void OnDisable()

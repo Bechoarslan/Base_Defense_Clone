@@ -3,6 +3,7 @@ using DG.Tweening;
 using RunTime.Controllers.Player;
 using RunTime.Data.ValueObject;
 using RunTime.Enums;
+using RunTime.Enums.Camera;
 using RunTime.Keys;
 using RunTime.Signals;
 using Unity.Mathematics;
@@ -13,8 +14,8 @@ namespace RunTime.Commands.PlayerMovement
 {
     public class PlayerTurretMovementCommand
     {
-        public void Execute(ref PlayerMovementData playerMovementData, ref HorizontalInputParams inputParams,
-            ref Rigidbody rigidbody, ref GameObject emptyObject)
+        public void Execute(ref PlayerData playerData, ref HorizontalInputParams inputParams,
+            ref Rigidbody rigidbody, ref GameObject emptyObject, ref bool isTurretPlay)
         {
             var newRotation = inputParams.Values.x * 25;
             if(newRotation == 0) return;
@@ -34,10 +35,10 @@ namespace RunTime.Commands.PlayerMovement
             
             var escapeValue = Math.Clamp(inputParams.Values.z, -1, 0);
             if (!(escapeValue < -0.5f)) return;
-            PlayerSignals.Instance.onPlayerExitInteractWithTurret?.Invoke();
-            var playerMovement = new Vector3(0, 0,
-                escapeValue * playerMovementData.JoystickSpeed);
-            rigidbody.velocity = playerMovement;
+            isTurretPlay = false;
+           PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
+           CameraSignals.Instance.onChangeCameraState?.Invoke(CameraEnums.Start);
+            
 
 
 

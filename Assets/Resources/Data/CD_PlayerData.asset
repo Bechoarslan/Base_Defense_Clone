@@ -12,5 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64041ec945794fd98469e77185dc8d4c, type: 3}
   m_Name: CD_PlayerData
   m_EditorClassIdentifier: 
-  movementData:
+  data:
     JoystickSpeed: 2
+    StackData:
+    - DataName: Money
+      StackLimit: 0
+      StackAnimDuration: 0
+      StackOffSet: 0
+      BulletData:
+      - {x: 0, y: 0, z: 0}
+    - DataName: Bullet
+      StackLimit: 5
+      StackAnimDuration: 1
+      StackOffSet: 0.5
+      BulletData:
+      - {x: -0.1, y: 0.12, z: -0.4}
+      - {x: -0.1, y: 0.12, z: 0.1}
+      - {x: 0.5, y: 0.12, z: 0.07}
+      - {x: 0.5, y: 0.12, z: -0.4}

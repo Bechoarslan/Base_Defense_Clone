@@ -5,9 +5,10 @@ namespace RunTime.Commands.PlayerMovement
 {
     public class PlayerLookAtTurretCommand
     {
-        public void Execute(ref Transform playerManagerTransform, ref Transform turretTransform)
+        public void Execute(ref Rigidbody rigidbody, ref GameObject turretObj)
         {
-            
+            var playerManagerTransform = rigidbody.transform;
+            var turretTransform = turretObj.transform;
             Quaternion newDirect = Quaternion.Euler(playerManagerTransform.eulerAngles.x,turretTransform.eulerAngles.y,playerManagerTransform.eulerAngles.z);
             playerManagerTransform.rotation = newDirect;
             

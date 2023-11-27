@@ -12,11 +12,11 @@ namespace RunTime.Commands.PlayerMovement
     public class PlayerJoystickMovementCommand
     {
         
-        public void Execute(ref PlayerMovementData playerMovementData, ref HorizontalInputParams inputParams,
+        public void Execute(ref PlayerData playerData, ref HorizontalInputParams inputParams,
             ref Rigidbody rigidbody)
         {
-            var playerMovement = new Vector3(inputParams.Values.x * playerMovementData.JoystickSpeed, 0,
-                inputParams.Values.z * playerMovementData.JoystickSpeed);
+            var playerMovement = new Vector3(inputParams.Values.x * playerData.JoystickSpeed, 0,
+                inputParams.Values.z * playerData.JoystickSpeed);
             rigidbody.velocity = playerMovement;
             if(playerMovement != Vector3.zero)
             {
