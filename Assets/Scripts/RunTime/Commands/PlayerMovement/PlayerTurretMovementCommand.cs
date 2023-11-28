@@ -14,7 +14,7 @@ namespace RunTime.Commands.PlayerMovement
 {
     public class PlayerTurretMovementCommand
     {
-        public void Execute(ref PlayerData playerData, ref HorizontalInputParams inputParams,
+        public void Execute(ref HorizontalInputParams inputParams,
             ref Rigidbody rigidbody, ref GameObject emptyObject, ref bool isTurretPlay)
         {
             var newRotation = inputParams.Values.x * 25;
@@ -34,11 +34,10 @@ namespace RunTime.Commands.PlayerMovement
             
             
             var escapeValue = Math.Clamp(inputParams.Values.z, -1, 0);
-            if (!(escapeValue < -0.5f)) return;
+            if (!(escapeValue < -0.8f)) return;
             isTurretPlay = false;
-           PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
-           CameraSignals.Instance.onChangeCameraState?.Invoke(CameraEnums.Start);
-            
+            rigidbody.velocity = new Vector3(0, 0, -10);
+
 
 
 

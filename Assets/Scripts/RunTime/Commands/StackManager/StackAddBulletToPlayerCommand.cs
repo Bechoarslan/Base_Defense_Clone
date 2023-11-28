@@ -4,6 +4,7 @@ using RunTime.Data.UnityObject;
 using RunTime.Data.ValueObject;
 using RunTime.Enums.Pool;
 using RunTime.Signals;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace RunTime.Commands.StackManager
@@ -24,21 +25,29 @@ namespace RunTime.Commands.StackManager
         }
 
 
-        public void Execute(Transform bulletArea)
+        public void Execute(ref Transform bulletArea, ref bool isGotStack)
         {
+            if (isGotStack) return;
             for (var i = 0; i < _stackData.StackData[(int)PoolType.Bullet].StackLimit; i++)
             {
-               var obj = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Bullet);
-                obj.transform.position = bulletArea.position;
-                obj.gameObject.SetActive(true);
-                obj.transform.parent = _stackManager;
-                var newPos = new Vector3(_stackManager.transform.localPosition.x,
-                    _stackManager.transform.localPosition.y + _stackData.StackData[(int)PoolType.Bullet].StackOffSet * _stackManager.transform.childCount,
-                    0);
-                obj.transform.DOLocalMove(newPos, 1f);
-                obj.transform.DOLocalRotate(new Vector3(0, 0, 0), 1f);
-                _bulletList.Add(obj);
+                var bullet = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Bullet);
+                bullet.transform.position = new Vector3(bulletArea.position.x + Random.Range(-0.5f, 0.5f),
+                    bulletArea.position.y + Random.Range(-0.5f, 0.5f), bulletArea.position.z + Random.Range(-0.5f, 0.5f));
+                bullet.SetActive(true);
+                var posX = _stackManager.localPosition.x;
+                var posY = _stackManager.localPosition.y +(_stackData.StackData[(int)PoolType.Bullet].StackOffSet * (_bulletList.Count % 10));
+                var poZ = _stackManager.localPosition.z - _bulletList.Count / 10 * 0.6f;
+                bullet.transform.parent = _stackManager;
+                var newPos = new Vector3(posX, posY, poZ);
+                bullet.transform.DOLocalRotate(new Vector3(0, 0, 0), 0.5f);
+                bullet.transform.DOLocalMove(newPos, 1f);
+                _bulletList.Add(bullet);
+                
+                
             }
+           
+            
+           
 
 
         }

@@ -1,9 +1,11 @@
 using System;
+using Cinemachine;
 using DG.Tweening;
 using RunTime.Controllers.Player;
 using RunTime.Data.UnityObject;
 using RunTime.Data.ValueObject;
 using RunTime.Enums;
+using RunTime.Enums.Camera;
 using RunTime.Keys;
 using RunTime.Signals;
 using Sirenix.OdinInspector;
@@ -61,8 +63,8 @@ namespace RunTime.Managers
         private void OnPlayerExitInteractWithTurret()
         {
             PlayerSignals.Instance.onSetPlayerAnimationState?.Invoke(PlayerAnimationState.Run);
-            playerMovementController.ExitInteractWithTurret();
             PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
+            CameraSignals.Instance.onChangeCameraState?.Invoke(CameraEnums.Start);
         }
 
 

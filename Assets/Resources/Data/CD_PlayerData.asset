@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: CD_PlayerData
   m_EditorClassIdentifier: 
   data:
-    JoystickSpeed: 2
+    JoystickSpeed: 3
     StackData:
     - DataName: Money
       StackLimit: 0
@@ -22,7 +22,7 @@ MonoBehaviour:
       BulletData:
       - {x: 0, y: 0, z: 0}
     - DataName: Bullet
-      StackLimit: 5
+      StackLimit: 20
       StackAnimDuration: 1
       StackOffSet: 0.5
       BulletData:

@@ -8,6 +8,8 @@ TagManager:
   - BulletArea
   - TurretBulletArea
   - Money
+  - ExitArea
+  - EnterArea
   layers:
   - Default
   - TransparentFX

@@ -93,7 +93,6 @@ namespace RunTime.Managers
         private void OnSendPool(GameObject poolObject, PoolType poolType)
         {
             poolObject.transform.parent = poolHolder.GetChild((int)poolType);
-            poolObject.SetActive(false);
             poolObject.transform.localPosition = Vector3.zero;
         }
 

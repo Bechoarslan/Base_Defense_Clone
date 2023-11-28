@@ -18,5 +18,8 @@ namespace RunTime.Signals
         public UnityAction<Transform> onPlayerInteractWithBulletArea = delegate { };
         public UnityAction<Transform> onPlayerInteractWithTurretBulletArea = delegate {  };
         
+        public UnityAction onPlayerInteractExitArea = delegate {  };
+        public UnityAction onPlayerInteractEnterArea = delegate {  };
+        
     }
 }

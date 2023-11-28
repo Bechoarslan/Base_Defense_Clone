@@ -8,6 +8,8 @@ using RunTime.Enums.Pool;
 using RunTime.Signals;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 namespace RunTime.Managers
 {
@@ -18,8 +20,11 @@ namespace RunTime.Managers
         #region Private Variables
         
         private StackAddBulletToPlayerCommand _stackAddBulletToPlayerCommand;
+        private StackAddBulletToBulletAreaCommand _stackAddBulletToBulletAreaCommand;
         [ShowInInspector] private List<GameObject> _bulletList = new List<GameObject>();
         private PlayerData _stackData;
+        private Transform _bulletArea;
+        private bool _isGotStack;
 
         #endregion
 
@@ -37,6 +42,7 @@ namespace RunTime.Managers
         private void Init()
         {
             _stackAddBulletToPlayerCommand = new StackAddBulletToPlayerCommand(ref _stackData,transform,ref _bulletList);
+            _stackAddBulletToBulletAreaCommand = new StackAddBulletToBulletAreaCommand(ref _stackData, ref _bulletList);
         }
         
         
@@ -50,34 +56,56 @@ namespace RunTime.Managers
             CoreGameSignals.Instance.onPlay += OnPlay;
             PlayerSignals.Instance.onPlayerInteractWithBulletArea += OnPlayerInteractWithBulletArea;
             PlayerSignals.Instance.onPlayerInteractWithTurretBulletArea += OnPlayerInteractWithTurretBulletArea;
+            PlayerSignals.Instance.onPlayerInteractEnterArea += OnPlayerInteractEnterArea;
+        }
+
+        private void OnPlayerInteractEnterArea()
+        {
+            if(_bulletList.Count <= 0 ) return;
+         
+            for (var i = _bulletList.Count; i > 0; i--)
+            {
+                var obj = _bulletList[i - 1];
+                _bulletList.Remove(obj);
+                obj.transform.parent = _bulletArea;
+                var randomXPos = Random.Range(-0.5f, 0.5f);
+                var randomRot = Random.Range(-180, 180);
+                var newPos = new Vector3(obj.transform.position.x + randomXPos, obj.transform.position.y, obj.transform.position.z + randomXPos);
+                var newRotation = new Vector3(0, 0, randomRot);
+                obj.transform.DOLocalRotate(newRotation, 2f);
+                obj.transform.DOMove(newPos, 0.5f).OnComplete(() =>
+                {
+                    obj.transform.DOMove(_bulletArea.position, 0.5f).OnComplete(() =>
+                    {
+                        obj.SetActive(false);
+                        PoolSignals.Instance.onSendPool?.Invoke(obj,PoolType.Bullet);
+                    });
+                    
+                });
+               
+                
+                
+
+
+            }
+            
         }
 
         private void OnPlayerInteractWithTurretBulletArea(Transform turretArea)
         {
-            var data = _stackData.StackData[(int)PoolType.Bullet].BulletData;
             
-            for (int i =  _bulletList.Count; i > 0 ; i--)
-            {
-                var areaChildCount = turretArea.childCount;
-                var stackValue = areaChildCount / 4;
-                var obj = _bulletList[^1];
-                var index = areaChildCount % data.Count;
-                
-                
-                obj.transform.parent = turretArea;
-                var newPos = new Vector3(data[index].x, data[index].y + stackValue * 0.500f, data[index].z);
-                obj.transform.DOLocalMove(newPos, 1f);
-                obj.transform.DORotate(Vector3.zero, 1f);
-                _bulletList.Remove(obj);
-                
-            }
+            _stackAddBulletToBulletAreaCommand.Execute(ref turretArea);
+            _isGotStack = false;
         }
-
-        private void OnPlayerInteractWithBulletArea(Transform bulletArea)
+            
+        
+        private void OnPlayerInteractWithBulletArea(Transform bulletArea) 
         {
-            _stackAddBulletToPlayerCommand.Execute(bulletArea);
-            
+            _bulletArea = bulletArea;
+            _stackAddBulletToPlayerCommand.Execute(ref bulletArea, ref _isGotStack);
+            _isGotStack = true;
         }
+            
         
         private void UnSubscribeEvents()
         {

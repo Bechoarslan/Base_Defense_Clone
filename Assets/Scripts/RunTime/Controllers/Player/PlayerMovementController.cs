@@ -105,7 +105,7 @@ namespace RunTime.Controllers.Player
 
             if (_isTurretPlay)
             {
-                _playerTurretMovementCommand.Execute(ref _playerData, ref _inputParams, ref _rigidbody,ref _emptyObject,ref _isTurretPlay);
+                _playerTurretMovementCommand.Execute( ref _inputParams, ref _rigidbody,ref _emptyObject,ref _isTurretPlay);
             }
             
         }
@@ -119,11 +119,7 @@ namespace RunTime.Controllers.Player
             
         }
 
-        internal void ExitInteractWithTurret()
-        {
-            _isTurretPlay = false;
-            CameraSignals.Instance.onChangeCameraState?.Invoke(CameraEnums.Start);
-        }
+        
 
        
         
