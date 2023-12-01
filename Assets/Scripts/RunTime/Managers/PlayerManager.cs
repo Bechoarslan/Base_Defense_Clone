@@ -6,6 +6,7 @@ using RunTime.Data.UnityObject;
 using RunTime.Data.ValueObject;
 using RunTime.Enums;
 using RunTime.Enums.Camera;
+using RunTime.Enums.Gun;
 using RunTime.Keys;
 using RunTime.Signals;
 using Sirenix.OdinInspector;
@@ -19,6 +20,7 @@ namespace RunTime.Managers
 
         [SerializeField] private PlayerMovementController playerMovementController;
         [SerializeField] private PlayerAnimationController playerAnimationController;
+        [SerializeField] private PlayerMeshController playerMeshController;
         [SerializeField] private StackManager stackManager;
 
         #region Private Variables
@@ -55,14 +57,31 @@ namespace RunTime.Managers
             InputSignals.Instance.onInputTaken += () => PlayerSignals.Instance.onMoveConditionChanged?.Invoke(true);
             InputSignals.Instance.onInputReleased += () => PlayerSignals.Instance.onMoveConditionChanged?.Invoke(false);
             CoreGameSignals.Instance.onPlay += () => PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
-            PlayerSignals.Instance.onSetPlayerAnimationState += playerAnimationController.SetPlayerAnimationState;
+            PlayerSignals.Instance.onSetPlayerAnimation += playerAnimationController.SetPlayerAnimationState;
             PlayerSignals.Instance.onPLayerInteractWithTurret += OnPlayerInteractWithTurret;
             PlayerSignals.Instance.onPlayerExitInteractWithTurret += OnPlayerExitInteractWithTurret;
+            PlayerSignals.Instance.onPlayerInteractEnterArea += OnPlayerInteractEnterArea;
+            PlayerSignals.Instance.onSetAnimationLayer += OnSetAnimationLayer;
+            PlayerSignals.Instance.onPlayerInteractExitArea += OnPlayerInteractExitArea;
+        }
+
+        
+        private void OnSetAnimationLayer(PlayerAnimLayer layer,short weight) => playerAnimationController.SetAnimationLayer(layer,weight);
+        
+        private void OnPlayerInteractExitArea()
+        {
+            PlayerSignals.Instance.onSetAnimationLayer?.Invoke(PlayerAnimLayer.Outside,1);
+        }
+
+
+        private void OnPlayerInteractEnterArea()
+        {
+            PlayerSignals.Instance.onSetAnimationLayer?.Invoke(PlayerAnimLayer.Outside,0);
         }
 
         private void OnPlayerExitInteractWithTurret()
         {
-            PlayerSignals.Instance.onSetPlayerAnimationState?.Invoke(PlayerAnimationState.Run);
+            PlayerSignals.Instance.onSetPlayerAnimation?.Invoke(PlayerAnimationState.Run);
             PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
             CameraSignals.Instance.onChangeCameraState?.Invoke(CameraEnums.Start);
         }
@@ -70,7 +89,7 @@ namespace RunTime.Managers
 
         private void OnPlayerInteractWithTurret(GameObject turretObj)
         {
-            PlayerSignals.Instance.onSetPlayerAnimationState?.Invoke(PlayerAnimationState.Hold);
+            PlayerSignals.Instance.onSetPlayerAnimation?.Invoke(PlayerAnimationState.Hold);
             PlayerSignals.Instance.onPlayConditionChanged?.Invoke(false);
             playerMovementController.InteractWithTurret(turretObj);
         }
@@ -88,7 +107,7 @@ namespace RunTime.Managers
             InputSignals.Instance.onInputTaken -= () => PlayerSignals.Instance.onMoveConditionChanged?.Invoke(true);
             InputSignals.Instance.onInputReleased -= () => PlayerSignals.Instance.onMoveConditionChanged?.Invoke(false);
             CoreGameSignals.Instance.onPlay -= () => PlayerSignals.Instance.onPlayConditionChanged?.Invoke(true);
-            PlayerSignals.Instance.onSetPlayerAnimationState -= playerAnimationController.SetPlayerAnimationState;
+            PlayerSignals.Instance.onSetPlayerAnimation -= playerAnimationController.SetPlayerAnimationState;
             PlayerSignals.Instance.onPLayerInteractWithTurret -= OnPlayerInteractWithTurret;
             PlayerSignals.Instance.onPlayerExitInteractWithTurret -= OnPlayerExitInteractWithTurret;
         }

@@ -12,5 +12,7 @@ namespace RunTime.Signals
         public Func<PoolType,GameObject> onGetPoolObject = delegate { return null; };
         public UnityAction<GameObject,PoolType> onSendPool = delegate {  };
         
+        public UnityAction onEnemySpawned = delegate {  };
+        
     }
 }

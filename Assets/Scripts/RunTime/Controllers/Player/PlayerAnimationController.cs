@@ -1,4 +1,5 @@
 using RunTime.Enums;
+using RunTime.Enums.Gun;
 using RunTime.Keys;
 using Sirenix.OdinInspector;
 using UnityEngine;
@@ -40,6 +41,11 @@ namespace RunTime.Controllers.Player
         public void SetPlayerAnimationState(PlayerAnimationState animState)
         {
             playerAnimator.SetTrigger(animState.ToString());
+        }
+
+        public void SetAnimationLayer(PlayerAnimLayer layer, short weight)
+        {
+            playerAnimator.SetLayerWeight((int)layer,weight);
         }
     }
 }

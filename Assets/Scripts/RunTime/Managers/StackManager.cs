@@ -21,6 +21,7 @@ namespace RunTime.Managers
         
         private StackAddBulletToPlayerCommand _stackAddBulletToPlayerCommand;
         private StackAddBulletToBulletAreaCommand _stackAddBulletToBulletAreaCommand;
+        private BulletStackReturnToBulletAreaCommand _bulletStackReturnToBulletAreaCommand;
         [ShowInInspector] private List<GameObject> _bulletList = new List<GameObject>();
         private PlayerData _stackData;
         private Transform _bulletArea;
@@ -43,6 +44,7 @@ namespace RunTime.Managers
         {
             _stackAddBulletToPlayerCommand = new StackAddBulletToPlayerCommand(ref _stackData,transform,ref _bulletList);
             _stackAddBulletToBulletAreaCommand = new StackAddBulletToBulletAreaCommand(ref _stackData, ref _bulletList);
+            _bulletStackReturnToBulletAreaCommand = new BulletStackReturnToBulletAreaCommand(ref _bulletList);
         }
         
         
@@ -59,41 +61,10 @@ namespace RunTime.Managers
             PlayerSignals.Instance.onPlayerInteractEnterArea += OnPlayerInteractEnterArea;
         }
 
-        private void OnPlayerInteractEnterArea()
-        {
-            if(_bulletList.Count <= 0 ) return;
-         
-            for (var i = _bulletList.Count; i > 0; i--)
-            {
-                var obj = _bulletList[i - 1];
-                _bulletList.Remove(obj);
-                obj.transform.parent = _bulletArea;
-                var randomXPos = Random.Range(-0.5f, 0.5f);
-                var randomRot = Random.Range(-180, 180);
-                var newPos = new Vector3(obj.transform.position.x + randomXPos, obj.transform.position.y, obj.transform.position.z + randomXPos);
-                var newRotation = new Vector3(0, 0, randomRot);
-                obj.transform.DOLocalRotate(newRotation, 2f);
-                obj.transform.DOMove(newPos, 0.5f).OnComplete(() =>
-                {
-                    obj.transform.DOMove(_bulletArea.position, 0.5f).OnComplete(() =>
-                    {
-                        obj.SetActive(false);
-                        PoolSignals.Instance.onSendPool?.Invoke(obj,PoolType.Bullet);
-                    });
-                    
-                });
-               
-                
-                
-
-
-            }
-            
-        }
+        private void OnPlayerInteractEnterArea() => _bulletStackReturnToBulletAreaCommand.Execute(ref _bulletArea);
 
         private void OnPlayerInteractWithTurretBulletArea(Transform turretArea)
         {
-            
             _stackAddBulletToBulletAreaCommand.Execute(ref turretArea);
             _isGotStack = false;
         }
@@ -112,6 +83,7 @@ namespace RunTime.Managers
             CoreGameSignals.Instance.onPlay -= OnPlay;
             PlayerSignals.Instance.onPlayerInteractWithBulletArea -= OnPlayerInteractWithBulletArea;
             PlayerSignals.Instance.onPlayerInteractWithTurretBulletArea -= OnPlayerInteractWithTurretBulletArea;
+            PlayerSignals.Instance.onPlayerInteractEnterArea -= OnPlayerInteractEnterArea;
         }
 
         private void OnDisable()
@@ -127,4 +99,5 @@ namespace RunTime.Managers
 
         
     }
+
 }

@@ -1,4 +1,5 @@
 using RunTime.Enums;
+using RunTime.Enums.Gun;
 using RunTime.Extensions;
 using UnityEngine;
 using UnityEngine.Events;
@@ -10,7 +11,8 @@ namespace RunTime.Signals
         public UnityAction<bool> onPlayConditionChanged = delegate {  };
         public UnityAction<bool> onMoveConditionChanged = delegate {  };
         
-        public UnityAction<PlayerAnimationState> onSetPlayerAnimationState = delegate {  };
+        public UnityAction<PlayerAnimationState> onSetPlayerAnimation = delegate {  };
+        public UnityAction<PlayerAnimLayer,short> onSetAnimationLayer = delegate {  };
         
         public UnityAction<GameObject> onPLayerInteractWithTurret = delegate {  };
         public UnityAction onPlayerExitInteractWithTurret = delegate {  };
