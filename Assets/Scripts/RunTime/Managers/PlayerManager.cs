@@ -63,9 +63,15 @@ namespace RunTime.Managers
             PlayerSignals.Instance.onPlayerInteractEnterArea += OnPlayerInteractEnterArea;
             PlayerSignals.Instance.onSetAnimationLayer += OnSetAnimationLayer;
             PlayerSignals.Instance.onPlayerInteractExitArea += OnPlayerInteractExitArea;
+            PlayerSignals.Instance.onSendPlayerTransform += OnSendPlayerTransform;
         }
 
-        
+        private Transform OnSendPlayerTransform()
+        {
+            return transform;
+        }
+
+
         private void OnSetAnimationLayer(PlayerAnimLayer layer,short weight) => playerAnimationController.SetAnimationLayer(layer,weight);
         
         private void OnPlayerInteractExitArea()
@@ -110,6 +116,10 @@ namespace RunTime.Managers
             PlayerSignals.Instance.onSetPlayerAnimation -= playerAnimationController.SetPlayerAnimationState;
             PlayerSignals.Instance.onPLayerInteractWithTurret -= OnPlayerInteractWithTurret;
             PlayerSignals.Instance.onPlayerExitInteractWithTurret -= OnPlayerExitInteractWithTurret;
+            PlayerSignals.Instance.onPlayerInteractEnterArea -= OnPlayerInteractEnterArea;
+            PlayerSignals.Instance.onSetAnimationLayer -= OnSetAnimationLayer;
+            PlayerSignals.Instance.onPlayerInteractExitArea -= OnPlayerInteractExitArea;
+            PlayerSignals.Instance.onSendPlayerTransform -= OnSendPlayerTransform;
         }
 
         private void OnDisable()

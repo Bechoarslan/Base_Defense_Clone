@@ -34,7 +34,6 @@ namespace RunTime.Managers
 
         private Vector3 SendWallsTransformToEnemy()
         {
-                
                 var randomPosZ = Random.Range(enemySpawnArea[0].position.z, enemySpawnArea[1].position.z);
                 var randomPosX = Random.Range(enemySpawnArea[0].position.x, enemySpawnArea[2].position.x);
                 var newPos = new Vector3(randomPosX, 0, randomPosZ);

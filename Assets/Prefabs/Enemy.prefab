@@ -179,7 +179,7 @@ Animator:
   m_GameObject: {fileID: 2052860925567462268}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 1cf2dbe8224f92441a61897a0a8a3ecd, type: 3}
-  m_Controller: {fileID: 9100000, guid: a7f6f9c9e7f934fd0be82dbad2067efc, type: 2}
+  m_Controller: {fileID: 9100000, guid: 037d85c33b9ec49a4b3909acef19806f, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -199,8 +199,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2225888070602897412}
-  - component: {fileID: 4305042145555968566}
-  - component: {fileID: 3826719866579088206}
   - component: {fileID: 2190345783134540131}
   - component: {fileID: 2648860067645993487}
   m_Layer: 0
@@ -228,56 +226,6 @@ Transform:
   - {fileID: 8013689547370738517}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!54 &4305042145555968566
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4153888756289014647}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 1
-  m_Constraints: 80
-  m_CollisionDetection: 0
---- !u!136 &3826719866579088206
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4153888756289014647}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.23
-  m_Height: 1.6937177
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.74620044, z: 0}
 --- !u!195 &2190345783134540131
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -288,7 +236,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -313,6 +261,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   navMeshAgent: {fileID: 2190345783134540131}
+  animator: {fileID: 698026925385152205}
+  npcType: 0
 --- !u!1 &5848937185767603449
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,10 +273,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1134099208533413980}
   - component: {fileID: 4414362959174939420}
-  - component: {fileID: 9012236861375031075}
+  - component: {fileID: 3748045369901664382}
+  - component: {fileID: 4632900388107088234}
   m_Layer: 0
   m_Name: PhysicsController
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -373,8 +324,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!65 &9012236861375031075
-BoxCollider:
+--- !u!135 &3748045369901664382
+SphereCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -392,8 +343,21 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.53403324, y: 1.4076846, z: 0.28356782}
-  m_Center: {x: -0.003283888, y: 0.73001945, z: 0.03}
+  m_Radius: 3.3032675
+  m_Center: {x: 0, y: 2.8032675, z: 0}
+--- !u!114 &4632900388107088234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5848937185767603449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fd9061be5f2452ca8428c194aa3c3ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  npcManager: {fileID: 2648860067645993487}
 --- !u!1001 &7733287622443098670
 PrefabInstance:
   m_ObjectHideFlags: 0

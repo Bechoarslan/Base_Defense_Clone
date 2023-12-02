@@ -1,3 +1,4 @@
+using System;
 using RunTime.Enums;
 using RunTime.Enums.Gun;
 using RunTime.Extensions;
@@ -22,6 +23,10 @@ namespace RunTime.Signals
         
         public UnityAction onPlayerInteractExitArea = delegate {  };
         public UnityAction onPlayerInteractEnterArea = delegate {  };
+        
+        
+        public Func<Transform> onSendPlayerTransform = delegate { return null; };
+        
         
     }
 }

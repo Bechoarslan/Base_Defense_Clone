@@ -10,6 +10,7 @@ TagManager:
   - Money
   - ExitArea
   - EnterArea
+  - Enemy
   layers:
   - Default
   - TransparentFX

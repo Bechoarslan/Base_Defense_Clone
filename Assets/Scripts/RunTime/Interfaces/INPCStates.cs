@@ -1,14 +1,22 @@
 using RunTime.Enums.NPC;
+using UnityEngine;
 
 namespace RunTime.Interfaces
 {
-    public interface INPCStates
+    public interface INpcStates
     {
-        void PerformAction();
-        
-        void SetAnimationState(NPCAnimationState animationState);
+
+        void StartAction();
+
+        void UpdateAction();
+
+        void OnColliderEntered(Collider other);
+
+        void SetAnimation(NPCAnimationEnum animationEnums);
 
 
 
     }
+
+   
 }

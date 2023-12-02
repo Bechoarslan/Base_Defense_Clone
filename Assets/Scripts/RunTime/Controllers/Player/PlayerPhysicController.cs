@@ -1,4 +1,5 @@
 
+using System;
 using RunTime.Signals;
 using UnityEngine;
 
@@ -16,6 +17,7 @@ namespace RunTime.Controllers.Player
         private readonly string _turretBulletArea = "TurretBulletArea";
         private readonly string _exitArea = "ExitArea";
         private readonly string _enterArea = "EnterArea";
+        private readonly string _enemy = "Enemy";
         
 
         #endregion
@@ -46,6 +48,8 @@ namespace RunTime.Controllers.Player
             {
                 PlayerSignals.Instance.onPlayerInteractExitArea?.Invoke();
             }
+
+           
             
         }
 
@@ -56,5 +60,6 @@ namespace RunTime.Controllers.Player
                 PlayerSignals.Instance.onPlayerExitInteractWithTurret?.Invoke();
             }
         }
+        
     }
 }

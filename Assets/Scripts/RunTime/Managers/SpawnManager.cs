@@ -35,7 +35,9 @@ namespace RunTime.Managers
                 PoolSignals.Instance.onEnemySpawned?.Invoke();
                 enemy.transform.parent = transform.parent;
                 yield return new WaitForSeconds(4f);
+                
             }
+            
             
         }
 
