@@ -82,9 +82,10 @@ namespace Runtime.Managers
 
         private void OnSendPoolObject(GameObject poolObj, PoolType poolType)
         {
-            var poolParent = transform.GetChild((int)poolType);
             poolObj.SetActive(false);
+            var poolParent = transform.GetChild((int)poolType);
             poolObj.transform.SetParent(poolParent);
+            
             
             
         }

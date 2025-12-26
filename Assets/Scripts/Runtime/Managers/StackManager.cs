@@ -47,9 +47,9 @@ namespace Runtime.Managers
         private void SubscribeEvents()
         {
             PlayerSignals.Instance.onSendStacksToHolder += OnSendPlayerStacksToHolder;
-            StackSignals.Instance.onSendStackObjectToHolder += OnSendStackObjectToHolder;
-            StackSignals.Instance.onSendStackObjectToArea += OnSendstackObjectToArea;
-            StackSignals.Instance.onGetAmmoStackHolderTransform += OnGetAmmoStackHolderTransform;
+            GameSignals.Instance.onSendStackObjectToHolder += OnSendStackObjectToHolder;
+            GameSignals.Instance.onSendStackObjectToArea += OnSendstackObjectToArea;
+            GameSignals.Instance.onGetStackAmmoHolderTransform += OnGetAmmoStackHolderTransform;
         }
 
         private Transform OnGetAmmoStackHolderTransform() => ammoStackHolder;
@@ -129,8 +129,8 @@ namespace Runtime.Managers
 
         private void UnSubscribeEvents()
         {
-            StackSignals.Instance.onSendStackObjectToHolder -= OnSendStackObjectToHolder;
-            StackSignals.Instance.onSendStackObjectToArea -= OnSendstackObjectToArea;
+            GameSignals.Instance.onSendStackObjectToHolder -= OnSendStackObjectToHolder;
+            GameSignals.Instance.onSendStackObjectToArea -= OnSendstackObjectToArea;
             PlayerSignals.Instance.onSendStacksToHolder -= OnSendPlayerStacksToHolder;
         }
 

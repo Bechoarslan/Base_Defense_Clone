@@ -8,6 +8,7 @@ TagManager:
   - DepositArea
   - Turret
   - Enemy
+  - Hostage
   layers:
   - Default
   - TransparentFX

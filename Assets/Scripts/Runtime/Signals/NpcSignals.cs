@@ -6,6 +6,6 @@ namespace Runtime.Signals
 {
     public class NpcSignals : MonoSingleton<NpcSignals>
     {
-       
+        
     }
 }

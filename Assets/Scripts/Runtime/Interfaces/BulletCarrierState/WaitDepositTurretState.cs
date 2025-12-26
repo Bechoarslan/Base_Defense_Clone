@@ -1,0 +1,48 @@
+using System.Collections;
+using Runtime.Enums;
+using Runtime.Enums.NPCState;
+using Runtime.Managers.NPCManager.Hostage;
+using Runtime.Signals;
+using UnityEngine;
+
+namespace Runtime.Interfaces.BulletCarrierState
+{
+    public class WaitDepositTurretState : INPCStateMachine
+    {
+        private NPCBulletCarrierManager Manager;
+        public WaitDepositTurretState(NPCBulletCarrierManager npcBulletCarrierManager)
+        {
+            Manager = npcBulletCarrierManager;
+        }
+
+        public void EnterState()
+        {
+            Debug.Log("Depositing Bullet's");
+            var turretHolderTransform = GameSignals.Instance.onGetTurretHolderTransform?.Invoke();
+            Manager.StartCor(GameSignals.Instance.onSendStackObjectToArea?.Invoke(turretHolderTransform,Manager.bulletHolder,StackType.Ammo));
+            Manager.StartCor(WaitForDeposit());
+        }
+
+        public void UpdateState()
+        {
+            
+        }
+
+        public void OnTriggerEnter(Collider other)
+        {
+            
+        }
+
+        public void OnTriggerExit(Collider other)
+        {
+            
+            
+        }
+
+        IEnumerator WaitForDeposit()
+        {
+            yield return new WaitForSeconds(Manager.npcData.Data.WaitTime);
+            Manager.SwitchState(BulletCarrierType.WalkAmmoArea);
+        }
+    }
+}

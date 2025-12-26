@@ -1,0 +1,47 @@
+using Runtime.Enums.NPCState;
+using Runtime.Managers.NPCManager.Hostage;
+using Runtime.Signals;
+using UnityEngine;
+using UnityEngine.AI;
+
+namespace Runtime.Interfaces.BulletCarrierState
+{
+    public class WalkAmmoAreaState : INPCStateMachine
+    {
+        private NPCBulletCarrierManager Manager;
+        private NavMeshAgent Agent;
+
+        public WalkAmmoAreaState(NPCBulletCarrierManager npcBulletCarrierManager, ref NavMeshAgent navMeshAgent)
+        {
+            Manager = npcBulletCarrierManager;
+            Agent = navMeshAgent;
+        }
+
+        public void EnterState()
+        {
+            var ammoTransform = GameSignals.Instance.onGetStackAmmoHolderTransform?.Invoke();
+            if (ammoTransform != null) 
+                Agent.SetDestination(ammoTransform.position);
+        }
+
+        public void UpdateState()
+        {
+            
+        }
+
+        public void OnTriggerEnter(Collider other)
+        {
+            if (other.CompareTag("AmmoArea"))
+            {
+                Debug.Log("Ammo Area Entered");
+                Agent.isStopped = true;
+                Manager.SwitchState(BulletCarrierType.WaitTakeBullet);
+            }
+        }
+
+        public void OnTriggerExit(Collider other)
+        {
+            
+        }
+    }
+}

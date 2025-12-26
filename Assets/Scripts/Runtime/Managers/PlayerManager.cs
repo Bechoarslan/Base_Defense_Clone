@@ -73,12 +73,12 @@ namespace Runtime.Managers
         public void OnStackAmmo(Transform otherTransform, Transform stackHolder, StackType bullet)
         {
             Debug.Log("Stacking Ammo");
-            StartCoroutine(StackSignals.Instance.onSendStackObjectToHolder?.Invoke(otherTransform,stackHolder,bullet));
+            StartCoroutine(GameSignals.Instance.onSendStackObjectToHolder?.Invoke(otherTransform,stackHolder,bullet));
         }
 
         public void OnSendStackToDeposit(Transform holderTransform, Transform stackHolder, StackType ammo)
         {
-            StartCoroutine(StackSignals.Instance.onSendStackObjectToArea?.Invoke(holderTransform, stackHolder, ammo));
+            StartCoroutine(GameSignals.Instance.onSendStackObjectToArea?.Invoke(holderTransform, stackHolder, ammo));
         }
 
         public void ChangePlayerState(PlayerState playerState)
