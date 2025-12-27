@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 namespace Runtime.Interfaces.HostageState
 {
-    public class TerrifiedState : INPCStateMachine
+    public class TerrifiedState : IStateMachine
     {
         private NPCHostageManager Manager;
         private NavMeshAgent Agent;
@@ -40,7 +40,7 @@ namespace Runtime.Interfaces.HostageState
         private void FollowPlayer(Transform playerTransform)
         {
             Manager.playerTransform = playerTransform;
-            Manager.SwitchState(HostageStateType.FollowPlayer);
+            Manager.SwitchState(NPCHostageStateType.FollowPlayer);
         }
 
         public void OnTriggerExit(Collider other)

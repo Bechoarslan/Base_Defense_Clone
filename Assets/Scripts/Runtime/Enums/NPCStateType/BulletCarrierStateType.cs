@@ -1,6 +1,6 @@
 namespace Runtime.Enums.NPCState
 {
-    public enum BulletCarrierType
+    public enum BulletCarrierStateType
     {
         WalkAmmoArea,
         WaitTakeBullet,

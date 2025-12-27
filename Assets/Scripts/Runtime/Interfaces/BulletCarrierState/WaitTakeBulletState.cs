@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Runtime.Interfaces.BulletCarrierState
 {
-    public class WaitTakeBulletState : INPCStateMachine
+    public class WaitTakeBulletState : IStateMachine
     {
         private NPCBulletCarrierManager Manager;
         
@@ -43,7 +43,7 @@ namespace Runtime.Interfaces.BulletCarrierState
         IEnumerator WaitTakeBullet()
         {
             yield return new WaitForSeconds(Manager.npcData.Data.WaitTime);
-            Manager.SwitchState(BulletCarrierType.WalkTurretArea);
+            Manager.SwitchState(BulletCarrierStateType.WalkTurretArea);
         }
     }
 }

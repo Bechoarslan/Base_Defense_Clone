@@ -1,6 +1,6 @@
 namespace Runtime.Enums.NPCState
 {
-    public enum HostageStateType
+    public enum NPCHostageStateType
     {
         FollowPlayer,
         Terrified,

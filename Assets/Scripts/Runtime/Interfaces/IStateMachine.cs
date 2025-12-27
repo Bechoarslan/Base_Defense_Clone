@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Runtime.Interfaces
 {
-    public interface INPCStateMachine
+    public interface IStateMachine
     {
         void EnterState();
         void UpdateState();

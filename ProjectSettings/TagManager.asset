@@ -9,6 +9,7 @@ TagManager:
   - Turret
   - Enemy
   - Hostage
+  - TurretNPC
   layers:
   - Default
   - TransparentFX

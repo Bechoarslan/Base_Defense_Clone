@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Runtime.Enums;
 using RunTime.Utilities;
 using UnityEngine;
@@ -24,6 +25,13 @@ namespace Runtime.Signals
         public Func<(Transform, Transform)> onGetTurretStandPointAndTurretTransform = () => (null, null);
         public Func<Transform> onGetTurretHolderTransform = () => null;
         
+
+        #endregion
+
+
+        #region Spawn Signals
+
+        public Func<Transform> onEnemyWalkPointTransform = () => null;
 
         #endregion
     }

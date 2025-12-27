@@ -55,5 +55,23 @@ namespace Runtime.Controllers
             }
 
         }
+
+        public IEnumerator RotateToEnemy(List<GameObject> enteredEnemies)
+        {
+            var waiter = new WaitForSeconds(0.5f);
+            while (true)
+            {
+                if (enteredEnemies.Count <= 0)
+                {
+                    yield return null;
+                    continue;
+                }
+               
+                var target = enteredEnemies[^1].transform;
+                turretManager.transform.DORotate(new Vector3(0,
+                    Quaternion.LookRotation(target.position - turretManager.transform.position).eulerAngles.y, 0), 0.5f);
+                yield return waiter;
+            }
+        }
     }
 }

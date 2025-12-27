@@ -62,7 +62,7 @@ namespace Runtime.Managers
         private GameObject OnGetPoolObject(PoolType poolType)
         {
             var poolParent = transform.GetChild((int)poolType);
-            if (poolParent.childCount < 1)
+            if (poolParent.childCount < 1 )
             {
                 Debug.LogError("Pool is empty!");
                 return InstantiateNewPoolObject(poolType);

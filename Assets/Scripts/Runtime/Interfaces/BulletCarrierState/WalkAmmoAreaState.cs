@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 namespace Runtime.Interfaces.BulletCarrierState
 {
-    public class WalkAmmoAreaState : INPCStateMachine
+    public class WalkAmmoAreaState : IStateMachine
     {
         private NPCBulletCarrierManager Manager;
         private NavMeshAgent Agent;
@@ -35,7 +35,7 @@ namespace Runtime.Interfaces.BulletCarrierState
             {
                 Debug.Log("Ammo Area Entered");
                 Agent.isStopped = true;
-                Manager.SwitchState(BulletCarrierType.WaitTakeBullet);
+                Manager.SwitchState(BulletCarrierStateType.WaitTakeBullet);
             }
         }
 

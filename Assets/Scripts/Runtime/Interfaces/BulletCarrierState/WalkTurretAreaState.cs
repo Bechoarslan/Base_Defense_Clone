@@ -6,7 +6,7 @@ using UnityEngine.AI;
 
 namespace Runtime.Interfaces.BulletCarrirerState
 {
-    public class WalkTurretAreaState : INPCStateMachine
+    public class WalkTurretAreaState : IStateMachine
     {
         private NPCBulletCarrierManager Manager;
         private NavMeshAgent Agent;
@@ -34,7 +34,7 @@ namespace Runtime.Interfaces.BulletCarrirerState
             if (other.CompareTag("DepositArea"))
             {
                 Debug.Log("DepositArea Entered");
-                Manager.SwitchState(BulletCarrierType.WaitDepositBullet);
+                Manager.SwitchState(BulletCarrierStateType.WaitDepositBullet);
             }
         }
 

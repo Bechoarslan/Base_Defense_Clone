@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Runtime.Interfaces.BulletCarrierState
 {
-    public class WaitDepositTurretState : INPCStateMachine
+    public class WaitDepositTurretState : IStateMachine
     {
         private NPCBulletCarrierManager Manager;
         public WaitDepositTurretState(NPCBulletCarrierManager npcBulletCarrierManager)
@@ -42,7 +42,7 @@ namespace Runtime.Interfaces.BulletCarrierState
         IEnumerator WaitForDeposit()
         {
             yield return new WaitForSeconds(Manager.npcData.Data.WaitTime);
-            Manager.SwitchState(BulletCarrierType.WalkAmmoArea);
+            Manager.SwitchState(BulletCarrierStateType.WalkAmmoArea);
         }
     }
 }

@@ -4,5 +4,6 @@ namespace Runtime.Enums
     {
         Ammo,
         Projectile,
+        Enemy
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using Runtime.Enums;
 using Runtime.Signals;
+using Sirenix.OdinInspector;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -46,7 +47,7 @@ namespace Runtime.Controllers
             GameSignals.Instance.onTurretStateChange += OnTurretStateChange;
         }
 
-        private void OnTurretStateChange(TurretState turretState)
+        public void OnTurretStateChange(TurretState turretState)
         {
             
             switch (turretState)
@@ -60,6 +61,7 @@ namespace Runtime.Controllers
             _turretState = turretState;
         }
 
+        [Button("Ready To Shoot")]
         public void ReadyToShoot()
         {
             switch (_turretState)
@@ -69,6 +71,7 @@ namespace Runtime.Controllers
                     break;
                 case TurretState.AutoTurret:
                     StartCoroutine(turretController.EnemyShooting(ammoHolder));
+                    StartCoroutine(turretController.RotateToEnemy(enteredEnemies));
                     break;
                 case TurretState.None:
                     StopAllCoroutines();

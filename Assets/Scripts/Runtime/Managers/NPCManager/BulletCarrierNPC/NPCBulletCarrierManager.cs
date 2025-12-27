@@ -16,7 +16,7 @@ namespace Runtime.Managers.NPCManager.Hostage
 
         #region Public Variables
 
-        public INPCStateMachine CurrentState;
+        public IStateMachine CurrentState;
 
         #endregion
 
@@ -59,20 +59,20 @@ namespace Runtime.Managers.NPCManager.Hostage
             
         }
 
-        public void SwitchState(BulletCarrierType waitTakeBullet)
+        public void SwitchState(BulletCarrierStateType waitTakeBullet)
         {
             switch (waitTakeBullet)
             {
-                case BulletCarrierType.WaitDepositBullet:
+                case BulletCarrierStateType.WaitDepositBullet:
                     CurrentState = _waitDepositTurretState;
                     break;
-                case BulletCarrierType.WaitTakeBullet:
+                case BulletCarrierStateType.WaitTakeBullet:
                     CurrentState = _waitTakeBulletState;
                     break;
-                case BulletCarrierType.WalkAmmoArea:
+                case BulletCarrierStateType.WalkAmmoArea:
                     CurrentState = _walkAmmoAreaState;
                     break;
-                case BulletCarrierType.WalkTurretArea:
+                case BulletCarrierStateType.WalkTurretArea:
                     CurrentState = _walkTurretAreaState;
                     break;
             }

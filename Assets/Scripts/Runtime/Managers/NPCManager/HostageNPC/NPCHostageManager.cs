@@ -15,7 +15,7 @@ namespace Runtime.Managers.NPCManager.Hostage
 
         #region Public Variables
 
-        public INPCStateMachine _currentState;
+        public IStateMachine _currentState;
         public Transform playerTransform;
 
         #endregion
@@ -64,14 +64,14 @@ namespace Runtime.Managers.NPCManager.Hostage
             _currentState.UpdateState();
         }
 
-        public void SwitchState(HostageStateType hostageStateType)
+        public void SwitchState(NPCHostageStateType npcHostageStateType)
         {
-            switch (hostageStateType)
+            switch (npcHostageStateType)
             {
-                case HostageStateType.FollowPlayer:
+                case NPCHostageStateType.FollowPlayer:
                     _currentState = _followPlayerState;
                     break;
-                case HostageStateType.Terrified:
+                case NPCHostageStateType.Terrified:
                     _currentState = _terrifiedState;
                     break;
             }

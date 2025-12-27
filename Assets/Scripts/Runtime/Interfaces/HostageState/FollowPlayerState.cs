@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 namespace Runtime.Interfaces.HostageState
 {
-    public class FollowPlayerState : INPCStateMachine
+    public class FollowPlayerState : IStateMachine
     {
         public NavMeshAgent Agent;
         public NPCHostageManager Manager;
