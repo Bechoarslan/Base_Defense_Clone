@@ -14,6 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   PlayerData:
     MoveSpeed: 5
-    RotateSpeed: 8
-    StackLimit: 10
-    StackOffset: 0.4
+    RotateSpeed: 5
+    Health: 100

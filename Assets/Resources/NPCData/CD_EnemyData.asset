@@ -18,3 +18,4 @@ MonoBehaviour:
     Damage: 10
     AttackSpeed: 3
     DetectionRadius: 0
+    StopDistance: 26.47

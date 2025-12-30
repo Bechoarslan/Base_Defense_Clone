@@ -5,6 +5,7 @@ namespace Runtime.Enums
     public enum PlayerState
     {
         Idle,
-        Turret
+        Turret,
+        Shooting
     }
 }

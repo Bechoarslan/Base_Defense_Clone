@@ -1,3 +1,4 @@
+using Runtime.Controllers.NpcController.Enemy;
 using Runtime.Managers.EnemyManager;
 using UnityEngine;
 using UnityEngine.AI;
@@ -8,7 +9,8 @@ namespace Runtime.Interfaces.EnemyState
     {
         private EnemyManager Manager;
         private NavMeshAgent Agent;
-        public EnemyDieState(EnemyManager enemyManager, NavMeshAgent navMeshAgent)
+        public EnemyDieState(EnemyManager enemyManager, NavMeshAgent navMeshAgent,
+            EnemyAnimationController enemyAnimationController)
         {
             Manager = enemyManager;
             Agent = navMeshAgent;
@@ -24,12 +26,17 @@ namespace Runtime.Interfaces.EnemyState
             
         }
 
-        public void OnTriggerEnter(Collider other)
+        public void OnStateTriggerEnter(Collider other)
         {
            
         }
 
-        public void OnTriggerExit(Collider other)
+        public void OnStateTriggerExit(Collider other)
+        {
+            
+        }
+
+        public void OnExitState()
         {
             
         }

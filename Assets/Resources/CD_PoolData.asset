@@ -15,13 +15,13 @@ MonoBehaviour:
   pools:
   - poolType: 0
     poolSize: 15
-    poolPrefab: {fileID: 6365105347646174373, guid: 43157a3f80ed54dd3918e48155160e4e,
+    poolPrefab: {fileID: 4926628885402515831, guid: 3b22f4dc5a79443d3ac7203ccdeaa5c1,
       type: 3}
   - poolType: 1
-    poolSize: 50
-    poolPrefab: {fileID: 1860424472043036706, guid: c1a0d753d3d3444a08ed1e448743db6f,
+    poolSize: 5
+    poolPrefab: {fileID: 4997030908126669252, guid: b7a59db95db2242409c0134ee8745d11,
       type: 3}
   - poolType: 2
-    poolSize: 25
-    poolPrefab: {fileID: 6941386766898285696, guid: 0ef14df99117e4a9ba5beae1b353b3fc,
+    poolSize: 50
+    poolPrefab: {fileID: 4764477179679800130, guid: 749631adf5cb2419ca154d5710ae2421,
       type: 3}

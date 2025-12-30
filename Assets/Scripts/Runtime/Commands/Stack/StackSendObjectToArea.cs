@@ -12,7 +12,7 @@ namespace Runtime.Commands.Stack
             stackObj.transform.DOLocalJump(new Vector3(0,2f,0) ,0,1,0.3f).OnComplete(() =>
             {
              
-                var childCount = areaHolder.childCount - 1;
+                var childCount = areaHolder.childCount;
                 var offSetX = (childCount % 2) ;
                 var offSetZ = ((childCount / 2) % 2) ;
                 var offSetY = (childCount / 4) ;

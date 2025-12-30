@@ -59,7 +59,7 @@ namespace Runtime.Managers
         {
             var count = playerStackHolder.childCount;
             Debug.Log(count);
-            for (int i = count - 1; i > 0; i--)
+            for (int i = count - 1; i >= 0; i--)
             {
                 var stackObj = playerStackHolder.GetChild(i).gameObject;
                 stackObj.transform.DOLocalJump(new Vector3(0, 2f, 0), 1f, 1, 0.5f).OnComplete(() =>

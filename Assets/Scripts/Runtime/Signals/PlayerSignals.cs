@@ -9,5 +9,6 @@ namespace Runtime.Signals
     {
         public Action<PlayerState> onChangePlayerState = delegate { };
         public Action<Transform> onSendStacksToHolder = delegate { };
+        public Func<Transform> onGetPlayerTransform = delegate { return null; };
     }
 }

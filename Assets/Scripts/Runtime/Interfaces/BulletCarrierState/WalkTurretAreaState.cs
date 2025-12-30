@@ -29,7 +29,7 @@ namespace Runtime.Interfaces.BulletCarrirerState
             
         }
 
-        public void OnTriggerEnter(Collider other)
+        public void OnStateTriggerEnter(Collider other)
         {
             if (other.CompareTag("DepositArea"))
             {
@@ -38,7 +38,12 @@ namespace Runtime.Interfaces.BulletCarrirerState
             }
         }
 
-        public void OnTriggerExit(Collider other)
+        public void OnStateTriggerExit(Collider other)
+        {
+            
+        }
+
+        public void OnExitState()
         {
             
         }

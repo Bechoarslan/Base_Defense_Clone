@@ -27,12 +27,17 @@ namespace Runtime.Interfaces.NPCTurretState
             
         }
 
-        public void OnTriggerEnter(Collider other)
+        public void OnStateTriggerEnter(Collider other)
         {
             
         }
 
-        public void OnTriggerExit(Collider other)
+        public void OnStateTriggerExit(Collider other)
+        {
+            
+        }
+
+        public void OnExitState()
         {
             
         }

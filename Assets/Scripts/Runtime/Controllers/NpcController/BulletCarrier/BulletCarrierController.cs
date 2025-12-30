@@ -10,7 +10,7 @@ namespace Runtime.Controllers.NpcController.BulletCarrier
         private void OnTriggerEnter(Collider other)
         {
             
-            manager.CurrentState.OnTriggerEnter(other);
+            manager.CurrentState.OnStateTriggerEnter(other);
         }
     }
 }

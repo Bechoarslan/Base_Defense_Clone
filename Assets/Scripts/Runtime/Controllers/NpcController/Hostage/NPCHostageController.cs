@@ -10,7 +10,7 @@ namespace Runtime.Controllers.NpcController.Hostage
         private void OnTriggerEnter(Collider other)
         {
             Debug.Log("Hostage OnTriggerEnter");
-            npcHostageManager._currentState.OnTriggerEnter(other);
+            npcHostageManager._currentState.OnStateTriggerEnter(other);
         }
     }
 }

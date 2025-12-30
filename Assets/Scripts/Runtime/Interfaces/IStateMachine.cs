@@ -6,7 +6,9 @@ namespace Runtime.Interfaces
     {
         void EnterState();
         void UpdateState();
-        void OnTriggerEnter(Collider other);
-        void OnTriggerExit(Collider other);
+        void OnStateTriggerEnter(Collider other);
+        void OnStateTriggerExit(Collider other);
+        
+        void OnExitState();
     }
 }

@@ -10,6 +10,7 @@ namespace Runtime.Data.ValueObjects.NpcData
         public int Damage;
         public float AttackSpeed;
         public float DetectionRadius;
-        
+        public float StopDistance;
+
     }
 }

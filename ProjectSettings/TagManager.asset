@@ -10,6 +10,14 @@ TagManager:
   - Enemy
   - Hostage
   - TurretNPC
+  - BuildArea
+  - OutOfBase
+  - InOutOfBase
+  - Barrier
+  - EnemyStopDistance
+  - EnemyChecker
+  - GunOn
+  - GunOff
   layers:
   - Default
   - TransparentFX
@@ -19,8 +27,8 @@ TagManager:
   - UI
   - Player
   - Ammo
-  - 
-  - 
+  - Targetable
+  - Enemy
   - 
   - 
   - 

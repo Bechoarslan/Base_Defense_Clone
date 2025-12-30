@@ -30,16 +30,21 @@ namespace Runtime.Interfaces.BulletCarrierState
            
         }
 
-        public void OnTriggerEnter(Collider other)
+        public void OnStateTriggerEnter(Collider other)
         {
            
         }
 
-        public void OnTriggerExit(Collider other)
+        public void OnStateTriggerExit(Collider other)
         {
             
         }
-        
+
+        public void OnExitState()
+        {
+            
+        }
+
         IEnumerator WaitTakeBullet()
         {
             yield return new WaitForSeconds(Manager.npcData.Data.WaitTime);

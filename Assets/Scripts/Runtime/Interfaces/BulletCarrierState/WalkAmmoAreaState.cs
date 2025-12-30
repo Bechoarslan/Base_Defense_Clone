@@ -29,7 +29,7 @@ namespace Runtime.Interfaces.BulletCarrierState
             
         }
 
-        public void OnTriggerEnter(Collider other)
+        public void OnStateTriggerEnter(Collider other)
         {
             if (other.CompareTag("AmmoArea"))
             {
@@ -39,7 +39,12 @@ namespace Runtime.Interfaces.BulletCarrierState
             }
         }
 
-        public void OnTriggerExit(Collider other)
+        public void OnStateTriggerExit(Collider other)
+        {
+            
+        }
+
+        public void OnExitState()
         {
             
         }

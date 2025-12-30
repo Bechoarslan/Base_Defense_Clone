@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Runtime.Enums;
 using Runtime.Managers;
 using Runtime.Signals;
@@ -8,8 +9,14 @@ namespace Runtime.Controllers.Player
 {
     public class PlayerPhysicController : MonoBehaviour
     {
+        
         [SerializeField] private PlayerManager playerManager;
         [SerializeField] private Transform stackHolder;
+        [SerializeField] private GameObject enemyColliderChecker;
+        [SerializeField] private GameObject gunHolder;
+        private Transform _barrier;
+        private bool _isOpen;
+        private bool _isGun;
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("AmmoArea"))
@@ -30,6 +37,45 @@ namespace Runtime.Controllers.Player
                     PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder);
                 }
             }
+            else if (other.CompareTag("GunOff"))
+            {
+                OnEnterAndExitOutOfBase(true);
+
+            }
+            else if (other.CompareTag("GunOn")) 
+            {
+                OnEnterAndExitOutOfBase(false);
+            }
+            else if (other.CompareTag("InOutOfBase"))
+            {
+                var block = GameObject.FindGameObjectWithTag("Barrier");
+                RotateGate(block);
+            }
+          
+           
+        }
+
+        private void OnEnterAndExitOutOfBase(bool value)
+        {
+            Debug.Log("Out of Base Triggered");
+            if (!value)
+            {
+                
+                playerManager.ChangePlayerState(PlayerState.Shooting);
+                enemyColliderChecker.layer = LayerMask.NameToLayer("Targetable");
+                playerManager.SetHealthVisible(true);
+                gunHolder.gameObject.SetActive(true);
+             
+            }
+            else
+            {
+                
+                playerManager.ChangePlayerState(PlayerState.Idle);
+                enemyColliderChecker.layer = LayerMask.NameToLayer("Player");
+                playerManager.SetHealthVisible(false);
+                gunHolder.gameObject.SetActive(false);
+           
+            }
         }
 
 
@@ -47,7 +93,24 @@ namespace Runtime.Controllers.Player
             {
                 GameSignals.Instance.onTurretStateChange?.Invoke(TurretState.None);
             }
+            else if (other.CompareTag("InOutOfBase"))
+            {
+                var block = GameObject.FindGameObjectWithTag("Barrier");
+                RotateGate(block);
+            }
             
+          
+            
+        }
+
+        private void RotateGate(GameObject blokc)
+        {
+            blokc.transform.DOLocalRotate(
+                _isOpen ? new Vector3(0, 0, 0) : new Vector3(0, 0, 90),
+                0.4f
+            );
+
+            _isOpen = !_isOpen;
         }
     }
 }

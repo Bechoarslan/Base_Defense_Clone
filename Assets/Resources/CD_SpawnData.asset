@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CD_SpawnData
   m_EditorClassIdentifier: 
   Data:
-    SpawnDelay: 5
-    SpawnCount: 15
+    SpawnDelay: 600
+    SpawnCount: 1

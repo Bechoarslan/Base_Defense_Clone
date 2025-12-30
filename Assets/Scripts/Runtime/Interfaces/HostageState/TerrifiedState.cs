@@ -27,7 +27,7 @@ namespace Runtime.Interfaces.HostageState
             
         }
 
-        public void OnTriggerEnter(Collider other)
+        public void OnStateTriggerEnter(Collider other)
         {
             Debug.Log(other.gameObject.tag);
             if (other.CompareTag("Player"))
@@ -43,7 +43,12 @@ namespace Runtime.Interfaces.HostageState
             Manager.SwitchState(NPCHostageStateType.FollowPlayer);
         }
 
-        public void OnTriggerExit(Collider other)
+        public void OnStateTriggerExit(Collider other)
+        {
+            
+        }
+
+        public void OnExitState()
         {
             
         }

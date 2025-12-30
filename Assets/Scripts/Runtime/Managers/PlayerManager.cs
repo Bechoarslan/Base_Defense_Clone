@@ -1,27 +1,33 @@
 using System;
+using System.Collections.Generic;
 using Runtime.Controllers.Player;
 using Runtime.Data.UnityObjects;
 using Runtime.Enums;
+using Runtime.Interfaces;
 using Runtime.Keys;
 using Runtime.Signals;
 using UnityEngine;
 
 namespace Runtime.Managers
 {
-    public class PlayerManager : MonoBehaviour
+    public class PlayerManager : MonoBehaviour,IDamageable
     {
         #region Self Variables
 
+        public List<GameObject> EnemyList = new List<GameObject>();
+        public float Health { get; set; }
         #region Serialized Variables
 
         [SerializeField] private PlayerMovementController playerMovementController;
-
+        [SerializeField] private PlayerHealthController playerHealthController;
+        
+        public PlayerState playerState;
         [SerializeField] private CD_PlayerData playerData;
         #endregion
 
         #region Private Variables
 
-        private PlayerState _playerState;
+  
         #endregion
 
         #endregion
@@ -30,6 +36,8 @@ namespace Runtime.Managers
         {
             SendPlayerDataToControllers();
             ChangePlayerState(PlayerState.Idle);
+            Health = playerData.PlayerData.Health;
+            playerHealthController.SetHealth(Health);
         }
 
         private void SendPlayerDataToControllers()
@@ -47,6 +55,7 @@ namespace Runtime.Managers
         {
         
        
+            PlayerSignals.Instance.onGetPlayerTransform += OnGetPlayerTransform;
             InputSignals.Instance.onInputParamsChanged += OnInputParamsChanged;
             
         }
@@ -57,14 +66,17 @@ namespace Runtime.Managers
 
         private void UnSubscribeEvents()
         {
-           
-          
+
+            PlayerSignals.Instance.onGetPlayerTransform += OnGetPlayerTransform;
             InputSignals.Instance.onInputParamsChanged -= OnInputParamsChanged;
             
            
             
         }
 
+        private Transform OnGetPlayerTransform() => this.transform;
+        
+        
         private void OnDisable()
         {
             UnSubscribeEvents();
@@ -83,9 +95,18 @@ namespace Runtime.Managers
 
         public void ChangePlayerState(PlayerState playerState)
         {
-            _playerState = playerState;
+            this.playerState = playerState;
            
-            playerMovementController.OnStateChanged(_playerState);
+            playerMovementController.OnStateChanged(this.playerState);
+        }
+
+     
+        public void TakeDamage(float damageAmount) =>
+            playerHealthController.OnTakeDamage(damageAmount);
+
+        public void SetHealthVisible(bool value)
+        {
+            playerHealthController.SetHealthVisible(value);
         }
     }
 }
