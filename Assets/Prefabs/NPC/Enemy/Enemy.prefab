@@ -870,7 +870,7 @@ GameObject:
   - component: {fileID: 5248104600583876471}
   m_Layer: 9
   m_Name: Enemy
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -908,6 +908,7 @@ MonoBehaviour:
   enemyData: {fileID: 11400000, guid: 156b63a13fb1045b6ace6bc703c4b85c, type: 2}
   navMeshAgent: {fileID: -5495631132927883252}
   enemyAnimationController: {fileID: 7065260510662199128}
+  enemyMaterial: {fileID: 7051616617973541926}
 --- !u!195 &-5495631132927883252
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1062,7 +1063,7 @@ GameObject:
   - component: {fileID: 432241316831779275}
   m_Layer: 9
   m_Name: PhysicController
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

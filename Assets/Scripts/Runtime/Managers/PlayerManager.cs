@@ -20,6 +20,7 @@ namespace Runtime.Managers
 
         [SerializeField] private PlayerMovementController playerMovementController;
         [SerializeField] private PlayerHealthController playerHealthController;
+        [SerializeField] private PlayerShootingController playerShootingController;
         
         public PlayerState playerState;
         [SerializeField] private CD_PlayerData playerData;
@@ -98,6 +99,7 @@ namespace Runtime.Managers
             this.playerState = playerState;
            
             playerMovementController.OnStateChanged(this.playerState);
+            playerShootingController.OnStateChanged(this.playerState);
         }
 
      

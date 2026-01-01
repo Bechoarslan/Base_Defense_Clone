@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Runtime.Controllers.NpcController.Enemy;
 using Runtime.Data.UnityObjects;
 using Runtime.Enums.EnemyStateType;
@@ -10,10 +11,11 @@ using UnityEngine.AI;
 
 namespace Runtime.Managers.EnemyManager
 {
-    public class EnemyManager : MonoBehaviour
+    public class EnemyManager : MonoBehaviour,IDamageable
     {
         #region Self Variables
 
+        public float Health { get; set; } = 100;
         #region Public Variables
 
         public Transform Target;
@@ -26,6 +28,7 @@ namespace Runtime.Managers.EnemyManager
         [SerializeField] private CD_EnemyData enemyData;
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private EnemyAnimationController enemyAnimationController;
+        [SerializeField] private SkinnedMeshRenderer enemyMaterial;
 
         #endregion
 
@@ -110,6 +113,16 @@ namespace Runtime.Managers.EnemyManager
             
             _currentState.UpdateState();
            
+        }
+
+       
+        public void TakeDamage(float damageAmount)
+        {
+            var currentColor = enemyMaterial.material.color;
+            enemyMaterial.material.DOColor( Color.gray, 0.5f ).OnComplete(() =>
+            {
+                enemyMaterial.material.DOColor( currentColor, 0.5f );
+            });
         }
     }
 }

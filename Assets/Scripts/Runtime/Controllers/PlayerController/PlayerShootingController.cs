@@ -13,65 +13,51 @@ namespace Runtime.Controllers.Player
     {
         #region Self Variables
 
+        #region Public Variables
+
+        public Transform LookAtTarget;
+
+        #endregion
         #region Serialized Variables
 
         [SerializeField] private List<GameObject> enemyList;
+        [SerializeField] private Transform firePoint;
 
         #endregion
 
         #region Private Variables
         
         private Coroutine _shootingCoroutine;
+        private PlayerState _playerState;
         #endregion
 
         #endregion
+        
+       
 
-        // Inspector'da görünecek buton bu fonksiyonda olmalı
-        [Button("Start Shooting")] 
-        private void StartShootingButton()
-        {
-            // Oyun çalışmıyorsa Coroutine başlatılamaz, hata almamak için kontrol ekle
-            if (Application.isPlaying)
-            {
-                StopAllCoroutines(); // Üst üste binmemesi için öncekileri durdurabilirsin
-                StartCoroutine(StartShootingRoutine());
-            }
-            else
-            {
-                Debug.LogWarning("Coroutine'ler sadece Play Mode'da çalışır!");
-            }
-        }
-
-// Asıl mantık burada (İsmini karışmasın diye değiştirdim)
         private IEnumerator StartShootingRoutine()
         {
             var waiter = new WaitForSeconds(1f);
-            Debug.Log("In Shooting Coroutine - Başladı");
-    
-            // HATA AYIKLAMA: Listenin o anki durumunu konsola yazdır
-            Debug.Log($"Enemy List Count: {enemyList.Count}"); 
-
-            while (enemyList.Count > 0)
+            
+            while (_playerState == PlayerState.Shooting)
             {
-                Debug.Log("Shooting at enemies - Döngüye Girdi");
-        
-                // Foreach yerine for kullanmak, ateş ederken düşman ölürse (listeden silinirse)
-                // "CollectionModified" hatası almanızı engeller.
+                
+                
                 for (int i = enemyList.Count - 1; i >= 0; i--)
                 {
                     var enemy = enemyList[i];
                     if (enemy != null)
                     {
-                        var enemyTransform = enemy.transform;
+                        LookAtTarget = enemy.transform;
+                       
                         Fire(); 
-                        Debug.Log($"Shooting at enemy: {enemyTransform.name}");
+                       
                     }
                 }
         
                 yield return waiter;
             }
-    
-            Debug.Log("Enemy List 0 olduğu için döngüden çıkıldı.");
+            
         }
 
         private void Fire()
@@ -79,21 +65,23 @@ namespace Runtime.Controllers.Player
             var bullet = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Projectile);
             if (bullet != null)
             {
-                bullet.transform.position = transform.position + transform.forward * 1.5f + Vector3.up * 1.0f;
-                bullet.transform.rotation = Quaternion.LookRotation(transform.forward);
+                bullet.transform.SetParent(firePoint);
+                bullet.transform.localPosition = Vector3.zero;
                 bullet.SetActive(true);
                 var rb = bullet.GetComponent<Rigidbody>();
-                rb.velocity = transform.forward * 20f; // Set bullet speed
+                Vector3 direction = (LookAtTarget.position - firePoint.position).normalized;
+                rb.velocity = direction * 50f; // Merminin hızı
+               
             }
         }
 
 
-        public void AddEnemyToList(GameObject otherGameObject) 
+        private void AddEnemyToList(GameObject otherGameObject) 
         {
             if (!enemyList.Contains(otherGameObject))
             {
                 enemyList.Add(otherGameObject);
-                Debug.Log($"Enemy added to list: {otherGameObject.name}");
+        
             }
         }
 
@@ -101,8 +89,38 @@ namespace Runtime.Controllers.Player
         {
             if (other.CompareTag("Enemy"))
             {
+                AddEnemyToList(other.gameObject.transform.parent.gameObject);
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag("Enemy"))
+            {
+                if (enemyList.Contains(other.gameObject))
+                {
+                    enemyList.Remove(other.gameObject);
+                    
+                    
+                }
+            }
+        }
+
+        public void OnStateChanged(PlayerState playerState)
+        {
+            _playerState = playerState;
+            if (_playerState != PlayerState.Shooting)
+            {
+                if(_shootingCoroutine != null)
+                {
+                    StopCoroutine(_shootingCoroutine);
+                }
+            }
+            else
+            {
                 StartCoroutine(StartShootingRoutine());
             }
+           
         }
     }
 }

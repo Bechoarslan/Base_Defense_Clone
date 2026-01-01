@@ -539,6 +539,18 @@ Transform:
   - {fileID: 474666749}
   m_Father: {fileID: 399018248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &126180017 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8895768626686990024, guid: eb8529faac89943359d29557f07b10e9,
+    type: 3}
+  m_PrefabInstance: {fileID: 4224214704820304059}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6b9a38c95694abb89786677ab0b6734, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &126705847
 GameObject:
   m_ObjectHideFlags: 0
@@ -622,35 +634,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 126705847}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &149997456 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6368027866526224229, guid: eb8529faac89943359d29557f07b10e9,
-    type: 3}
-  m_PrefabInstance: {fileID: 4224214704820304059}
-  m_PrefabAsset: {fileID: 0}
---- !u!136 &149997459
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 149997456}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 6
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &164221823
 GameObject:
   m_ObjectHideFlags: 0
@@ -980,7 +963,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.38745555, y: -0.0000000058636487, z: 0.0000000024644016,
     w: 0.9218884}
-  m_LocalPosition: {x: 0, y: 10.209, z: -10}
+  m_LocalPosition: {x: 0, y: 10.479, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2054,7 +2037,7 @@ Transform:
   m_GameObject: {fileID: 474666748}
   serializedVersion: 2
   m_LocalRotation: {x: 0.38745552, y: -0.0000000058636482, z: 0.000000002464401, w: 0.9218884}
-  m_LocalPosition: {x: 0, y: 10.209, z: -10}
+  m_LocalPosition: {x: 0, y: 10.479, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5400,6 +5383,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Floating Joystick
       objectReference: {fileID: 0}
+    - target: {fileID: 8170153791668043269, guid: 0d230cc8be529a542a08cb878ab14b18,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8469,7 +8457,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1208953216091154701}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 857608c2946d4aef90e6448eb19a5273, type: 3}
   m_Name: 
@@ -9663,6 +9651,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4639217158161898718, guid: eb8529faac89943359d29557f07b10e9,
+        type: 3}
+      propertyPath: playerAnimationController
+      value: 
+      objectReference: {fileID: 126180017}
     - target: {fileID: 7319563930435272527, guid: eb8529faac89943359d29557f07b10e9,
         type: 3}
       propertyPath: m_Name
@@ -9676,7 +9669,7 @@ PrefabInstance:
     - target: {fileID: 8206277518107798795, guid: eb8529faac89943359d29557f07b10e9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.27
       objectReference: {fileID: 0}
     - target: {fileID: 8206277518107798795, guid: eb8529faac89943359d29557f07b10e9,
         type: 3}
@@ -9721,11 +9714,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6368027866526224229, guid: eb8529faac89943359d29557f07b10e9,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 149997459}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb8529faac89943359d29557f07b10e9, type: 3}
 --- !u!23 &4267761474757937628
 MeshRenderer:

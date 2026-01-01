@@ -14,6 +14,7 @@ namespace Runtime.Controllers.Player
         
         [SerializeField] private Rigidbody playerRb;
         [SerializeField] private PlayerAnimationController playerAnimationController;
+        [SerializeField] private PlayerShootingController playerShootingController;
 
 
         #endregion
@@ -29,6 +30,8 @@ namespace Runtime.Controllers.Player
         private Transform _turretStandPoint;
         
         private bool _isInTurret;
+
+        private Vector3 _targetRotation = Vector3.zero;
         #endregion
 
         #endregion
@@ -135,12 +138,27 @@ namespace Runtime.Controllers.Player
 
         private void RotateCharacter()
         {
-            if (_moveVector.sqrMagnitude > 0.1f)
-            {
-                var targetRotation = Quaternion.LookRotation(_moveVector);
-                transform.GetChild(0).rotation =
-                    Quaternion.Slerp(transform.GetChild(0).rotation, targetRotation, Time.fixedDeltaTime * _playerData.PlayerData.RotateSpeed);
-            }
+          
+                if (playerShootingController.LookAtTarget != null)
+                {
+                    Vector3 direction = playerShootingController.LookAtTarget.position - transform.position;
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+                    transform.GetChild(0).rotation =
+                        Quaternion.Slerp(transform.GetChild(0).rotation, targetRotation,
+                            Time.fixedDeltaTime * _playerData.PlayerData.RotateSpeed);
+                }
+                else
+                {
+                    if (_moveVector.sqrMagnitude > 0.1f)
+                    {
+                        var targetRotation = Quaternion.LookRotation(_moveVector);
+                        transform.GetChild(0).rotation =
+                            Quaternion.Slerp(transform.GetChild(0).rotation, targetRotation,
+                                Time.fixedDeltaTime * _playerData.PlayerData.RotateSpeed);
+                    }
+                }
+                
+            
         }
 
 
