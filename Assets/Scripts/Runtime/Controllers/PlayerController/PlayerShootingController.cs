@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Runtime.Enums;
+using Runtime.Interfaces;
 using Runtime.Managers;
 using Runtime.Signals;
 using Sirenix.OdinInspector;
@@ -15,12 +16,12 @@ namespace Runtime.Controllers.Player
 
         #region Public Variables
 
-        public Transform LookAtTarget;
+        public Transform EnemyTarget;
 
         #endregion
         #region Serialized Variables
 
-        [SerializeField] private List<GameObject> enemyList;
+        private Dictionary<GameObject,IDamageable> _enemyDictionary = new Dictionary<GameObject, IDamageable>();
         [SerializeField] private Transform firePoint;
 
         #endregion
@@ -29,32 +30,25 @@ namespace Runtime.Controllers.Player
         
         private Coroutine _shootingCoroutine;
         private PlayerState _playerState;
+        private IDamageable _currentDamageable;
         #endregion
 
         #endregion
         
        
 
+        public void StartShootingCoroutineCaller()
+        {
+            _shootingCoroutine = StartCoroutine(StartShootingRoutine());
+        }
         private IEnumerator StartShootingRoutine()
         {
             var waiter = new WaitForSeconds(1f);
-            
-            while (_playerState == PlayerState.Shooting)
+            Debug.Log("Shooting Coroutine Started");
+            while (true)
             {
-                
-                
-                for (int i = enemyList.Count - 1; i >= 0; i--)
-                {
-                    var enemy = enemyList[i];
-                    if (enemy != null)
-                    {
-                        LookAtTarget = enemy.transform;
-                       
-                        Fire(); 
-                       
-                    }
-                }
-        
+                Debug.Log("Shooting Coroutine Working");
+                Fire();
                 yield return waiter;
             }
             
@@ -63,64 +57,106 @@ namespace Runtime.Controllers.Player
         private void Fire()
         {
             var bullet = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Projectile);
-            if (bullet != null)
+            if (bullet != null && EnemyTarget != null)
             {
+             
                 bullet.transform.SetParent(firePoint);
                 bullet.transform.localPosition = Vector3.zero;
                 bullet.SetActive(true);
                 var rb = bullet.GetComponent<Rigidbody>();
-                Vector3 direction = (LookAtTarget.position - firePoint.position).normalized;
-                rb.velocity = direction * 50f; // Merminin hızı
-               
+                Vector3 direction = (EnemyTarget.position - firePoint.position).normalized;
+                rb.velocity =  direction * 50; // Merminin hızı
+                bullet.transform.SetParent(null);
+
             }
+         
         }
 
 
-        private void AddEnemyToList(GameObject otherGameObject) 
-        {
-            if (!enemyList.Contains(otherGameObject))
-            {
-                enemyList.Add(otherGameObject);
-        
-            }
-        }
+   
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Enemy"))
-            {
-                AddEnemyToList(other.gameObject.transform.parent.gameObject);
+            {   PlayerSignals.Instance.onChangeAnimBool?.Invoke(true,PlayerAnimState.IsShooting);
+                var enemy = other.gameObject.transform.parent.gameObject;
+                var damageable = enemy.GetComponent<IDamageable>();
+                Debug.Log(enemy.name);
+                if (_enemyDictionary.ContainsKey(enemy)) return;
+                if (EnemyTarget == null)
+                { 
+                    AddToDictionary(enemy,damageable);
+                    EnemyTarget = enemy.transform;
+                    
+                 
+                }
+                else
+                {
+                    AddToDictionary(enemy,damageable);
+                    var targetEnemyDistance = Vector3.Distance(transform.position, EnemyTarget.position);
+                    var newEnemyDistance = Vector3.Distance(transform.position, enemy.transform.position);
+                    if (!(newEnemyDistance < targetEnemyDistance)) return;
+                    EnemyTarget = enemy.transform;
+                    _currentDamageable = damageable;
+                }
+             
             }
+        }
+
+        private void AddToDictionary(GameObject enemy,IDamageable damageable)
+        {
+            if(damageable.Health <= 0) return;
+            _enemyDictionary.TryAdd(enemy,damageable);
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("Enemy"))
             {
-                if (enemyList.Contains(other.gameObject))
-                {
-                    enemyList.Remove(other.gameObject);
-                    
-                    
-                }
+                var enemy =  other.gameObject.transform.parent.gameObject;
+                OnEnemyDiedClearFromDic(enemy);
+                
             }
         }
 
-        public void OnStateChanged(PlayerState playerState)
+    
+        public void OnEnemyDiedClearFromDic(GameObject obj)
         {
-            _playerState = playerState;
-            if (_playerState != PlayerState.Shooting)
+            if (!_enemyDictionary.Remove(obj)) return;
+            if (EnemyTarget != obj.transform) return;
+            if (_enemyDictionary.Count == 0)
             {
-                if(_shootingCoroutine != null)
+                PlayerSignals.Instance.onChangeAnimBool?.Invoke(false,PlayerAnimState.IsShooting);
+            }
+            EnemyTarget = null;
+            _currentDamageable = null;
+            float closestDistance = Mathf.Infinity;
+            foreach (var enemyPair in _enemyDictionary)
+            {
+                var enemyTransform = enemyPair.Key.transform;
+                var distance = Vector3.Distance(transform.position, enemyTransform.position);
+                if (distance < closestDistance)
                 {
-                    StopCoroutine(_shootingCoroutine);
+                    closestDistance = distance;
+                    EnemyTarget = enemyTransform;
+                    _currentDamageable = enemyPair.Value;
                 }
             }
-            else
-            {
-                StartCoroutine(StartShootingRoutine());
-            }
-           
+
+
+
         }
+
+       
+        public void StopShootingCoroutineCaller()
+        {
+            if (_shootingCoroutine == null) return;
+           Debug.Log("Shooting Coroutine Stopped");
+            StopCoroutine(_shootingCoroutine);
+            
+        }
+
+
+        
     }
 }

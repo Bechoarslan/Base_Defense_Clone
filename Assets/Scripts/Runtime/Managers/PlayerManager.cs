@@ -21,8 +21,9 @@ namespace Runtime.Managers
         [SerializeField] private PlayerMovementController playerMovementController;
         [SerializeField] private PlayerHealthController playerHealthController;
         [SerializeField] private PlayerShootingController playerShootingController;
+        [SerializeField] private PlayerAnimationController playerAnimationController;
         
-        public PlayerState playerState;
+        private PlayerState _playerState;
         [SerializeField] private CD_PlayerData playerData;
         #endregion
 
@@ -36,7 +37,7 @@ namespace Runtime.Managers
         private void Awake()
         {
             SendPlayerDataToControllers();
-            ChangePlayerState(PlayerState.Idle);
+            OnStateChanged(PlayerState.Idle);
             Health = playerData.PlayerData.Health;
             playerHealthController.SetHealth(Health);
         }
@@ -54,12 +55,21 @@ namespace Runtime.Managers
 
         private void SubscribeEvents()
         {
-        
-       
+            
+
+            PlayerSignals.Instance.onEnemyDiedClearFromList += playerShootingController.OnEnemyDiedClearFromDic;
+            PlayerSignals.Instance.onChangeAnimBool += playerAnimationController.OnChangeAnimBool;
+            PlayerSignals.Instance.onTriggerAnimState += playerAnimationController.OnTriggerAnimation;
+            PlayerSignals.Instance.onChangeAnimFloat += playerAnimationController.OnChangeSetAnimFloat;
+            PlayerSignals.Instance.onStartShootingCoroutine += playerShootingController.StartShootingCoroutineCaller;
             PlayerSignals.Instance.onGetPlayerTransform += OnGetPlayerTransform;
+            PlayerSignals.Instance.onChangeAnimLayer += playerAnimationController.OnChangeBaseLayer;
+            PlayerSignals.Instance.onChangePlayerState += OnStateChanged;
             InputSignals.Instance.onInputParamsChanged += OnInputParamsChanged;
             
         }
+
+ 
 
         private void OnInputParamsChanged(InputParamsKeys inputParams) 
             => playerMovementController.OnInputChanged(inputParams);
@@ -68,7 +78,13 @@ namespace Runtime.Managers
         private void UnSubscribeEvents()
         {
 
-            PlayerSignals.Instance.onGetPlayerTransform += OnGetPlayerTransform;
+            PlayerSignals.Instance.onChangeAnimBool -= playerAnimationController.OnChangeAnimBool;
+            PlayerSignals.Instance.onTriggerAnimState -= playerAnimationController.OnTriggerAnimation;
+            PlayerSignals.Instance.onChangeAnimFloat -= playerAnimationController.OnChangeSetAnimFloat;
+            PlayerSignals.Instance.onStartShootingCoroutine -= playerShootingController.StartShootingCoroutineCaller;
+            PlayerSignals.Instance.onGetPlayerTransform -= OnGetPlayerTransform;
+            PlayerSignals.Instance.onChangeAnimLayer -= playerAnimationController.OnChangeBaseLayer;
+            PlayerSignals.Instance.onChangePlayerState -= OnStateChanged;
             InputSignals.Instance.onInputParamsChanged -= OnInputParamsChanged;
             
            
@@ -94,12 +110,32 @@ namespace Runtime.Managers
             StartCoroutine(GameSignals.Instance.onSendStackObjectToArea?.Invoke(holderTransform, stackHolder, ammo));
         }
 
-        public void ChangePlayerState(PlayerState playerState)
+        public void OnStateChanged(PlayerState playerState)
         {
-            this.playerState = playerState;
+            if (this._playerState == playerState) return;
+            playerMovementController.OnStateChanged(playerState);
            
-            playerMovementController.OnStateChanged(this.playerState);
-            playerShootingController.OnStateChanged(this.playerState);
+            switch (playerState)
+            {
+                case PlayerState.Idle:
+                  
+                    playerAnimationController.OnChangeBaseLayer(1, 0);
+                    PlayerSignals.Instance.onChangeAnimLayer?.Invoke(1,0);
+                    playerShootingController.StopShootingCoroutineCaller();
+                    break;
+                case PlayerState.Turret:
+                    playerAnimationController.OnChangeAnimBool(true,PlayerAnimState.IsHolding);
+                    playerAnimationController.OnTriggerAnimation(PlayerAnimState.IsHolding);
+                    playerMovementController.OnSetTurretPos();
+                 
+                    break;
+                case PlayerState.Shooting:
+                    PlayerSignals.Instance.onChangeAnimLayer?.Invoke(1,1f);
+                  playerShootingController.StartShootingCoroutineCaller();
+                    
+                    break;
+            }
+            this._playerState = playerState;
         }
 
      

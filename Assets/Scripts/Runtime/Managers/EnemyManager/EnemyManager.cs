@@ -19,12 +19,13 @@ namespace Runtime.Managers.EnemyManager
         #region Public Variables
 
         public Transform Target;
-        public IStateMachine _currentState;
-        
+        public IStateMachine _currentState ;
+        public GameObject colliderLayer;
 
         #endregion
         #region Serialized Variables
 
+      
         [SerializeField] private CD_EnemyData enemyData;
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private EnemyAnimationController enemyAnimationController;
@@ -42,6 +43,8 @@ namespace Runtime.Managers.EnemyManager
         
        
         private EnemyStateType _currentStateType;
+
+        private bool _isDead;
         
         #endregion
 
@@ -75,11 +78,11 @@ namespace Runtime.Managers.EnemyManager
         {
             if (_currentState != null)
             {
+               
                 _currentState.OnExitState();
             }
-            
             _currentStateType = stateType;
-            switch (stateType)
+            switch (_currentStateType)
             {
                 case EnemyStateType.Move:
                     _currentState = _enemyWalkState;
@@ -110,7 +113,7 @@ namespace Runtime.Managers.EnemyManager
 
         private void Update()
         {
-            
+            if (_isDead) return;
             _currentState.UpdateState();
            
         }
@@ -118,11 +121,21 @@ namespace Runtime.Managers.EnemyManager
        
         public void TakeDamage(float damageAmount)
         {
+            Health -= damageAmount;
             var currentColor = enemyMaterial.material.color;
             enemyMaterial.material.DOColor( Color.gray, 0.5f ).OnComplete(() =>
             {
                 enemyMaterial.material.DOColor( currentColor, 0.5f );
             });
+            if (!(Health <= 0)) return;
+            PlayerSignals.Instance.onEnemyDiedClearFromList?.Invoke(gameObject);
+            _isDead = true;
+            OnEnemyChangeState(EnemyStateType.Die);
+        }
+        
+        public void OnStopCoroutine(Coroutine routine)
+        {
+            StopCoroutine(routine);
         }
     }
 }

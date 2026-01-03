@@ -14,10 +14,7 @@ namespace Runtime.Controllers.Player
         #endregion
 
 
-        public void OnChangeAnimationBool(bool value, PlayerAnimState boolName)
-        {
-            animator.SetBool(boolName.ToString(), value);
-        }
+    
 
         public void OnChangeBaseLayer(int layerIndex, float value)
         {
@@ -25,5 +22,21 @@ namespace Runtime.Controllers.Player
             
         }
 
+        public void OnChangeSetAnimFloat(float value, PlayerAnimState floatName)
+        {
+           animator.SetFloat(floatName.ToString(), value);
+        }
+
+        public void OnTriggerAnimation(PlayerAnimState obj)
+        {
+            
+            animator.SetTrigger(obj.ToString());
+        }
+        
+        public void OnChangeAnimBool(bool value, PlayerAnimState boolName)
+        {
+            Debug.Log("Bool Changed "+ boolName.ToString() + " Value: " + value);
+            animator.SetBool(boolName.ToString(), value);
+        }
     }
 }

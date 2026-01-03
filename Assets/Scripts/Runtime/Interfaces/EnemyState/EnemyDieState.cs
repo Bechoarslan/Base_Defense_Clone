@@ -1,5 +1,7 @@
 using Runtime.Controllers.NpcController.Enemy;
+using Runtime.Enums.EnemyStateType;
 using Runtime.Managers.EnemyManager;
+using Runtime.Signals;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,15 +11,24 @@ namespace Runtime.Interfaces.EnemyState
     {
         private EnemyManager Manager;
         private NavMeshAgent Agent;
+        private EnemyAnimationController _enemyAnimationController;
         public EnemyDieState(EnemyManager enemyManager, NavMeshAgent navMeshAgent,
             EnemyAnimationController enemyAnimationController)
         {
             Manager = enemyManager;
             Agent = navMeshAgent;
+            _enemyAnimationController = enemyAnimationController;
         }
 
         public void EnterState()
         {
+            Manager.tag = "Untagged";
+           Agent.isStopped = true;
+           _enemyAnimationController.OnSetBoolAnimation(true);
+           _enemyAnimationController.OnSetTriggerAnimation(EnemyStateType.Die);
+           Manager.Target = null;
+         
+           
            
         }
 

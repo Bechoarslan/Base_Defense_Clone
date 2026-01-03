@@ -2,7 +2,10 @@ namespace Runtime.Enums
 {
     public enum PlayerAnimState
     {
-       IsRunning,
-       IsHolding
+       IsHolding,
+       Speed,
+       IsShooting,
+       Shoot
+    
     }
 }

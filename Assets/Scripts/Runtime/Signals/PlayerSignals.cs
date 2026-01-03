@@ -10,5 +10,19 @@ namespace Runtime.Signals
         public Action<PlayerState> onChangePlayerState = delegate { };
         public Action<Transform> onSendStacksToHolder = delegate { };
         public Func<Transform> onGetPlayerTransform = delegate { return null; };
+        
+     
+        public Action onStartShootingCoroutine = delegate { };
+        
+
+        public Action<GameObject> onEnemyDiedClearFromList = delegate { };
+        #region Animation Events
+
+        public Action<PlayerAnimState> onTriggerAnimState = delegate { };
+        public Action <float,PlayerAnimState> onChangeAnimFloat = delegate { };
+        public Action<int,float> onChangeAnimLayer = delegate { };
+        public Action<bool,PlayerAnimState> onChangeAnimBool = delegate { };
+
+        #endregion
     }
 }

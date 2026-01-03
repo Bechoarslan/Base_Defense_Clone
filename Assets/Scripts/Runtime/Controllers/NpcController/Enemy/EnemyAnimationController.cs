@@ -26,6 +26,11 @@ namespace Runtime.Controllers.NpcController.Enemy
             animator.SetTrigger(stateType.ToString());
         }
 
+        public void OnSetBoolAnimation(bool value)
+        {
+            animator.SetBool("IsDead",value);
+        }
+
 
 
 

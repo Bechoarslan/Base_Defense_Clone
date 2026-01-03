@@ -1,6 +1,10 @@
+using System;
+using Runtime.Commands.Player;
 using Runtime.Data.UnityObjects;
 using Runtime.Enums;
 using Runtime.Keys;
+using Runtime.Managers;
+using Runtime.Signals;
 using UnityEngine;
 
 namespace Runtime.Controllers.Player
@@ -10,19 +14,23 @@ namespace Runtime.Controllers.Player
         #region Self Variables
 
         #region Serialized Variables
-
         
-        [SerializeField] private Rigidbody playerRb;
-        [SerializeField] private PlayerAnimationController playerAnimationController;
         [SerializeField] private PlayerShootingController playerShootingController;
+        [SerializeField] private Rigidbody playerRb;
 
 
         #endregion
 
+
+        #region Commands
+
+        private PlayerIdleMoveCommand _idleMoveCommand;
+        private PlayerTurretMoveCommand _playerTurretMoveCommand;
+
+        #endregion
         #region Private Variables
 
         private CD_PlayerData _playerData;
-        private Vector3 _moveVector;
         private InputParamsKeys _inputParamsKeys;
         private PlayerState _playerState;
         
@@ -30,11 +38,28 @@ namespace Runtime.Controllers.Player
         private Transform _turretStandPoint;
         
         private bool _isInTurret;
+        
 
-        private Vector3 _targetRotation = Vector3.zero;
+        #region Ref Values
+        private Vector3 _moveVector;
+
+        #endregion
+       
         #endregion
 
         #endregion
+
+        private void Start()
+        {
+            InitCommand();
+        }
+
+        private void InitCommand()
+        {
+            _idleMoveCommand = new PlayerIdleMoveCommand(playerRb,ref _playerData,transform);
+            _playerTurretMoveCommand = new PlayerTurretMoveCommand(playerRb, transform, _playerData);
+
+        }
 
         public void GetPlayerData(CD_PlayerData playerData) => _playerData = playerData;
        
@@ -42,16 +67,16 @@ namespace Runtime.Controllers.Player
         {
             switch (_playerState)
             {
-                case PlayerState.Idle:
-                    Move();
-                    RotateCharacter();
+                case PlayerState.Idle: 
+                    _moveVector = _idleMoveCommand.Execute(_inputParamsKeys);
+                   _idleMoveCommand.RotatePlayer(_moveVector);
                     break;
                 case PlayerState.Turret:
                     RotateTurret();
                     break;
                 case PlayerState.Shooting:
-                    Move();
-                    RotateCharacter();
+                    _moveVector = _idleMoveCommand.Execute(_inputParamsKeys);
+                    _idleMoveCommand.RotateToEnemy(_moveVector,playerShootingController.EnemyTarget);
                     break;
             }
            
@@ -68,124 +93,40 @@ namespace Runtime.Controllers.Player
                     0f,
                     _inputParamsKeys.InputParams.y
                 );
-
-               
-
                 if (_inputParamsKeys.InputParams.y < -0.8)
                 {
-                    _isInTurret = false;
+                    
                     GetOutFromTurret();
+                  _isInTurret = false;
                     return;
                 }
-                
-                float targetYAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
-                float clampedYAngle = Mathf.Clamp(targetYAngle, -45f, 45f);
-
-                Quaternion targetRotation = Quaternion.Euler(0f, clampedYAngle, 0f);
-                playerRb.MovePosition(new Vector3(_turretStandPoint.position.x,
-                    transform.position.y, _turretStandPoint.position.z));
-                playerRb.MoveRotation(targetRotation);
-               
-                _turretTransform.rotation = Quaternion.Slerp(
-                    _turretTransform.rotation,
-                    targetRotation,
-                    Time.fixedDeltaTime * _playerData.PlayerData.RotateSpeed
-                );
-                
+                _playerTurretMoveCommand.Execute(_turretStandPoint,dir,_turretTransform);
             }
+         
         }
 
         private void GetOutFromTurret()
         {
             _turretStandPoint = null;
             _turretTransform = null;
-            transform.SetParent(null);
-            OnStateChanged(PlayerState.Idle);
+            PlayerSignals.Instance.onChangeAnimBool?.Invoke(false,PlayerAnimState.IsHolding);
+            PlayerSignals.Instance.onChangePlayerState?.Invoke(PlayerState.Idle);
         }
 
-        public void OnInputChanged(InputParamsKeys inputParams)
-        {
-            _inputParamsKeys = inputParams;
-        }
-
-
-        private void Move()
-        {
-            _moveVector = new Vector3(_inputParamsKeys.InputParams.x, 0, _inputParamsKeys.InputParams.y);
-
-            // 2. Animasyon kontrolü
-            if(_moveVector == Vector3.zero)
-            {
-                playerAnimationController.OnChangeAnimationBool(false, PlayerAnimState.IsRunning);
-            }
-            else
-            {
-                playerAnimationController.OnChangeAnimationBool(true, PlayerAnimState.IsRunning);
-            }
-
-           
-            if (_moveVector.magnitude > 1f) 
-            { 
-                _moveVector.Normalize(); 
-            }
-            
-            Vector3 currentVelocity = playerRb.velocity;
-            Vector3 targetVelocity = _moveVector * _playerData.PlayerData.MoveSpeed;
-            targetVelocity.y = currentVelocity.y;
-            playerRb.velocity = Vector3.Lerp(currentVelocity, targetVelocity, Time.fixedDeltaTime * 15f);
-        }
         
-
-        private void RotateCharacter()
+        public void OnInputChanged(InputParamsKeys inputParams) => _inputParamsKeys = inputParams;
+        
+        public void OnSetTurretPos()
         {
-          
-                if (playerShootingController.LookAtTarget != null)
-                {
-                    Vector3 direction = playerShootingController.LookAtTarget.position - transform.position;
-                    Quaternion targetRotation = Quaternion.LookRotation(direction);
-                    transform.GetChild(0).rotation =
-                        Quaternion.Slerp(transform.GetChild(0).rotation, targetRotation,
-                            Time.fixedDeltaTime * _playerData.PlayerData.RotateSpeed);
-                }
-                else
-                {
-                    if (_moveVector.sqrMagnitude > 0.1f)
-                    {
-                        var targetRotation = Quaternion.LookRotation(_moveVector);
-                        transform.GetChild(0).rotation =
-                            Quaternion.Slerp(transform.GetChild(0).rotation, targetRotation,
-                                Time.fixedDeltaTime * _playerData.PlayerData.RotateSpeed);
-                    }
-                }
-                
-            
+            (_turretTransform, _turretStandPoint) = Signals.GameSignals.Instance.onGetTurretStandPointAndTurretTransform();
+                    
+            var newPos = new Vector3(_turretStandPoint.position.x,transform.position.y, _turretStandPoint.position.z);
+            transform.localPosition = newPos;
+            transform.localRotation = Quaternion.Euler(_turretStandPoint.localRotation.eulerAngles);
+            _isInTurret = true;
         }
 
-
-        public void OnStateChanged(PlayerState playerState)
-        {
-            if (this._playerState == playerState) return;
-            switch (playerState)
-            {
-                case PlayerState.Idle:
-                    playerAnimationController.OnChangeAnimationBool(false,PlayerAnimState.IsHolding);
-                    playerAnimationController.OnChangeBaseLayer(1, 0);
-                    break;
-                case PlayerState.Turret:
-                    playerAnimationController.OnChangeAnimationBool(true,PlayerAnimState.IsHolding);
-                    (_turretTransform, _turretStandPoint) = Signals.GameSignals.Instance.onGetTurretStandPointAndTurretTransform();
-                    
-                    var newPos = new Vector3(_turretStandPoint.position.x,transform.position.y, _turretStandPoint.position.z);
-                    transform.localPosition = newPos;
-                    transform.localRotation = Quaternion.Euler(_turretStandPoint.localRotation.eulerAngles);
-                    _isInTurret = true;
-                    break;
-                case PlayerState.Shooting:
-                    playerAnimationController.OnChangeBaseLayer(1,1f);
-                    
-                    break;
-            }
-            this._playerState = playerState;
-        }
+        public void OnStateChanged(PlayerState playerState) => _playerState = playerState;
+        
     }
 }

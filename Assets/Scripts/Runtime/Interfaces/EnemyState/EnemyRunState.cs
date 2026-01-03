@@ -42,7 +42,7 @@ namespace Runtime.Interfaces.EnemyState
            if(other.gameObject.CompareTag("Player") && other.gameObject.layer == LayerMask.NameToLayer("Player"))
            {
                
-               Manager.StartCoroutine(DamageToPlayer(other.gameObject.transform.root.gameObject));
+               _attackCoroutine = Manager.StartCoroutine(DamageToPlayer(other.gameObject.transform.root.gameObject));
                Debug.Log("Attacked to Player");
            }
         }
@@ -52,7 +52,6 @@ namespace Runtime.Interfaces.EnemyState
        
             while (true)
             {
-              
                 AnimationController.OnSetTriggerAnimation(EnemyStateType.Attack);
                 yield return new WaitForSeconds(0.6f);
                 AnimationController.OnSetTriggerAnimation(EnemyStateType.Run);
@@ -70,14 +69,15 @@ namespace Runtime.Interfaces.EnemyState
         public void OnStateTriggerExit(Collider other)
         {
            AnimationController.OnSetTriggerAnimation(EnemyStateType.Run);
-           if(_attackCoroutine != null)  Manager.StopCoroutine(_attackCoroutine);
+           if(_attackCoroutine != null)  Manager.OnStopCoroutine(_attackCoroutine);
            
 
         }
 
         public void OnExitState()
         {
-            
+            if(_attackCoroutine != null) Manager.OnStopCoroutine(_attackCoroutine);
+         Debug.Log("Exited Run State");   
         }
     }
 }

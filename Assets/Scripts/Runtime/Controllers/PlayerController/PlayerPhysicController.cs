@@ -29,7 +29,7 @@ namespace Runtime.Controllers.Player
             }
             else if (other.CompareTag("Turret"))
             {
-                playerManager.ChangePlayerState(PlayerState.Turret);
+                playerManager.OnStateChanged(PlayerState.Turret);
                 GameSignals.Instance.onTurretStateChange?.Invoke(TurretState.PlayerIn);
                 
                 if (stackHolder.childCount > 0)
@@ -57,20 +57,21 @@ namespace Runtime.Controllers.Player
 
         private void OnEnterAndExitOutOfBase(bool value)
         {
-            Debug.Log("Out of Base Triggered");
+           
             if (!value)
             {
                 
-                playerManager.ChangePlayerState(PlayerState.Shooting);
+                playerManager.OnStateChanged(PlayerState.Shooting);
                 enemyColliderChecker.layer = LayerMask.NameToLayer("Targetable");
                 playerManager.SetHealthVisible(true);
                 gunHolder.gameObject.SetActive(true);
+                
              
             }
             else
             {
                 
-                playerManager.ChangePlayerState(PlayerState.Idle);
+                playerManager.OnStateChanged(PlayerState.Idle);
                 enemyColliderChecker.layer = LayerMask.NameToLayer("Player");
                 playerManager.SetHealthVisible(false);
                 gunHolder.gameObject.SetActive(false);

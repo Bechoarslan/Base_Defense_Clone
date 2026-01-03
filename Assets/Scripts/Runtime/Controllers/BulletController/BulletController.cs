@@ -1,5 +1,7 @@
 using System;
+using Runtime.Enums;
 using Runtime.Interfaces;
+using Runtime.Signals;
 using UnityEngine;
 
 namespace Runtime.Controllers.BulletController
@@ -10,7 +12,7 @@ namespace Runtime.Controllers.BulletController
         {
             if (other.CompareTag("Enemy"))
             {
-                Debug.Log("Bullet hit an enemy!" + other.gameObject.transform.root.gameObject.name);
+              
                 
                 // Burada düşmana hasar verme işlemi yapılabilir
                 var idamageable = other.transform.parent.GetComponent<IDamageable>();
@@ -19,6 +21,8 @@ namespace Runtime.Controllers.BulletController
                     idamageable.TakeDamage(20);
                 }
 
+                PoolSignals.Instance.onSendPoolObject?.Invoke(this.gameObject,PoolType.Projectile);
+                
                 // Mermiyi yok et
                
             }
