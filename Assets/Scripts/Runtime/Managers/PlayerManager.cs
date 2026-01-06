@@ -15,6 +15,7 @@ namespace Runtime.Managers
         #region Self Variables
 
         public List<GameObject> EnemyList = new List<GameObject>();
+        public List<GameObject> HostageList = new List<GameObject>();
         public float Health { get; set; }
         #region Serialized Variables
 
@@ -29,6 +30,7 @@ namespace Runtime.Managers
 
         #region Private Variables
 
+      
   
         #endregion
 

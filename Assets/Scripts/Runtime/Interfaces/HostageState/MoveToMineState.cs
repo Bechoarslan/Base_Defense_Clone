@@ -1,4 +1,5 @@
 using System.Collections;
+using Runtime.Enums.NPCState;
 using Runtime.Managers.NPCManager.Hostage;
 using Runtime.Signals;
 using UnityEngine;
@@ -17,8 +18,8 @@ namespace Runtime.Interfaces.HostageState
         }
         public void EnterState()
         {
-            Debug.Log("Entering MoveToMineState");
-            var miningAreaTransform = GameSignals.Instance.onGetMiningAreaTransform.Invoke();
+             var miningAreaTransform = GameSignals.Instance.onGetMiningAreaTransform.Invoke();
+             Manager.mineAreaTransform = miningAreaTransform;
             Agent.SetDestination(miningAreaTransform.position);
         }
         
@@ -28,9 +29,12 @@ namespace Runtime.Interfaces.HostageState
             if(Agent.pathPending) return;
             if (Agent.remainingDistance <= Agent.stoppingDistance)
             {
-                Debug.Log("Reached Mining Area");
+                
+               Manager.SwitchState(NPCHostageStateType.MineAndCarryGem);
+              
             }
         }
+        
 
         public void OnStateTriggerEnter(Collider other)
         {
@@ -43,8 +47,8 @@ namespace Runtime.Interfaces.HostageState
         }
 
         public void OnExitState()
-        {
-            
+        { 
+          
         }
     }
 }

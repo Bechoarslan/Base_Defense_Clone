@@ -37,8 +37,10 @@ namespace Runtime.Signals
 
         #region Gem Signals
 
-        public Action<GameObject> onHostageEnteredGemHouse = delegate { };
+       
         public Func<Transform> onGetMiningAreaTransform = () => null;
+        public Func<Transform> onGetGemStackAreaTransform = () => null;
+        public Action<GameObject> onSendGemToHolder = delegate { };
 
         #endregion
     }

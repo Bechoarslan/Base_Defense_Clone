@@ -23,6 +23,7 @@ namespace Runtime.Signals
         public Action<int,float> onChangeAnimLayer = delegate { };
         public Action<bool,PlayerAnimState> onChangeAnimBool = delegate { };
 
+        public Action<GameObject> onPlayerEnteredMineArea = delegate { };
         #endregion
     }
 }

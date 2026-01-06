@@ -18,6 +18,9 @@ namespace Runtime.Managers.NPCManager.Hostage
 
         public IStateMachine _currentState;
         public Transform playerTransform;
+        public GameObject pickaxeObj;
+        public Transform gemHolderTransform;
+        public Transform mineAreaTransform;
 
         #endregion
         #region Serialized Variables
@@ -26,6 +29,7 @@ namespace Runtime.Managers.NPCManager.Hostage
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private NPCHostageController npcHostageController;
         [SerializeField] private CD_NpcData npcHostageData;
+      
 
         #endregion
 
@@ -34,8 +38,8 @@ namespace Runtime.Managers.NPCManager.Hostage
         private FollowPlayerState _followPlayerState;
         private TerrifiedState _terrifiedState;
         private MoveToMineState _moveToMineState;
-        
-        private NPCHostageStateType _currentStateType;
+        private HostageMineAndCarryGemState _mineAndMoveToGemAreaState;
+        private NPCHostageStateType _currentStateType = NPCHostageStateType.None;
         
         #endregion
 
@@ -48,11 +52,11 @@ namespace Runtime.Managers.NPCManager.Hostage
 
         private void GetReferences()
         {
-            navMeshAgent.speed = npcHostageData.Data.MoveSpeed;
-            _followPlayerState = new FollowPlayerState(this,ref navMeshAgent);
+           _followPlayerState = new FollowPlayerState(this,ref navMeshAgent);
             _terrifiedState = new TerrifiedState(this,ref navMeshAgent);
             _moveToMineState = new MoveToMineState(this,ref navMeshAgent);
-            _currentStateType = NPCHostageStateType.Terrified;
+            _mineAndMoveToGemAreaState = new HostageMineAndCarryGemState(this,ref navMeshAgent);
+            SwitchState(NPCHostageStateType.Terrified);
         }
 
         private void OnEnable()
@@ -72,12 +76,14 @@ namespace Runtime.Managers.NPCManager.Hostage
 
         public void SwitchState(NPCHostageStateType npcHostageStateType)
         {
+            if(_currentStateType == npcHostageStateType) return;
             if (_currentState != null)
             {
                
                _currentState.OnExitState();
             }
             _currentStateType = npcHostageStateType;
+          
             switch (_currentStateType)
             {
                 case NPCHostageStateType.FollowPlayer:
@@ -89,6 +95,10 @@ namespace Runtime.Managers.NPCManager.Hostage
                 case NPCHostageStateType.Mine:
                     _currentState = _moveToMineState;
                     break;
+                case NPCHostageStateType.MineAndCarryGem:
+                    _currentState = _mineAndMoveToGemAreaState;
+                    break;
+                    
             }
             _currentState.EnterState();
         }

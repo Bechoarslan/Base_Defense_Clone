@@ -5,6 +5,7 @@ namespace Runtime.Enums
         Ammo,
         Bullet,
         Enemy,
-        TurretBullet
+        TurretBullet,
+        Gem,
     }
 }

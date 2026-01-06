@@ -51,6 +51,19 @@ namespace Runtime.Controllers.Player
                 var block = GameObject.FindGameObjectWithTag("Barrier");
                 RotateGate(block);
             }
+            else if (other.CompareTag("Hostage"))
+            {
+                playerManager.HostageList.Add(other.gameObject.transform.parent.gameObject);
+            }
+            else if (other.CompareTag("Mine"))
+            {
+                if (playerManager.HostageList.Count <= 0) return;
+                foreach (var hostages in playerManager.HostageList)
+                {
+                    PlayerSignals.Instance.onPlayerEnteredMineArea?.Invoke(hostages);
+                }
+                
+            }
           
            
         }

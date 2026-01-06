@@ -19,7 +19,7 @@ namespace Runtime.Interfaces.HostageState
 
         public void EnterState()
         {
-            Manager.SetTriggerAnimation(nameof(NPCHostageStateType.FollowPlayer));
+            Manager.SetTriggerAnimation(nameof(HostageAnimState.Run));
             Agent.SetDestination(Manager.playerTransform.position);
        
 
@@ -36,12 +36,12 @@ namespace Runtime.Interfaces.HostageState
             if (Agent.pathPending) return;
             if (Agent.remainingDistance <= Agent.stoppingDistance)
             {
-                Manager.SetBoolAnimation(nameof(NPCHostageStateType.IsRunning), false);
+                Manager.SetBoolAnimation(nameof(HostageAnimState.IsRunning), false);
                 Agent.isStopped = true;
             }
             else
             {
-                Manager.SetBoolAnimation(nameof(NPCHostageStateType.IsRunning), true);
+                Manager.SetBoolAnimation(nameof(HostageAnimState.IsRunning), true);
                 Agent.isStopped = false;
             }
 
@@ -49,11 +49,7 @@ namespace Runtime.Interfaces.HostageState
 
         public void OnStateTriggerEnter(Collider other)
         {
-            if (other.CompareTag("Mine"))
-            {
-                Debug.Log("Hostage Entered Gem House");
-                GameSignals.Instance.onHostageEnteredGemHouse?.Invoke(Manager.gameObject);
-            }
+            
         }
 
         public void OnStateTriggerExit(Collider other)

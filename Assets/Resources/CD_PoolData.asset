@@ -29,3 +29,7 @@ MonoBehaviour:
     poolSize: 100
     poolPrefab: {fileID: 8517224949937676000, guid: 4c8873113a582492d92dbb598adeefe4,
       type: 3}
+  - poolType: 4
+    poolSize: 50
+    poolPrefab: {fileID: 5614097074571965547, guid: 9ee78211ac5624f5f9cd20be1fab0e97,
+      type: 3}

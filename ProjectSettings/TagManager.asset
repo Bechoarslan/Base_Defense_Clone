@@ -18,6 +18,8 @@ TagManager:
   - EnemyChecker
   - GunOn
   - GunOff
+  - Mine
+  - GemStack
   layers:
   - Default
   - TransparentFX
