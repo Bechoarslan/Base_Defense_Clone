@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Runtime.Data.UnityObjects;
+using Runtime.Data.ValueObjects;
 using Runtime.Enums;
 using Runtime.Interfaces;
 using Runtime.Managers;
@@ -31,10 +33,17 @@ namespace Runtime.Controllers.Player
         private Coroutine _shootingCoroutine;
         private PlayerState _playerState;
         private IDamageable _currentDamageable;
+        private PlayerData _playerData;
         #endregion
 
         #endregion
-        
+
+
+
+        public void GetPlayerData(CD_PlayerData playerData)
+        {
+            _playerData = playerData.PlayerData;
+        } 
        
 
         public void StartShootingCoroutineCaller()
@@ -43,11 +52,10 @@ namespace Runtime.Controllers.Player
         }
         private IEnumerator StartShootingRoutine()
         {
-            var waiter = new WaitForSeconds(1f);
-            Debug.Log("Shooting Coroutine Started");
+            var waiter = new WaitForSeconds(_playerData.FireRate);
             while (true)
             {
-                Debug.Log("Shooting Coroutine Working");
+              
                 Fire();
                 yield return waiter;
             }
@@ -56,7 +64,7 @@ namespace Runtime.Controllers.Player
 
         private void Fire()
         {
-            var bullet = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Projectile);
+            var bullet = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Bullet);
             if (bullet != null && EnemyTarget != null)
             {
              
@@ -64,7 +72,9 @@ namespace Runtime.Controllers.Player
                 bullet.transform.localPosition = Vector3.zero;
                 bullet.SetActive(true);
                 var rb = bullet.GetComponent<Rigidbody>();
-                Vector3 direction = (EnemyTarget.position - firePoint.position).normalized;
+                Vector3 direction = (EnemyTarget.position - firePoint.position);
+                direction.y = 0;
+                direction.Normalize();
                 rb.velocity =  direction * 50; // Merminin hızı
                 bullet.transform.SetParent(null);
 
@@ -81,7 +91,6 @@ namespace Runtime.Controllers.Player
             {   PlayerSignals.Instance.onChangeAnimBool?.Invoke(true,PlayerAnimState.IsShooting);
                 var enemy = other.gameObject.transform.parent.gameObject;
                 var damageable = enemy.GetComponent<IDamageable>();
-                Debug.Log(enemy.name);
                 if (_enemyDictionary.ContainsKey(enemy)) return;
                 if (EnemyTarget == null)
                 { 
@@ -157,6 +166,6 @@ namespace Runtime.Controllers.Player
         }
 
 
-        
+      
     }
 }

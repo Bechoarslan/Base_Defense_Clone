@@ -1,4 +1,6 @@
+using Runtime.Enums.NPCState;
 using Runtime.Managers.NPCManager.Hostage;
+using Runtime.Signals;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -17,8 +19,9 @@ namespace Runtime.Interfaces.HostageState
 
         public void EnterState()
         {
+            Manager.SetTriggerAnimation(nameof(NPCHostageStateType.FollowPlayer));
             Agent.SetDestination(Manager.playerTransform.position);
-            Debug.Log("Hostage is Following the Player");
+       
 
         }
 
@@ -29,15 +32,27 @@ namespace Runtime.Interfaces.HostageState
 
         private void FollowPlayer()
         {
-            Agent.SetDestination(Manager.playerTransform.position);
-          
+            Agent.destination = Manager.playerTransform.position;
+            if (Agent.pathPending) return;
+            if (Agent.remainingDistance <= Agent.stoppingDistance)
+            {
+                Manager.SetBoolAnimation(nameof(NPCHostageStateType.IsRunning), false);
+                Agent.isStopped = true;
+            }
+            else
+            {
+                Manager.SetBoolAnimation(nameof(NPCHostageStateType.IsRunning), true);
+                Agent.isStopped = false;
+            }
+
         }
 
         public void OnStateTriggerEnter(Collider other)
         {
-            if (other.CompareTag("MiningArea"))
+            if (other.CompareTag("Mine"))
             {
-                Debug.Log(("Hostage reached Mining Area"));
+                Debug.Log("Hostage Entered Gem House");
+                GameSignals.Instance.onHostageEnteredGemHouse?.Invoke(Manager.gameObject);
             }
         }
 

@@ -19,7 +19,8 @@ namespace Runtime.Interfaces.HostageState
 
         public void EnterState()
         {
-            Debug.Log(("Hostage is Terrified and Position set to wait point"));
+            Manager.SetTriggerAnimation(nameof(NPCHostageStateType.Terrified));
+            
         }
 
         public void UpdateState()
@@ -29,10 +30,10 @@ namespace Runtime.Interfaces.HostageState
 
         public void OnStateTriggerEnter(Collider other)
         {
-            Debug.Log(other.gameObject.tag);
+            
             if (other.CompareTag("Player"))
             {
-                Debug.Log("Changing State to Follow Player");
+                
                 FollowPlayer(other.transform.root);
             }
         }

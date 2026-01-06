@@ -21,7 +21,7 @@ namespace Runtime.Controllers.BulletController
                     idamageable.TakeDamage(20);
                 }
 
-                PoolSignals.Instance.onSendPoolObject?.Invoke(this.gameObject,PoolType.Projectile);
+                PoolSignals.Instance.onSendPoolObject?.Invoke(this.gameObject,PoolType.Bullet);
                 
                 // Mermiyi yok et
                

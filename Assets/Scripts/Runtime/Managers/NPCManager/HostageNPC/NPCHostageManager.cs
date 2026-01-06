@@ -1,4 +1,5 @@
 using System;
+using Runtime.Controllers.NpcController;
 using Runtime.Controllers.NpcController.Hostage;
 using Runtime.Data.UnityObjects;
 using Runtime.Enums.NPCState;
@@ -21,6 +22,7 @@ namespace Runtime.Managers.NPCManager.Hostage
         #endregion
         #region Serialized Variables
 
+        [SerializeField] private NPCAnimationController npcAnimationController;
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private NPCHostageController npcHostageController;
         [SerializeField] private CD_NpcData npcHostageData;
@@ -31,6 +33,9 @@ namespace Runtime.Managers.NPCManager.Hostage
         
         private FollowPlayerState _followPlayerState;
         private TerrifiedState _terrifiedState;
+        private MoveToMineState _moveToMineState;
+        
+        private NPCHostageStateType _currentStateType;
         
         #endregion
 
@@ -46,12 +51,13 @@ namespace Runtime.Managers.NPCManager.Hostage
             navMeshAgent.speed = npcHostageData.Data.MoveSpeed;
             _followPlayerState = new FollowPlayerState(this,ref navMeshAgent);
             _terrifiedState = new TerrifiedState(this,ref navMeshAgent);
-            _currentState = _terrifiedState;
+            _moveToMineState = new MoveToMineState(this,ref navMeshAgent);
+            _currentStateType = NPCHostageStateType.Terrified;
         }
 
         private void OnEnable()
         {
-            _currentState.EnterState();
+            SwitchState(_currentStateType);
         }
 
         private void OnDisable()
@@ -66,7 +72,13 @@ namespace Runtime.Managers.NPCManager.Hostage
 
         public void SwitchState(NPCHostageStateType npcHostageStateType)
         {
-            switch (npcHostageStateType)
+            if (_currentState != null)
+            {
+               
+               _currentState.OnExitState();
+            }
+            _currentStateType = npcHostageStateType;
+            switch (_currentStateType)
             {
                 case NPCHostageStateType.FollowPlayer:
                     _currentState = _followPlayerState;
@@ -74,8 +86,22 @@ namespace Runtime.Managers.NPCManager.Hostage
                 case NPCHostageStateType.Terrified:
                     _currentState = _terrifiedState;
                     break;
+                case NPCHostageStateType.Mine:
+                    _currentState = _moveToMineState;
+                    break;
             }
             _currentState.EnterState();
+        }
+        
+        public void SetTriggerAnimation(string animationName)
+        {
+        
+            npcAnimationController.OnTriggerAnimation(animationName);
+        }
+        
+        public void SetBoolAnimation(string animationName, bool value)
+        {
+            npcAnimationController.OnChangeBoolAnimation(animationName, value);
         }
     }
 }

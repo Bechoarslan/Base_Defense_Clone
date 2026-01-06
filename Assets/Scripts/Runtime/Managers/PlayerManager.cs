@@ -45,6 +45,7 @@ namespace Runtime.Managers
         private void SendPlayerDataToControllers()
         {
             playerMovementController.GetPlayerData(playerData);
+            playerShootingController.GetPlayerData(playerData);
          
         }
 
@@ -101,7 +102,7 @@ namespace Runtime.Managers
 
         public void OnStackAmmo(Transform otherTransform, Transform stackHolder, StackType bullet)
         {
-            Debug.Log("Stacking Ammo");
+            
             StartCoroutine(GameSignals.Instance.onSendStackObjectToHolder?.Invoke(otherTransform,stackHolder,bullet));
         }
 
@@ -125,7 +126,7 @@ namespace Runtime.Managers
                     break;
                 case PlayerState.Turret:
                     playerAnimationController.OnChangeAnimBool(true,PlayerAnimState.IsHolding);
-                    playerAnimationController.OnTriggerAnimation(PlayerAnimState.IsHolding);
+                    playerAnimationController.OnTriggerAnimation(PlayerAnimState.Hold);
                     playerMovementController.OnSetTurretPos();
                  
                     break;

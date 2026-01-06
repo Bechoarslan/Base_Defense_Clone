@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Data:
     SpawnDelay: 600
-    SpawnCount: 1
+    SpawnCount: 10

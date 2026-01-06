@@ -122,7 +122,7 @@ namespace Runtime.Controllers.Player
                     
             var newPos = new Vector3(_turretStandPoint.position.x,transform.position.y, _turretStandPoint.position.z);
             transform.localPosition = newPos;
-            transform.localRotation = Quaternion.Euler(_turretStandPoint.localRotation.eulerAngles);
+            transform.GetChild(0).transform.localRotation = Quaternion.Euler(_turretStandPoint.localRotation.eulerAngles);
             _isInTurret = true;
         }
 

@@ -20,12 +20,11 @@ namespace Runtime.Managers.EnemyManager
 
         public Transform Target;
         public IStateMachine _currentState ;
-        public GameObject colliderLayer;
 
         #endregion
         #region Serialized Variables
 
-      
+        [SerializeField] private GameObject enemyCollider;
         [SerializeField] private CD_EnemyData enemyData;
         [SerializeField] private NavMeshAgent navMeshAgent;
         [SerializeField] private EnemyAnimationController enemyAnimationController;
@@ -128,6 +127,7 @@ namespace Runtime.Managers.EnemyManager
                 enemyMaterial.material.DOColor( currentColor, 0.5f );
             });
             if (!(Health <= 0)) return;
+            enemyCollider.tag = "Untagged";
             PlayerSignals.Instance.onEnemyDiedClearFromList?.Invoke(gameObject);
             _isDead = true;
             OnEnemyChangeState(EnemyStateType.Die);

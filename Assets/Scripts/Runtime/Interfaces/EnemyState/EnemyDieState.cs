@@ -12,6 +12,7 @@ namespace Runtime.Interfaces.EnemyState
         private EnemyManager Manager;
         private NavMeshAgent Agent;
         private EnemyAnimationController _enemyAnimationController;
+        
         public EnemyDieState(EnemyManager enemyManager, NavMeshAgent navMeshAgent,
             EnemyAnimationController enemyAnimationController)
         {
@@ -22,7 +23,6 @@ namespace Runtime.Interfaces.EnemyState
 
         public void EnterState()
         {
-            Manager.tag = "Untagged";
            Agent.isStopped = true;
            _enemyAnimationController.OnSetBoolAnimation(true);
            _enemyAnimationController.OnSetTriggerAnimation(EnemyStateType.Die);

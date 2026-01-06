@@ -34,5 +34,12 @@ namespace Runtime.Signals
         public Func<Transform> onEnemyWalkPointTransform = () => null;
 
         #endregion
+
+        #region Gem Signals
+
+        public Action<GameObject> onHostageEnteredGemHouse = delegate { };
+        public Func<Transform> onGetMiningAreaTransform = () => null;
+
+        #endregion
     }
 }

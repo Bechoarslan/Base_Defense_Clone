@@ -5,7 +5,8 @@ namespace Runtime.Enums
        IsHolding,
        Speed,
        IsShooting,
-       Shoot
+       Shoot,
+       Hold
     
     }
 }

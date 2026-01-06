@@ -26,11 +26,10 @@ namespace Runtime.Controllers
         #endregion
 
         #region Private Variables
-
-        [SerializeField]public List<GameObject> enteredEnemies = new List<GameObject>();
+        
         private int _ammoCounter;
         private bool _isHaveSeater;
-        private TurretState _turretState = TurretState.None;
+       [SerializeField] public TurretState _turretState = TurretState.None;
         #endregion
 
         #endregion
@@ -42,6 +41,7 @@ namespace Runtime.Controllers
 
         private void SubscribeEvents()
         {
+            PlayerSignals.Instance.onEnemyDiedClearFromList += turretController.OnEnemyDiedClearFromList;
             GameSignals.Instance.onGetTurretStandPointAndTurretTransform += OnGetTurretStandPoint;
             GameSignals.Instance.onGetTurretHolderTransform += OnGetHolderTransform;
             GameSignals.Instance.onTurretStateChange += OnTurretStateChange;
@@ -56,12 +56,14 @@ namespace Runtime.Controllers
                     StartCoroutine(turretController.EnemyShooting(ammoHolder));
                     break;
                 case TurretState.AutoTurret:
+                    StartCoroutine(turretController.EnemyShooting(ammoHolder));
+                    StartCoroutine(turretController.RotateToEnemy());
                     break;
             }
             _turretState = turretState;
         }
 
-        [Button("Ready To Shoot")]
+        [Button("Ready To Shoot") ]
         public void ReadyToShoot()
         {
             switch (_turretState)
@@ -71,7 +73,7 @@ namespace Runtime.Controllers
                     break;
                 case TurretState.AutoTurret:
                     StartCoroutine(turretController.EnemyShooting(ammoHolder));
-                    StartCoroutine(turretController.RotateToEnemy(enteredEnemies));
+                    StartCoroutine(turretController.RotateToEnemy());
                     break;
                 case TurretState.None:
                     StopAllCoroutines();
@@ -90,7 +92,9 @@ namespace Runtime.Controllers
 
         private void UnSubscribeEvents()
         {
-            GameSignals.Instance.onGetTurretStandPointAndTurretTransform -= OnGetTurretStandPoint;
+            GameSignals.Instance.onGetTurretStandPointAndTurretTransform -= OnGetTurretStandPoint; 
+            GameSignals.Instance.onGetTurretHolderTransform -= OnGetHolderTransform;
+            GameSignals.Instance.onTurretStateChange -= OnTurretStateChange;
         }
 
         private void OnDisable()
@@ -99,7 +103,7 @@ namespace Runtime.Controllers
         }
         
 
-        public void AddEnemyToList(GameObject otherGameObject) => enteredEnemies.Add(otherGameObject);
+        
 
         
     }

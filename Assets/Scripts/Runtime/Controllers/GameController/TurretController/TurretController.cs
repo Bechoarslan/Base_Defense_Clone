@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Runtime.Enums;
+using Runtime.Interfaces;
 using Runtime.Signals;
 using UnityEngine;
 
@@ -13,14 +15,18 @@ namespace Runtime.Controllers
 
         #region Serialized Variables
 
+        [SerializeField] private Transform turretTransform;
         [SerializeField] private TurretManager turretManager;
         [SerializeField] private Transform firePoint;
+        [SerializeField] private List<GameObject> enteredEnemies = new List<GameObject>();
 
         #endregion
 
         #region Private Variables
 
         private int _ammoCounter;
+        private IDamageable _damageable;
+         private Transform _targetedEnemy;
         #endregion
 
         #endregion
@@ -34,11 +40,14 @@ namespace Runtime.Controllers
             
             while (true)
             {
-                if (ammoHolder.childCount <= 0 || turretManager.enteredEnemies.Count <= 0)
+                
+                if (ammoHolder.childCount <= 0 || enteredEnemies.Count <= 0 )
                 {
-                    yield return null;
+                    Debug.Log("Shooting Coroutine Active");
+                    yield return waiter;
                     continue;
                 }
+                
                 _ammoCounter++;
                 if (_ammoCounter >= 4)
                 {
@@ -47,30 +56,70 @@ namespace Runtime.Controllers
                     _ammoCounter = 0;
                 }
 
-                var projectile = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Projectile);
+                var projectile = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.TurretBullet);
+ 
                 projectile.transform.position = firePoint.position;
                 projectile.SetActive(true);
-                projectile.transform.DOMove(new Vector3(firePoint.position.x, firePoint.position.y, 10f), 0.5f);
+                var rb = projectile.GetComponent<Rigidbody>();
+                rb.velocity = firePoint.forward * 20f;
                 yield return waiter;
             }
 
         }
 
-        public IEnumerator RotateToEnemy(List<GameObject> enteredEnemies)
+        public IEnumerator RotateToEnemy()
         {
-            var waiter = new WaitForSeconds(0.5f);
+            var waiter = new WaitForSeconds(0.1f);
             while (true)
             {
-                if (enteredEnemies.Count <= 0)
+
+                if (_targetedEnemy != null)
                 {
-                    yield return null;
-                    continue;
+                    var target = _targetedEnemy.position - turretTransform.position;
+                    target.y = 0;
+                    var lookRotation = Quaternion.LookRotation(target);
+                    turretTransform.rotation = Quaternion.Slerp(turretTransform.rotation, lookRotation, 0.1f);
                 }
-               
-                var target = enteredEnemies[^1].transform;
-                turretManager.transform.DORotate(new Vector3(0,
-                    Quaternion.LookRotation(target.position - turretManager.transform.position).eulerAngles.y, 0), 0.5f);
+
                 yield return waiter;
+            }
+        }
+
+       
+
+        public void OnEnterEnemy(GameObject enemyObj)
+        {
+            if (enteredEnemies.Contains(enemyObj)) return;
+            Debug.Log("Added Enemy to List");
+            _targetedEnemy = enemyObj.transform;
+            enteredEnemies.Add(enemyObj);
+            _damageable = enemyObj.GetComponent<IDamageable>();
+        }
+
+        public void OnEnemyDiedClearFromList(GameObject obj)
+        {
+            
+            if (!enteredEnemies.Remove(obj)) return;
+            if (enteredEnemies.Count == 0)
+            {
+                _targetedEnemy = null;
+                _damageable = null;
+                return;
+            }
+            if (_targetedEnemy != obj.transform) return;
+            _targetedEnemy = null;
+            _damageable = null;
+            float closestDistance = Mathf.Infinity;
+            foreach (var enemyPair in enteredEnemies)
+            {
+                var enemyTransform = enemyPair.transform;
+                var distance = Vector3.Distance(transform.position, enemyTransform.position);
+                if (distance < closestDistance)
+                {
+                    closestDistance = distance;
+                    _targetedEnemy = enemyTransform;
+                    _damageable = enemyPair.GetComponent<IDamageable>();
+                }
             }
         }
     }

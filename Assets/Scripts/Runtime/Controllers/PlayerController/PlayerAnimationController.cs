@@ -35,7 +35,7 @@ namespace Runtime.Controllers.Player
         
         public void OnChangeAnimBool(bool value, PlayerAnimState boolName)
         {
-            Debug.Log("Bool Changed "+ boolName.ToString() + " Value: " + value);
+        
             animator.SetBool(boolName.ToString(), value);
         }
     }

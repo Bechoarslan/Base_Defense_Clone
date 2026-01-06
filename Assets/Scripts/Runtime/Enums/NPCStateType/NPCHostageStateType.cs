@@ -4,5 +4,9 @@ namespace Runtime.Enums.NPCState
     {
         FollowPlayer,
         Terrified,
+        Mine,
+        CartMine,
+        Stay,
+        IsRunning
     }
 }

@@ -821,7 +821,7 @@ GameObject:
   - component: {fileID: 5248104600583876471}
   m_Layer: 9
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -856,7 +856,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
-  colliderLayer: {fileID: 5617879063076121503}
+  enemyCollider: {fileID: 5617879063076121503}
   enemyData: {fileID: 11400000, guid: 156b63a13fb1045b6ace6bc703c4b85c, type: 2}
   navMeshAgent: {fileID: -5495631132927883252}
   enemyAnimationController: {fileID: 7065260510662199128}
@@ -896,7 +896,7 @@ CapsuleCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 64
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
@@ -1046,6 +1046,7 @@ GameObject:
   - component: {fileID: 8478641108852774822}
   - component: {fileID: 4327024299744145540}
   - component: {fileID: 432241316831779275}
+  - component: {fileID: 5132753831337393069}
   m_Layer: 9
   m_Name: PhysicController
   m_TagString: Enemy
@@ -1104,6 +1105,33 @@ CapsuleCollider:
   m_Height: 1.9004097
   m_Direction: 1
   m_Center: {x: 0, y: 0.8892889, z: 0}
+--- !u!54 &5132753831337393069
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5617879063076121503}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5752870259084004328
 GameObject:
   m_ObjectHideFlags: 0
