@@ -9,6 +9,7 @@ namespace Runtime.Data.ValueObjects
         public float RotateSpeed;
         public float Health;
         public float FireRate;
+        public float StackLimit;
 
     }
 }

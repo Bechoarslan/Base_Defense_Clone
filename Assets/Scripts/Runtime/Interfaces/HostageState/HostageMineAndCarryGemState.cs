@@ -26,8 +26,16 @@ namespace Runtime.Interfaces.HostageState
 
         private IEnumerator MineAndCarryCoroutine()
         {
-            Manager.pickaxeObj.SetActive(true);
-            Manager.SetTriggerAnimation(nameof(HostageAnimState.Mine));
+           
+            if (Manager.gemMineType == GemMineType.CartMine)
+            {
+                Manager.SetTriggerAnimation(nameof(HostageAnimState.CartMine));
+            }
+            else
+            {
+                Manager.pickaxeObj.SetActive(true);
+                Manager.SetTriggerAnimation(nameof(HostageAnimState.Mine));
+            }
             yield return new WaitForSeconds(5f);
             GetMine();
            Manager.SetTriggerAnimation(nameof(HostageAnimState.Carry));
@@ -40,6 +48,11 @@ namespace Runtime.Interfaces.HostageState
 
         private void GetMine()
         {
+            if(Manager.gemMineType == GemMineType.CartMine)
+            {
+                GameSignals.Instance.onHostageIsCartMining?.Invoke(false);
+                GameSignals.Instance.onHostageTakeGemFromCartMine?.Invoke();
+            }
             var gemObj = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Gem);
             gemObj.transform.parent = Manager.gemHolderTransform;
             gemObj.transform.localPosition = Vector3.zero;

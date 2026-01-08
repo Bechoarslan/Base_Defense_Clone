@@ -17,3 +17,4 @@ MonoBehaviour:
     RotateSpeed: 5
     Health: 100
     FireRate: 0.5
+    StackLimit: 10

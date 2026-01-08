@@ -105,12 +105,12 @@ namespace Runtime.Managers
         public void OnStackAmmo(Transform otherTransform, Transform stackHolder, StackType bullet)
         {
             
-            StartCoroutine(GameSignals.Instance.onSendStackObjectToHolder?.Invoke(otherTransform,stackHolder,bullet));
+            StartCoroutine(GameSignals.Instance.onSendBulletStackObjectToHolder?.Invoke(otherTransform,stackHolder,bullet, playerData.PlayerData.StackLimit));
         }
 
         public void OnSendStackToDeposit(Transform holderTransform, Transform stackHolder, StackType ammo)
         {
-            StartCoroutine(GameSignals.Instance.onSendStackObjectToArea?.Invoke(holderTransform, stackHolder, ammo));
+            StartCoroutine(GameSignals.Instance.onSendBulletStackObjectToArea?.Invoke(holderTransform, stackHolder, ammo));
         }
 
         public void OnStateChanged(PlayerState playerState)
@@ -148,6 +148,11 @@ namespace Runtime.Managers
         public void SetHealthVisible(bool value)
         {
             playerHealthController.SetHealthVisible(value);
+        }
+
+        public void OnGetMoneyStack(Transform stackHolder, GameObject moneyObj)
+        {
+            GameSignals.Instance.onSendMoneyStackToHolder?.Invoke(stackHolder, moneyObj, playerData.PlayerData.StackLimit);
         }
     }
 }

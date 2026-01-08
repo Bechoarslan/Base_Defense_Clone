@@ -4,22 +4,27 @@ using System.Collections.Generic;
 using Runtime.Data.UnityObjects.SpawnObjectData;
 using Runtime.Data.ValueObjects;
 using Runtime.Enums;
+using Runtime.Extensions;
+using Runtime.Managers.NPCManager.NPCMoneyCollector;
 using Runtime.Signals;
 using UnityEngine;
 
 namespace Runtime.Managers
 {
-    public class EnemySpawnManager : MonoBehaviour
+    public class SpawnManager : MonoBehaviour
     {
         #region Self Variables
 
         #region Serialized Variables
 
+        [Header("Enemy Spawn Points")]
         [SerializeField] private Transform enemyHolder;
         [SerializeField] private List<Transform> enemySpawnPoints;
         [SerializeField] private CD_SpawnData spawnData;
         [SerializeField] private List<Transform> enemyWalkPoints;
 
+        [Header("NPC Money Collector Points")]
+        [SerializeField] private Transform npcMoneyCollectorWalkPoint;
         #endregion
 
         #region Private Variables
@@ -47,8 +52,16 @@ namespace Runtime.Managers
 
         private void SubscribeEvents()
         {
+            GameSignals.Instance.onSendNPCMoneyCollectorWalkPoint += OnSendCollectorWaitPoint;
             GameSignals.Instance.onEnemyWalkPointTransform += SendEnemyWalkPoints;
+         
+            
         }
+
+    
+
+        private Transform OnSendCollectorWaitPoint() => npcMoneyCollectorWalkPoint;
+        
 
         private Transform SendEnemyWalkPoints()
         {
@@ -98,6 +111,11 @@ namespace Runtime.Managers
                 enemyObj.SetActive(true);
                 
             }
+        }
+
+        private void OnDestroy()
+        {
+            ServiceLocator.Unregister<SpawnManager>();
         }
     }
 }

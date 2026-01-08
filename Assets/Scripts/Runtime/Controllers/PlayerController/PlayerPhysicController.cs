@@ -19,51 +19,61 @@ namespace Runtime.Controllers.Player
         private bool _isGun;
         private void OnTriggerEnter(Collider other)
         {
-            if (other.CompareTag("AmmoArea"))
+            switch (other.tag)
             {
-                playerManager.OnStackAmmo(other.transform,stackHolder,StackType.Ammo);
-            }
-            else if (other.CompareTag("DepositArea"))
-            {
-                playerManager.OnSendStackToDeposit(other.transform, stackHolder, StackType.Ammo);
-            }
-            else if (other.CompareTag("Turret"))
-            {
-                playerManager.OnStateChanged(PlayerState.Turret);
-                GameSignals.Instance.onTurretStateChange?.Invoke(TurretState.PlayerIn);
-                
-                if (stackHolder.childCount > 0)
-                {
-                    PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder);
-                }
-            }
-            else if (other.CompareTag("GunOff"))
-            {
-                OnEnterAndExitOutOfBase(true);
+                case "AmmoArea":
+                    playerManager.OnStackAmmo(other.transform, stackHolder, StackType.Ammo);
+                    break;
 
+                case "Money":
+                    playerManager.OnGetMoneyStack(stackHolder, other.gameObject);
+                    break;
+                case "DepositArea":
+                    playerManager.OnSendStackToDeposit(other.transform, stackHolder, StackType.Ammo);
+                    break;
+
+                case "Turret":
+                    playerManager.OnStateChanged(PlayerState.Turret);
+                    GameSignals.Instance.onTurretStateChange?.Invoke(TurretState.PlayerIn);
+
+                    if (stackHolder.childCount > 0)
+                    {
+                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,PoolType.Ammo);
+                    }
+                    break;
+
+                case "GunOff":
+                    OnEnterAndExitOutOfBase(true);
+                    if(stackHolder.childCount > 0)
+                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,PoolType.Ammo);
+                    break;
+
+                case "GunOn":
+                    if(stackHolder.childCount > 0)
+                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,PoolType.Money);
+                    OnEnterAndExitOutOfBase(false);
+                    break;
+
+                case "InOutOfBase":
+                    var block = GameObject.FindGameObjectWithTag("Barrier");
+                    RotateGate(block);
+                    break;
+
+                case "Hostage":
+                    playerManager.HostageList.Add(other.transform.parent.gameObject);
+                    break;
+
+                case "Mine":
+                    if (playerManager.HostageList.Count <= 0) break;
+
+                    foreach (var hostages in playerManager.HostageList)
+                    {
+                        PlayerSignals.Instance.onPlayerEnteredMineArea?.Invoke(hostages);
+                        playerManager.EnemyList.Remove(hostages);
+                    }
+                    break;
             }
-            else if (other.CompareTag("GunOn")) 
-            {
-                OnEnterAndExitOutOfBase(false);
-            }
-            else if (other.CompareTag("InOutOfBase"))
-            {
-                var block = GameObject.FindGameObjectWithTag("Barrier");
-                RotateGate(block);
-            }
-            else if (other.CompareTag("Hostage"))
-            {
-                playerManager.HostageList.Add(other.gameObject.transform.parent.gameObject);
-            }
-            else if (other.CompareTag("Mine"))
-            {
-                if (playerManager.HostageList.Count <= 0) return;
-                foreach (var hostages in playerManager.HostageList)
-                {
-                    PlayerSignals.Instance.onPlayerEnteredMineArea?.Invoke(hostages);
-                }
-                
-            }
+            
           
            
         }
@@ -95,25 +105,22 @@ namespace Runtime.Controllers.Player
 
         private void OnTriggerExit(Collider other)
         {
-            if (other.CompareTag("AmmoArea"))
+            switch (other.tag)
             {
-               playerManager.StopAllCoroutines();
+                case "AmmoArea":
+                    playerManager.StopAllCoroutines();
+                    break;
+                case "DepositArea":
+                    playerManager.StopAllCoroutines();
+                    break;
+                case "Turret":
+                    GameSignals.Instance.onTurretStateChange?.Invoke(TurretState.None);
+                    break;
+                case "InOutOfBase":
+                    var block = GameObject.FindGameObjectWithTag("Barrier");
+                    RotateGate(block);
+                    break;
             }
-            else if (other.CompareTag("DepositArea"))
-            {
-                playerManager.StopAllCoroutines();
-            }
-            else if (other.CompareTag("Turret"))
-            {
-                GameSignals.Instance.onTurretStateChange?.Invoke(TurretState.None);
-            }
-            else if (other.CompareTag("InOutOfBase"))
-            {
-                var block = GameObject.FindGameObjectWithTag("Barrier");
-                RotateGate(block);
-            }
-            
-          
             
         }
 

@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Runtime.Enums;
+using Runtime.Managers.NPCManager.NPCMoneyCollector;
 using RunTime.Utilities;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Runtime.Signals
 {
@@ -11,9 +13,14 @@ namespace Runtime.Signals
     {
         #region Stack Signals
         
-        public Func<Transform,Transform,StackType,IEnumerator> onSendStackObjectToHolder = delegate { return null; };
-        public Func<Transform,Transform,StackType,IEnumerator> onSendStackObjectToArea = delegate { return null; };
+        public Func<Transform,Transform,StackType,float,IEnumerator> onSendBulletStackObjectToHolder = delegate { return null; };
+        public Func<Transform,Transform,StackType,IEnumerator> onSendBulletStackObjectToArea = delegate { return null; };
         public Func<Transform> onGetStackAmmoHolderTransform = () => null;
+        
+        public Action<Transform,GameObject,float> onSendMoneyStackToHolder = delegate { };
+        
+        public Func<List<GameObject>> onGetMoneyStackList = () => null;
+        public Action<GameObject> onAddListDroppedMoneyFromEnemy = delegate { };
         #endregion
         
 
@@ -32,15 +39,20 @@ namespace Runtime.Signals
         #region Spawn Signals
 
         public Func<Transform> onEnemyWalkPointTransform = () => null;
+        public Func<Transform> onSendNPCMoneyCollectorWalkPoint = () => null;
+        
+        public UnityAction<NPCMoneyCollectorManager> onSubscribeNPCMoneyCollectorManager = delegate { };
 
         #endregion
 
         #region Gem Signals
 
        
-        public Func<Transform> onGetMiningAreaTransform = () => null;
+        public Func<(Transform,GemMineType)> onGetMiningAreaTransform = () => (null,GemMineType.CrystalMine);
         public Func<Transform> onGetGemStackAreaTransform = () => null;
         public Action<GameObject> onSendGemToHolder = delegate { };
+        public Action<bool> onHostageIsCartMining = delegate { };
+        public Action onHostageTakeGemFromCartMine = delegate { };
 
         #endregion
     }

@@ -20,6 +20,7 @@ TagManager:
   - GunOff
   - Mine
   - GemStack
+  - Money
   layers:
   - Default
   - TransparentFX

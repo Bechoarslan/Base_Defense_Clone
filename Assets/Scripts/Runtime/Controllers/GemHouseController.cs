@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Sirenix.OdinInspector;
@@ -10,11 +11,12 @@ namespace Runtime.Controllers
     {
         #region Self Variables
 
+        public Transform cart;
+        public bool IsMineCartReady;
         #region Serialized Variables
 
         [SerializeField] private Transform fenceRight;
         [SerializeField] private Transform fenceLeft;
-        [SerializeField] private Transform cart;
         [SerializeField] private TextMeshPro gemCountText;
 
         #endregion
@@ -34,6 +36,8 @@ namespace Runtime.Controllers
             
         }
 
+       
+
         private void SetReadyGems()
         {
             gemCountText.text = _gemCounts.ToString();
@@ -42,17 +46,29 @@ namespace Runtime.Controllers
             cart.DOLocalMoveZ(-5f, 1f).OnComplete(() =>
             {
                 gemCountText.gameObject.SetActive(true);
+                IsMineCartReady = true;
             });
         }
         
         
         private void CloseFencesAndCart()
         {
-            cart.DOLocalMoveZ(-5F, 1f).OnComplete(() =>
+            cart.DOLocalMoveZ(0, 1f).OnComplete(() =>
             {
                 fenceRight.DOLocalRotate( _fenceRightOpenPos, 1f);
                 fenceLeft.DOLocalRotate( _fenceLeftOpenPos, 1f);
             });
+        }
+
+        public void OnHostageTakeGemFromCartMine()
+        {
+            _gemCounts--;
+            gemCountText.text = _gemCounts.ToString();
+            if (_gemCounts<=0)
+            { IsMineCartReady = false;
+                gemCountText.gameObject.SetActive(false);
+                CloseFencesAndCart();
+            }
         }
     }
 }

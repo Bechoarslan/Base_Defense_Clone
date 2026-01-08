@@ -17,6 +17,7 @@ namespace Runtime.Managers.NPCManager.Hostage
         #region Public Variables
 
         public IStateMachine CurrentState;
+        public CD_NpcData npcData;
 
         #endregion
 
@@ -24,7 +25,6 @@ namespace Runtime.Managers.NPCManager.Hostage
 
         [SerializeField] public Transform bulletHolder;
         [SerializeField] private NavMeshAgent navMeshAgent;
-        [SerializeField] public CD_NpcData npcData;
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace Runtime.Managers.NPCManager.Hostage
         private void GetReferences()
         {
             _waitDepositTurretState = new WaitDepositTurretState(this);
-            _waitTakeBulletState = new WaitTakeBulletState(this);
+            _waitTakeBulletState = new WaitTakeBulletState(this,npcData.Data);
             _walkAmmoAreaState = new WalkAmmoAreaState(this,ref navMeshAgent);
             _walkTurretAreaState = new WalkTurretAreaState(this, ref navMeshAgent);
             

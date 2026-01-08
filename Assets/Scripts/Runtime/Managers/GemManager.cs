@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using Runtime.Controllers;
+using Runtime.Enums;
 using Runtime.Enums.NPCState;
 using Runtime.Managers.NPCManager.Hostage;
 using Runtime.Signals;
@@ -11,18 +13,21 @@ namespace Runtime.Managers
     {
 
         #region Self Variables
-
+        
         #region Serialized Variables
 
         [SerializeField] private List<GameObject> gemWorkerList;
         [SerializeField] private List<Transform> gemPosList;
+        [SerializeField] private List<Transform> cartGemPosList;
         [SerializeField] private Transform gemHolderTransform;
+        [SerializeField] private GemHouseController gemHouseController; 
 
         #endregion
 
         #region Private Variables
 
         private List<GameObject> _gemObjList = new List<GameObject>();
+        private bool _isHostageCartMining;
         #endregion
 
         #endregion
@@ -41,7 +46,13 @@ namespace Runtime.Managers
             GameSignals.Instance.onGetMiningAreaTransform += OnGetMiningAreaTransform;
             GameSignals.Instance.onGetGemStackAreaTransform += OnSendGemStackAreaTransform;
             GameSignals.Instance.onSendGemToHolder += OnSendGemToHolder;
+            GameSignals.Instance.onHostageIsCartMining += OnHostageIsCartMining;
+            GameSignals.Instance.onHostageTakeGemFromCartMine += gemHouseController.OnHostageTakeGemFromCartMine;
         }
+
+        private void OnHostageIsCartMining(bool value) => _isHostageCartMining = value;
+       
+        
 
         private Transform OnSendGemStackAreaTransform() => gemHolderTransform;
         
@@ -54,8 +65,7 @@ namespace Runtime.Managers
             objective.SwitchState(NPCHostageStateType.Mine);
 
         }
-
-        [Button("add gem to holder")]
+        
         private void OnSendGemToHolder(GameObject gemObj)
         {
 
@@ -65,7 +75,7 @@ namespace Runtime.Managers
 
             int xIndex = index % 6;
             int zIndex = (index / 6) % 6;
-            int yIndex = index / 36; // 6x6 = 36, katman mantığı
+            int yIndex = index / 36; 
 
             float spacing = 0.3f;
 
@@ -73,17 +83,25 @@ namespace Runtime.Managers
             gemObj.transform.localPosition = new Vector3(
                 xIndex * spacing,
                 yIndex * spacing,
-                zIndex * spacing
+                -zIndex * spacing
             );
             gemObj.transform.localRotation = Quaternion.identity;
             
                 
             
         }
-        private Transform OnGetMiningAreaTransform()
+        private (Transform,GemMineType) OnGetMiningAreaTransform()
         {
+            if(gemHouseController.IsMineCartReady && !_isHostageCartMining)
+            {
+                var randomPos = Random.Range(0, cartGemPosList.Count);
+                return (cartGemPosList[randomPos],GemMineType.CartMine);
+            }
+            
             var randomIndex = Random.Range(0, gemPosList.Count);
-            return gemPosList[randomIndex];
+            return (gemPosList[randomIndex],GemMineType.CrystalMine);
+            
+            
         }
 
        
@@ -93,6 +111,7 @@ namespace Runtime.Managers
             GameSignals.Instance.onGetMiningAreaTransform -= OnGetMiningAreaTransform;
             GameSignals.Instance.onGetGemStackAreaTransform -= OnSendGemStackAreaTransform;
             GameSignals.Instance.onSendGemToHolder -= OnSendGemToHolder;
+            GameSignals.Instance.onHostageIsCartMining -= OnHostageIsCartMining;
         }
 
         private void OnDisable()

@@ -41,7 +41,7 @@ namespace Runtime.Managers
                 for (int j = 0; j < poolData.pools[i].poolSize; j++)
                 {
                     var poolObj = Instantiate(poolData.pools[i].poolPrefab, Vector3.zero,
-                        Quaternion.identity, poolParent.transform);
+                       poolData.pools[i].poolPrefab.transform.rotation, poolParent.transform);
                     poolObj.SetActive(false);
 
 
@@ -67,14 +67,16 @@ namespace Runtime.Managers
                 Debug.LogError("Pool is empty!");
                 return InstantiateNewPoolObject(poolType);
             }
+            
             var poolObj = poolParent.GetChild(poolParent.childCount - 1).gameObject;
+            
             return poolObj; 
         }
 
         private GameObject InstantiateNewPoolObject(PoolType poolType)
         {
             var data = poolData.pools[(int)poolType];
-            var poolObj = Instantiate(data.poolPrefab,Vector3.zero,Quaternion.identity,
+            var poolObj = Instantiate(data.poolPrefab,Vector3.zero,data.poolPrefab.transform.rotation,
                 transform.GetChild((int)poolType));
             poolObj.SetActive(false);
             return poolObj;

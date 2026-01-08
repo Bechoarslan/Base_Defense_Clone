@@ -1,4 +1,5 @@
 using System.Collections;
+using Runtime.Enums;
 using Runtime.Enums.NPCState;
 using Runtime.Managers.NPCManager.Hostage;
 using Runtime.Signals;
@@ -19,8 +20,14 @@ namespace Runtime.Interfaces.HostageState
         public void EnterState()
         {
              var miningAreaTransform = GameSignals.Instance.onGetMiningAreaTransform.Invoke();
-             Manager.mineAreaTransform = miningAreaTransform;
-            Agent.SetDestination(miningAreaTransform.position);
+             
+             Manager.gemMineType = miningAreaTransform.Item2;
+             if (Manager.gemMineType == GemMineType.CartMine)
+             {
+                 GameSignals.Instance.onHostageIsCartMining?.Invoke(true);
+             }
+             Manager.mineAreaTransform = miningAreaTransform.Item1;
+            Agent.SetDestination(miningAreaTransform.Item1.position);
         }
         
 

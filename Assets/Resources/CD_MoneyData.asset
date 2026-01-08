@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: CD_MoneyData
   m_EditorClassIdentifier: 
   stackData:
-    OffSetX: 0
-    OffSetY: 0.5
-    OffSetZ: 0
+    StackHolderOffset: {x: 0, y: 0.1, z: -0.1}
+    StackAreaOffset: {x: -0.3, y: 0.1, z: 0.3}
     StackLimit: 10

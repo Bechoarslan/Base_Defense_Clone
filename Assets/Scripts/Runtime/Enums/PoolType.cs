@@ -7,5 +7,6 @@ namespace Runtime.Enums
         Enemy,
         TurretBullet,
         Gem,
+        Money
     }
 }

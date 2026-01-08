@@ -8,7 +8,7 @@ namespace Runtime.Signals
     public class PlayerSignals : MonoSingleton<PlayerSignals>
     {
         public Action<PlayerState> onChangePlayerState = delegate { };
-        public Action<Transform> onSendStacksToHolder = delegate { };
+        public Action<Transform,PoolType> onSendStacksToHolder = delegate { };
         public Func<Transform> onGetPlayerTransform = delegate { return null; };
         
      

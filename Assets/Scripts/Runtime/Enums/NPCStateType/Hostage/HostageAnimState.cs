@@ -6,5 +6,6 @@ namespace Runtime.Enums.NPCState
         Carry,
         Mine,
         Run,
+        CartMine
     }
 }

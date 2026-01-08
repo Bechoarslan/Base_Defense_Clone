@@ -2,6 +2,7 @@ using System;
 using Runtime.Controllers.NpcController;
 using Runtime.Controllers.NpcController.Hostage;
 using Runtime.Data.UnityObjects;
+using Runtime.Enums;
 using Runtime.Enums.NPCState;
 using Runtime.Interfaces;
 using Runtime.Interfaces.HostageState;
@@ -21,6 +22,7 @@ namespace Runtime.Managers.NPCManager.Hostage
         public GameObject pickaxeObj;
         public Transform gemHolderTransform;
         public Transform mineAreaTransform;
+        public GemMineType gemMineType;
 
         #endregion
         #region Serialized Variables
@@ -40,6 +42,7 @@ namespace Runtime.Managers.NPCManager.Hostage
         private MoveToMineState _moveToMineState;
         private HostageMineAndCarryGemState _mineAndMoveToGemAreaState;
         private NPCHostageStateType _currentStateType = NPCHostageStateType.None;
+       
         
         #endregion
 

@@ -28,6 +28,7 @@ namespace Runtime.Managers
         private StackSendObjectToHolderCommand _stackSendObjectToHolderCommand;
         private StackSendObjectToArea _stackSendObjectToArea;
         private CD_StackData _emptyStackData;
+        private List<GameObject> _droppedMoneyList = new List<GameObject>();
         #endregion
 
         #endregion
@@ -47,15 +48,45 @@ namespace Runtime.Managers
         private void SubscribeEvents()
         {
             PlayerSignals.Instance.onSendStacksToHolder += OnSendPlayerStacksToHolder;
-            GameSignals.Instance.onSendStackObjectToHolder += OnSendStackObjectToHolder;
-            GameSignals.Instance.onSendStackObjectToArea += OnSendstackObjectToArea;
+            GameSignals.Instance.onSendBulletStackObjectToHolder += OnSendStackObjectToHolder;
+            GameSignals.Instance.onSendBulletStackObjectToArea += OnSendstackObjectToArea;
             GameSignals.Instance.onGetStackAmmoHolderTransform += OnGetAmmoStackHolderTransform;
+            GameSignals.Instance.onSendMoneyStackToHolder += OnSendMoneyStackToHolder;
+            GameSignals.Instance.onAddListDroppedMoneyFromEnemy += OnAddListDroppedMoneyFromEnemy;
+            GameSignals.Instance.onGetMoneyStackList += OnGetMoneyStackList;
+        }
+
+        private List<GameObject> OnGetMoneyStackList() => _droppedMoneyList;
+
+        private void OnAddListDroppedMoneyFromEnemy(GameObject obj)
+        {
+            if (_droppedMoneyList.Contains(obj)) return;
+            _droppedMoneyList.Add(obj);
+        }
+       
+
+        private void OnSendMoneyStackToHolder(Transform stackHolder, GameObject stackObj,float stackCountLimit)
+        {
+            if(stackHolder.childCount >= stackCountLimit)
+                return;
+            if(_droppedMoneyList.Contains(stackObj)) 
+                _droppedMoneyList.Remove(stackObj);
+            var stackHolderCount = stackHolder.childCount;
+            stackObj.transform.SetParent(stackHolder);
+            stackObj.transform.DOLocalJump(
+                new Vector3(0, 2f, 0),
+                2f, 1, 0.3f).OnComplete(() =>
+            {
+               var newPosition = new Vector3(0, moneyData.stackData.StackHolderOffset.y * stackHolderCount, moneyData.stackData.StackHolderOffset.z);
+                stackObj.transform.localRotation = Quaternion.Euler(-90,0, -90);
+                 stackObj.transform.DOLocalMove(newPosition, 0.5f);
+            });
         }
 
         private Transform OnGetAmmoStackHolderTransform() => ammoStackHolder;
        
 
-        private void OnSendPlayerStacksToHolder(Transform playerStackHolder)
+        private void OnSendPlayerStacksToHolder(Transform playerStackHolder,PoolType poolType)
         {
             var count = playerStackHolder.childCount;
             Debug.Log(count);
@@ -67,7 +98,7 @@ namespace Runtime.Managers
                     stackObj.transform.SetParent(ammoStackHolder);
                     stackObj.transform.DOMove(ammoStackHolder.position, 0.5f).OnComplete(() =>
                     {
-                        PoolSignals.Instance.onSendPoolObject?.Invoke(stackObj,PoolType.Ammo);
+                        PoolSignals.Instance.onSendPoolObject?.Invoke(stackObj,poolType);
                     });
 
                 });
@@ -96,7 +127,7 @@ namespace Runtime.Managers
             }
         }
 
-        private IEnumerator OnSendStackObjectToHolder(Transform areaHolder, Transform stackHolder, StackType stackType)
+        private IEnumerator OnSendStackObjectToHolder(Transform areaHolder, Transform stackHolder, StackType stackType,float stackLimit)
         {
             _emptyStackData = stackType switch
             {
@@ -104,9 +135,9 @@ namespace Runtime.Managers
                 StackType.Money => moneyData,
                 _ => _emptyStackData
             };
-            Debug.Log("here");
+            
             var waiter = new WaitForSeconds(0.2f);
-            while (stackHolder.childCount < _emptyStackData.stackData.StackLimit)
+            while (stackHolder.childCount < stackLimit)
             {
                 var obj = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Ammo);
                 if (obj is null) break;
@@ -123,15 +154,23 @@ namespace Runtime.Managers
                 case StackType.Ammo:
                     _stackSendObjectToHolderCommand.Execute(stackObj, areaHolder, stackHolder, ammoData);
                     break;
+                case StackType.Money:
+                    
+                    break;
             }
         }
 
 
         private void UnSubscribeEvents()
         {
-            GameSignals.Instance.onSendStackObjectToHolder -= OnSendStackObjectToHolder;
-            GameSignals.Instance.onSendStackObjectToArea -= OnSendstackObjectToArea;
-            PlayerSignals.Instance.onSendStacksToHolder -= OnSendPlayerStacksToHolder;
+            GameSignals.Instance.onSendBulletStackObjectToHolder -= OnSendStackObjectToHolder;
+            GameSignals.Instance.onSendBulletStackObjectToArea -= OnSendstackObjectToArea;
+            PlayerSignals.Instance.onSendStacksToHolder -= OnSendPlayerStacksToHolder; 
+            GameSignals.Instance.onGetStackAmmoHolderTransform -= OnGetAmmoStackHolderTransform;
+            GameSignals.Instance.onSendMoneyStackToHolder -= OnSendMoneyStackToHolder;
+            GameSignals.Instance.onAddListDroppedMoneyFromEnemy -= OnAddListDroppedMoneyFromEnemy;
+            GameSignals.Instance.onGetMoneyStackList -= OnGetMoneyStackList;
+            
         }
 
         private void OnDisable()
