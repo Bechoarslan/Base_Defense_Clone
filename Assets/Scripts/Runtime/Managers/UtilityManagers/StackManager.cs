@@ -5,7 +5,9 @@ using DG.Tweening;
 using Runtime.Commands.Stack;
 using Runtime.Data.UnityObjects;
 using Runtime.Enums;
+using Runtime.Keys;
 using Runtime.Signals;
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 namespace Runtime.Managers
@@ -71,6 +73,8 @@ namespace Runtime.Managers
                 return;
             if(_droppedMoneyList.Contains(stackObj)) 
                 _droppedMoneyList.Remove(stackObj);
+            Debug.Log("Money Stack Sent To Holder");
+            stackObj.tag = "Untagged";
             var stackHolderCount = stackHolder.childCount;
             stackObj.transform.SetParent(stackHolder);
             stackObj.transform.DOLocalJump(
@@ -88,22 +92,39 @@ namespace Runtime.Managers
 
         private void OnSendPlayerStacksToHolder(Transform playerStackHolder,PoolType poolType)
         {
+            var tag = "Untagged";
+            if (poolType == PoolType.Money)
+            {
+                tag = "Money";
+            }
             var count = playerStackHolder.childCount;
             Debug.Log(count);
             for (int i = count - 1; i >= 0; i--)
             {
                 var stackObj = playerStackHolder.GetChild(i).gameObject;
+
+                if (poolType == PoolType.Money)
+                {
+                    GameSignals.Instance.onGetResourceKeys?.Invoke().AddMoney(5);
+                }
                 stackObj.transform.DOLocalJump(new Vector3(0, 2f, 0), 1f, 1, 0.5f).OnComplete(() =>
                 {
                     stackObj.transform.SetParent(ammoStackHolder);
                     stackObj.transform.DOMove(ammoStackHolder.position, 0.5f).OnComplete(() =>
                     {
+                        stackObj.tag = tag;
                         PoolSignals.Instance.onSendPoolObject?.Invoke(stackObj,poolType);
                     });
 
                 });
                 
             }
+        }
+
+        [Button]
+        private void TrySomething()
+        {
+            GameSignals.Instance.onGetResourceKeys?.Invoke().AddMoney(1);
         }
 
         private IEnumerator OnSendstackObjectToArea(Transform areaHolder, Transform stackHolder, StackType stackType)

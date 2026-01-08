@@ -44,7 +44,6 @@ namespace Runtime.Managers.EnemyManager
         private EnemyStateType _currentStateType;
 
         private bool _isDead;
-        private Tweener _tweener;
         
         #endregion
 
@@ -124,9 +123,9 @@ namespace Runtime.Managers.EnemyManager
             Health -= damageAmount;
             var currentColor = enemyMaterial.material.color;
             enemyMaterial.DOKill();
-          _tweener =  enemyMaterial.material.DOColor( Color.gray, 0.1f ).OnComplete(() =>
+           enemyMaterial.material.DOColor( Color.gray, 0.1f ).OnComplete(() =>
           {
-               _tweener = enemyMaterial.material.DOColor( currentColor, 0.1f );
+               enemyMaterial.material.DOColor( currentColor, 0.1f );
             });
             if (!(Health <= 0)) return;
             enemyCollider.tag = "Untagged";

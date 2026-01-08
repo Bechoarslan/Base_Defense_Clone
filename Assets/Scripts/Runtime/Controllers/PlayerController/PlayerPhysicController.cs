@@ -17,15 +17,18 @@ namespace Runtime.Controllers.Player
         private Transform _barrier;
         private bool _isOpen;
         private bool _isGun;
+        private PoolType _poolType;
         private void OnTriggerEnter(Collider other)
         {
             switch (other.tag)
             {
                 case "AmmoArea":
                     playerManager.OnStackAmmo(other.transform, stackHolder, StackType.Ammo);
+                    _poolType = PoolType.Ammo;
                     break;
 
                 case "Money":
+                    _poolType = PoolType.Money;
                     playerManager.OnGetMoneyStack(stackHolder, other.gameObject);
                     break;
                 case "DepositArea":
@@ -38,19 +41,19 @@ namespace Runtime.Controllers.Player
 
                     if (stackHolder.childCount > 0)
                     {
-                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,PoolType.Ammo);
+                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,_poolType);
                     }
                     break;
 
                 case "GunOff":
                     OnEnterAndExitOutOfBase(true);
                     if(stackHolder.childCount > 0)
-                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,PoolType.Ammo);
+                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,_poolType);
                     break;
 
                 case "GunOn":
                     if(stackHolder.childCount > 0)
-                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,PoolType.Money);
+                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,_poolType);
                     OnEnterAndExitOutOfBase(false);
                     break;
 
@@ -70,6 +73,24 @@ namespace Runtime.Controllers.Player
                     {
                         PlayerSignals.Instance.onPlayerEnteredMineArea?.Invoke(hostages);
                         playerManager.EnemyList.Remove(hostages);
+                    }
+                    break;
+                case "GemStack":
+                    if (other.gameObject.transform.childCount > 0)
+                    {
+                        for (int i = other.gameObject.transform.childCount; i > 0 ; i--)
+                        {
+                            var gem = other.gameObject.transform.GetChild(i - 1).gameObject;
+                           
+                            gem.transform.DOLocalJump( new Vector3(0, 2f, 0), 1f, 1, 0.5f).OnComplete(() =>
+                            { 
+                                gem.transform.parent = null;
+                                PoolSignals.Instance.onSendPoolObject?.Invoke(gem,PoolType.Gem);
+                                GameSignals.Instance.onGetResourceKeys?.Invoke().AddGem(1);
+                            });
+                            
+                         
+                        }
                     }
                     break;
             }

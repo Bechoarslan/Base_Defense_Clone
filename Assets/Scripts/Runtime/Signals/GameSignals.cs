@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Runtime.Enums;
+using Runtime.Keys;
 using Runtime.Managers.NPCManager.NPCMoneyCollector;
 using RunTime.Utilities;
 using UnityEngine;
@@ -53,6 +54,15 @@ namespace Runtime.Signals
         public Action<GameObject> onSendGemToHolder = delegate { };
         public Action<bool> onHostageIsCartMining = delegate { };
         public Action onHostageTakeGemFromCartMine = delegate { };
+
+        #endregion
+
+
+        #region Resource Signals
+
+        public UnityAction<int> onUpdateCoinText = delegate { };
+        public UnityAction<int> onUpdateGemText = delegate { };
+        public Func<ResourcesKeys> onGetResourceKeys = () => null;
 
         #endregion
     }

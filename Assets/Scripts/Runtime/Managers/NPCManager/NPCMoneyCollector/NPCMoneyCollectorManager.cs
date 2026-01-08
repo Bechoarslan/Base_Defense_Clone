@@ -18,10 +18,11 @@ namespace Runtime.Managers.NPCManager.NPCMoneyCollector
         public Transform waitPoint { get; set; }
         public CD_NpcData npcData;
         public Transform moneyTransform { get; set; }   
+        public Transform barrierGate { get; set; }
         #region Serialized Variables
 
         [SerializeField] private NavMeshAgent navMeshAgent;
-        [SerializeField] private Transform moneyHolder;
+        [SerializeField] public Transform moneyHolder;
         
 
         #endregion
@@ -32,7 +33,8 @@ namespace Runtime.Managers.NPCManager.NPCMoneyCollector
         
 
         private CollectorWalkMoneyState _walkMoneyStateState;
-        private CollectorWaitForMoneyState _waitMoneyStateState;
+        private MoneyCollectorMoveWaitState _moveWaitMoneyStateState;
+        
         #endregion
 
         #endregion
@@ -44,10 +46,15 @@ namespace Runtime.Managers.NPCManager.NPCMoneyCollector
             
         }
 
+        private void Start()
+        {
+            barrierGate = GameObject.FindGameObjectWithTag("Barrier").transform;
+        }
+
         private void GetReferences()
         {
             _walkMoneyStateState = new CollectorWalkMoneyState(this, ref navMeshAgent);
-            _waitMoneyStateState = new CollectorWaitForMoneyState(this, ref navMeshAgent);
+            _moveWaitMoneyStateState = new MoneyCollectorMoveWaitState(this, ref navMeshAgent);
         }
 
       
@@ -88,7 +95,7 @@ namespace Runtime.Managers.NPCManager.NPCMoneyCollector
           switch (_currentStateType)
             {
                 case NPCMoneyCollectorStateType.WaitForMoney:
-                    currentState = _waitMoneyStateState;
+                    currentState = _moveWaitMoneyStateState;
                     break;
                 case NPCMoneyCollectorStateType.WalkMoney:
                     currentState = _walkMoneyStateState;

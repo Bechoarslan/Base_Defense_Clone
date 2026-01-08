@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6c7078370852422fab879b3faea6cfed, type: 3}
-  m_Name: CD_HostageData
+  m_Name: CD_MoneyCollector
   m_EditorClassIdentifier: 
   Data:
-    MoveSpeed: 3
+    MoveSpeed: 0
     RotationSpeed: 0
-    MaxStackCount: 10
+    MaxStackCount: 3
     WaitTime: 0
