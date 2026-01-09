@@ -15,5 +15,5 @@ MonoBehaviour:
   Data:
     MoveSpeed: 3
     RotationSpeed: 0
-    MaxStackCount: 0
+    MaxStackCount: 10
     WaitTime: 4

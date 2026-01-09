@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using Runtime.Controllers.Player;
 using Runtime.Data.UnityObjects;
@@ -32,6 +33,7 @@ namespace Runtime.Managers
 
       
   
+        private Coroutine _buyableCoroutine;
         #endregion
 
         #endregion
@@ -154,5 +156,7 @@ namespace Runtime.Managers
         {
             GameSignals.Instance.onSendMoneyStackToHolder?.Invoke(stackHolder, moneyObj, playerData.PlayerData.StackLimit);
         }
+
+       
     }
 }

@@ -11,10 +11,13 @@ namespace Runtime.Interfaces.BulletCarrierState
     public class WaitTakeBulletState : IStateMachine
     {
         private NPCBulletCarrierManager Manager;
+        private Coroutine _waitTakeBulletCoroutine;
+        private NpcData npcData;
 
         public WaitTakeBulletState(NPCBulletCarrierManager npcBulletCarrierManager, NpcData npcDataData)
         {
             Manager = npcBulletCarrierManager;
+            npcData = npcDataData;
         }
 
         public void EnterState()
@@ -22,7 +25,7 @@ namespace Runtime.Interfaces.BulletCarrierState
             Debug.Log("Taking Bullet's");
             var bulletHolderTransform = GameSignals.Instance.onGetStackAmmoHolderTransform?.Invoke();
             Manager.StartCor(GameSignals.Instance.onSendBulletStackObjectToHolder?.Invoke(bulletHolderTransform,
-                Manager.bulletHolder, StackType.Ammo,Manager.npcData.Data.MaxStackCount));
+                Manager.bulletHolder, StackType.Ammo,npcData.MaxStackCount));
             Manager.StartCor(WaitTakeBullet());
         }
 

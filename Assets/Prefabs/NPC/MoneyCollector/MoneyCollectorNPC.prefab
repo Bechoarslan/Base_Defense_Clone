@@ -1015,7 +1015,7 @@ GameObject:
   - component: {fileID: 5639314052373380869}
   - component: {fileID: 4758902605974423077}
   - component: {fileID: 946092383889725940}
-  - component: {fileID: 2902435450979354345}
+  - component: {fileID: 6379382856261011937}
   m_Layer: 0
   m_Name: MoneyCollectorNPC
   m_TagString: Untagged
@@ -1086,7 +1086,7 @@ CapsuleCollider:
   m_Height: 2.0173082
   m_Direction: 1
   m_Center: {x: 0, y: 0.97229266, z: 0}
---- !u!114 &2902435450979354345
+--- !u!114 &6379382856261011937
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1095,12 +1095,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 6323107764917462991}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bab32e8131a645b7881db7d8081061db, type: 3}
+  m_Script: {fileID: 11500000, guid: 98c87966e19f4dacbda78eb192b350aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcData: {fileID: 11400000, guid: f0a6b854c70ba45499b9c10236a22ed4, type: 2}
+  npcData: {fileID: 11400000, guid: 09ddbb4f882064a8eb0910ee5985b942, type: 2}
+  bulletHolder: {fileID: 7912397600826313354}
   navMeshAgent: {fileID: 4758902605974423077}
-  moneyHolder: {fileID: 7912397600826313354}
 --- !u!1 &7253452386768765510
 GameObject:
   m_ObjectHideFlags: 0
@@ -1177,7 +1177,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7912397600826313354}
   m_Layer: 0
-  m_Name: GemHolder
+  m_Name: BulletHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1465,7 +1465,7 @@ GameObject:
   - component: {fileID: 3722347293481847153}
   - component: {fileID: 281697807735762054}
   - component: {fileID: 1493275802784573769}
-  - component: {fileID: 1572069045384834775}
+  - component: {fileID: 7585950024402714862}
   m_Layer: 0
   m_Name: Physic
   m_TagString: Hostage
@@ -1538,7 +1538,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1572069045384834775
+--- !u!114 &7585950024402714862
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1547,10 +1547,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 9149175092567767475}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5af6d3ffa18a4280ac030c3f46cc359a, type: 3}
+  m_Script: {fileID: 11500000, guid: d8ab90248ff7418b950a14b2e8e504a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _controller: {fileID: 2902435450979354345}
+  manager: {fileID: 6379382856261011937}
 --- !u!1 &9153503127609207135
 GameObject:
   m_ObjectHideFlags: 0

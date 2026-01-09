@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using Runtime.Enums;
+using Runtime.Interfaces;
 using Runtime.Managers;
 using Runtime.Signals;
 using UnityEngine;
@@ -93,6 +94,9 @@ namespace Runtime.Controllers.Player
                         }
                     }
                     break;
+                case "BuyableArea":
+                   PlayerSignals.Instance.onPlayerEnteredBuyArea?.Invoke(other.gameObject,playerManager.transform);
+                    break;
             }
             
           
@@ -140,6 +144,9 @@ namespace Runtime.Controllers.Player
                 case "InOutOfBase":
                     var block = GameObject.FindGameObjectWithTag("Barrier");
                     RotateGate(block);
+                    break;
+                case "BuyableArea":
+                    PlayerSignals.Instance.onPlayerExitedBuyArea?.Invoke();
                     break;
             }
             

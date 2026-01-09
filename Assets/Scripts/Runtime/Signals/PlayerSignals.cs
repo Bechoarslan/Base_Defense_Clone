@@ -14,7 +14,8 @@ namespace Runtime.Signals
      
         public Action onStartShootingCoroutine = delegate { };
         
-
+        public Action<GameObject,Transform> onPlayerEnteredBuyArea = delegate { };
+        public Action onPlayerExitedBuyArea = delegate { };
         public Action<GameObject> onEnemyDiedClearFromList = delegate { };
         #region Animation Events
 

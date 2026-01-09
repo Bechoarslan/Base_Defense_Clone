@@ -150,6 +150,7 @@ namespace Runtime.Managers
 
         private IEnumerator OnSendStackObjectToHolder(Transform areaHolder, Transform stackHolder, StackType stackType,float stackLimit)
         {
+        
             _emptyStackData = stackType switch
             {
                 StackType.Ammo => ammoData,
@@ -163,6 +164,7 @@ namespace Runtime.Managers
                 var obj = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Ammo);
                 if (obj is null) break;
                 SetObjectPosition(obj,areaHolder, stackHolder, stackType);
+                Debug.Log("Stack Object Sending To Holder");
                 yield return waiter;
             }
            

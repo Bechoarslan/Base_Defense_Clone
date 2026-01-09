@@ -7,6 +7,8 @@ namespace Runtime.Enums
         Enemy,
         TurretBullet,
         Gem,
-        Money
+        Money,
+        DecorativeMoney,
+        NPCBulletCarrier,
     }
 }

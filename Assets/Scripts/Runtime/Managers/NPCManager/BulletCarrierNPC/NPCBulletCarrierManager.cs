@@ -34,6 +34,8 @@ namespace Runtime.Managers.NPCManager.Hostage
         private WaitTakeBulletState _waitTakeBulletState;
         private WalkAmmoAreaState _walkAmmoAreaState;
         private WalkTurretAreaState _walkTurretAreaState;
+        
+        private BulletCarrierStateType _bulletCarrierStateType;
         #endregion
 
         #endregion
@@ -61,7 +63,13 @@ namespace Runtime.Managers.NPCManager.Hostage
 
         public void SwitchState(BulletCarrierStateType waitTakeBullet)
         {
-            switch (waitTakeBullet)
+            if(_bulletCarrierStateType == waitTakeBullet) return;
+            if (CurrentState != null)
+            {
+                CurrentState.OnExitState();
+            }
+            _bulletCarrierStateType = waitTakeBullet;
+            switch (_bulletCarrierStateType)
             {
                 case BulletCarrierStateType.WaitDepositBullet:
                     CurrentState = _waitDepositTurretState;

@@ -21,6 +21,7 @@ TagManager:
   - Mine
   - GemStack
   - Money
+  - BuyableArea
   layers:
   - Default
   - TransparentFX
