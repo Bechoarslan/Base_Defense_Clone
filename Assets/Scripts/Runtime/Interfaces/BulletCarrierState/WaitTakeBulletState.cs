@@ -22,7 +22,7 @@ namespace Runtime.Interfaces.BulletCarrierState
 
         public void EnterState()
         {
-            Debug.Log("Taking Bullet's");
+            Manager.OnSetTriggerAnim("Idle");
             var bulletHolderTransform = GameSignals.Instance.onGetStackAmmoHolderTransform?.Invoke();
             Manager.StartCor(GameSignals.Instance.onSendBulletStackObjectToHolder?.Invoke(bulletHolderTransform,
                 Manager.bulletHolder, StackType.Ammo,npcData.MaxStackCount));

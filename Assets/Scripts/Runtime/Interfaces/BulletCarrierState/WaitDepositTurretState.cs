@@ -18,6 +18,7 @@ namespace Runtime.Interfaces.BulletCarrierState
         public void EnterState()
         {
             Debug.Log("Depositing Bullet's");
+            Manager.OnSetTriggerAnim("Idle");
             var turretHolderTransform = GameSignals.Instance.onGetTurretHolderTransform?.Invoke();
             Manager.StartCor(GameSignals.Instance.onSendBulletStackObjectToArea?.Invoke(turretHolderTransform,Manager.bulletHolder,StackType.Ammo));
             Manager.StartCor(WaitForDeposit());

@@ -19,6 +19,7 @@ namespace Runtime.Interfaces.BulletCarrierState
 
         public void EnterState()
         {
+            Manager.OnSetTriggerAnim("Run");
             var ammoTransform = GameSignals.Instance.onGetStackAmmoHolderTransform?.Invoke();
             if (ammoTransform != null) 
                 Agent.SetDestination(ammoTransform.position);

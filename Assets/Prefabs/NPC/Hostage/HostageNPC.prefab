@@ -404,7 +404,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7404207418974478822
 Transform:
   m_ObjectHideFlags: 0
@@ -439,6 +439,7 @@ MonoBehaviour:
   pickaxeObj: {fileID: 723132431828266637}
   gemHolderTransform: {fileID: 1118063432684480260}
   mineAreaTransform: {fileID: 0}
+  gemMineType: 0
   npcAnimationController: {fileID: 8166812747909461169}
   navMeshAgent: {fileID: 1206172679219542601}
   npcHostageController: {fileID: 7920439274245516890}

@@ -12,12 +12,14 @@ namespace Runtime.Interfaces.BulletCarrirerState
         private NavMeshAgent Agent;
         public WalkTurretAreaState(NPCBulletCarrierManager npcBulletCarrierManager, ref NavMeshAgent navMeshAgent)
         {
+           
             Manager = npcBulletCarrierManager;
             Agent = navMeshAgent;
         }
 
         public void EnterState()
-        {
+        { 
+            Manager.OnSetTriggerAnim("Run");
             var turretTransform = GameSignals.Instance.onGetTurretHolderTransform?.Invoke();
             if (turretTransform == null) return;
             Agent.isStopped = false;

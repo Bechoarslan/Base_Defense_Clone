@@ -7,6 +7,7 @@ namespace Runtime.Data.ValueObjects
     {
         public float MoveSpeed;
         public float RotateSpeed;
+        public float TurretMoveSpeed;
         public float Health;
         public float FireRate;
         public float StackLimit;

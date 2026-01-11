@@ -10,5 +10,8 @@ namespace Runtime.Enums
         Money,
         DecorativeMoney,
         NPCBulletCarrier,
+        NPCMoneyCollector,
+        NPCTurretController,
+        DecorativeGem
     }
 }

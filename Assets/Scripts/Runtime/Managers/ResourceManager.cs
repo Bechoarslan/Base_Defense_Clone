@@ -26,13 +26,14 @@ namespace Runtime.Managers
         private ResourcesKeys _resourcesKeys;
         private Coroutine _buyCoroutine;
         private IBuyable _currentBuyable;
+        private float _buyableResource;
         #endregion
 
         #endregion
 
         private void Awake()
         {
-            _resourcesKeys = new ResourcesKeys(999,0);
+            _resourcesKeys = new ResourcesKeys(999,100);
         }
 
         private void Start()
@@ -58,7 +59,7 @@ namespace Runtime.Managers
         {
             if(_buyCoroutine != null)
                 _currentBuyable.OnExitBuyArea();
-                StopCoroutine(_buyCoroutine);
+            StopCoroutine(_buyCoroutine);
         }
 
         private void OnPlayerEnteredBuyArea(GameObject obj,Transform playerTransform)
@@ -69,23 +70,26 @@ namespace Runtime.Managers
         private IEnumerator StartBuyingProcess(GameObject buyable, Transform playerTransform)
         {
              _currentBuyable = buyable.GetComponent<IBuyable>();
-            while (_resourcesKeys.money >= _currentBuyable.GetPrice() && _currentBuyable.GetPrice() >0)
+            
+             _buyableResource = _currentBuyable.GetBuyableType() == BuyType.Money ? _resourcesKeys.money : _resourcesKeys.gem;
+            while (_buyableResource >= _currentBuyable.GetPrice() && _currentBuyable.GetPrice() >0)
             {
                 yield return new WaitForSeconds(0.1f);
                 
                 _resourcesKeys.AddMoney(-1);
                 _currentBuyable.OnBuy(1);
 
-                var money = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.DecorativeMoney);
-                money.transform.parent = null;
-                money.transform.position = playerTransform.position;
+                var objType = _currentBuyable.GetBuyableType() == BuyType.Money ? PoolType.DecorativeMoney : PoolType.DecorativeGem;
+                var resourceObj = PoolSignals.Instance.onGetPoolObject?.Invoke(objType);
+                resourceObj.transform.parent = null;
+                resourceObj.transform.position = playerTransform.position;
                    
-                money.SetActive(true);
-                money.transform.DOLocalJump(new Vector3(money.transform.position.x,2f,money.transform.position.z),1f,1,0.5f).OnComplete(() =>
+                resourceObj.SetActive(true);
+                resourceObj.transform.DOLocalJump(new Vector3(resourceObj.transform.position.x,2f,resourceObj.transform.position.z),1f,1,0.5f).OnComplete(() =>
                 {
-                    money.transform.DOMove(buyable.transform.position, 0.5f).OnComplete(() =>
+                    resourceObj.transform.DOMove(buyable.transform.position, 0.5f).OnComplete(() =>
                     {
-                        PoolSignals.Instance.onSendPoolObject?.Invoke( money,PoolType.DecorativeMoney);
+                        PoolSignals.Instance.onSendPoolObject?.Invoke( resourceObj,PoolType.DecorativeMoney);
                     });
                 });
                

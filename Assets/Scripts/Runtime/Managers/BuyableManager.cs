@@ -1,7 +1,6 @@
-using System;
+
 using Runtime.Enums;
 using Runtime.Interfaces;
-using Runtime.Interfaces.Buyable;
 using Runtime.Signals;
 using TMPro;
 using UnityEngine;
@@ -15,8 +14,6 @@ namespace Runtime.Managers
         #region Public Variables
 
         public float Price = 100;
-        public IBuyable Buyable;
-       
         public SpriteRenderer Renderer;
         public TextMeshPro TextMeshPro;
        
@@ -24,6 +21,8 @@ namespace Runtime.Managers
         #region Serialized Variables
         [SerializeField] private BuyableType buyableType;
         [SerializeField] private BuyType buyType;
+        [SerializeField] private Transform defaultTransform;
+        
 
         #endregion
 
@@ -38,29 +37,12 @@ namespace Runtime.Managers
 
         private void Awake()
         {
-            InitBuyable();
             SetPriceText();
             _currentFill = 1 / Price;
             
         }
 
-        private void InitBuyable()
-        {
-            switch (buyableType)
-            {
-                case BuyableType.NPCTurretController:
-                    Buyable = new NPCTurretBuyState(this);
-                    break;
-                case BuyableType.NPCAmmoCarrier:
-                    Buyable = new NPCAmmoCarrierBuyState();
-                    break;
-                case BuyableType.NPCMoneyCollector:
-                    Buyable = new NPCMoneyCollectorBuyState();
-                    break;
-            }
-       
-            
-        }
+    
 
         private void OnEnable()
         {
@@ -85,6 +67,10 @@ namespace Runtime.Managers
         {
             UnSubscribeEvents();
         }
+
+        public BuyType GetBuyableType() => buyType;
+       
+
         public void OnBuy(int amount)
         {
             var fill = Renderer.material.GetFloat("_Fill");
@@ -121,6 +107,21 @@ namespace Runtime.Managers
                     bulletCarrier.transform.position = transform.position;
                     bulletCarrier.SetActive(true);
                     break;
+                case BuyableType.NPCMoneyCollector:
+                    var moneyCollector = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.NPCMoneyCollector);
+                    moneyCollector.transform.position = transform.position;
+                    moneyCollector.SetActive(true);
+                    break;
+                case BuyableType.NPCTurretController:
+                    var turretController = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.NPCTurretController);
+                    turretController.transform.SetParent(defaultTransform.transform);
+                    turretController.transform.localPosition = Vector3.zero;
+                    turretController.transform.localRotation = Quaternion.identity;
+                    turretController.SetActive(true);
+                    break;
+                case BuyableType.LevelWall:
+                    defaultTransform.gameObject.SetActive(false);
+                    break;
             }
         }
 
@@ -141,7 +142,6 @@ namespace Runtime.Managers
             switch (buyType)
             {
                 case BuyType.Gem:
-
                     CheckIt(resource.gem);
                     break;
                 case BuyType.Money:

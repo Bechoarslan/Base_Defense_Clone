@@ -4,6 +4,7 @@ namespace Runtime.Enums
     {
         NPCAmmoCarrier,
         NPCMoneyCollector,
-        NPCTurretController
+        NPCTurretController,
+        LevelWall,
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Runtime.Controllers.NpcController;
 using Runtime.Data.UnityObjects;
 using Runtime.Enums.NPCState;
 using Runtime.Interfaces;
@@ -25,6 +26,7 @@ namespace Runtime.Managers.NPCManager.Hostage
 
         [SerializeField] public Transform bulletHolder;
         [SerializeField] private NavMeshAgent navMeshAgent;
+        [SerializeField] private NPCAnimationController animationController; 
 
         #endregion
 
@@ -35,7 +37,7 @@ namespace Runtime.Managers.NPCManager.Hostage
         private WalkAmmoAreaState _walkAmmoAreaState;
         private WalkTurretAreaState _walkTurretAreaState;
         
-        private BulletCarrierStateType _bulletCarrierStateType;
+        private BulletCarrierStateType _bulletCarrierStateType = BulletCarrierStateType.None;
         #endregion
 
         #endregion
@@ -43,12 +45,12 @@ namespace Runtime.Managers.NPCManager.Hostage
         private void Awake()
         {
             GetReferences();
-            CurrentState = _walkAmmoAreaState;
+         
         }
 
-        private void Start()
+        private void OnEnable()
         {
-            CurrentState.EnterState();
+            SwitchState(_bulletCarrierStateType);
         }
 
         private void GetReferences()
@@ -57,7 +59,7 @@ namespace Runtime.Managers.NPCManager.Hostage
             _waitTakeBulletState = new WaitTakeBulletState(this,npcData.Data);
             _walkAmmoAreaState = new WalkAmmoAreaState(this,ref navMeshAgent);
             _walkTurretAreaState = new WalkTurretAreaState(this, ref navMeshAgent);
-            
+            SwitchState( BulletCarrierStateType.WalkAmmoArea);
             
         }
 
@@ -84,6 +86,7 @@ namespace Runtime.Managers.NPCManager.Hostage
                     CurrentState = _walkTurretAreaState;
                     break;
             }
+            Debug.Log(CurrentState.GetType().Name);
             CurrentState.EnterState();
         }
 
@@ -91,6 +94,11 @@ namespace Runtime.Managers.NPCManager.Hostage
         public void StartCor(IEnumerator invoke)
         {
             StartCoroutine(invoke);
+        }
+
+        public void OnSetTriggerAnim(string triggerName)
+        {
+            animationController.OnTriggerAnimation(triggerName);
         }
     }
 }

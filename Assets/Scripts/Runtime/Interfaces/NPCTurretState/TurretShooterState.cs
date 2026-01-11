@@ -14,11 +14,7 @@ namespace Runtime.Interfaces.NPCTurretState
 
         public void EnterState()
         {
-           var turretStandPoint=  GameSignals.Instance.onGetTurretStandPointAndTurretTransform?.Invoke().Item2;
-           Manager.transform.SetParent(turretStandPoint);
-              Manager.transform.localPosition = Vector3.zero;
-                Manager.transform.rotation = Quaternion.identity;
-                
+           
 
         }
 

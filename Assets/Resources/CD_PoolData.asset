@@ -45,3 +45,15 @@ MonoBehaviour:
     poolSize: 10
     poolPrefab: {fileID: 3658728239108775380, guid: 0f92cb73620bb423c8dd80eb775d6415,
       type: 3}
+  - poolType: 8
+    poolSize: 15
+    poolPrefab: {fileID: 6323107764917462991, guid: e508eef4481fe421a8da7b7743f8f9ed,
+      type: 3}
+  - poolType: 9
+    poolSize: 5
+    poolPrefab: {fileID: 5281350814195593396, guid: d8039155419294bae85dc9aa7f6d0ff4,
+      type: 3}
+  - poolType: 10
+    poolSize: 100
+    poolPrefab: {fileID: 5614097074571965547, guid: 9ee78211ac5624f5f9cd20be1fab0e97,
+      type: 3}

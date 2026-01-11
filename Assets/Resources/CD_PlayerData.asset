@@ -15,6 +15,7 @@ MonoBehaviour:
   PlayerData:
     MoveSpeed: 5
     RotateSpeed: 5
+    TurretMoveSpeed: 20
     Health: 100
     FireRate: 0.5
     StackLimit: 10

@@ -1,3 +1,4 @@
+using Runtime.Enums;
 using TMPro;
 using UnityEngine;
 
@@ -6,16 +7,15 @@ namespace Runtime.Interfaces
     public interface IBuyable
     {
 
+        BuyType GetBuyableType();
 
         void OnBuy(int amount);
         
-        void SetPriceText();
-
-        void OnReadyToBuy();
+     
         
          float GetPrice();
 
-         void CheckThePriceLabel(int price);
+         
 
 
          void OnExitBuyArea();

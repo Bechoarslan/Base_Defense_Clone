@@ -482,6 +482,7 @@ MonoBehaviour:
   npcData: {fileID: 11400000, guid: 09ddbb4f882064a8eb0910ee5985b942, type: 2}
   bulletHolder: {fileID: 6403191517424531780}
   navMeshAgent: {fileID: 5309302696577015856}
+  animationController: {fileID: 6747918122021540738}
 --- !u!1 &4177140846926508408
 GameObject:
   m_ObjectHideFlags: 0

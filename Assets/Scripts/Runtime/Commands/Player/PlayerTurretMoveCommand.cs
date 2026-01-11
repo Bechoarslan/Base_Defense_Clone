@@ -32,11 +32,17 @@ namespace Runtime.Commands.Player
             var targetYAngle = Mathf.Atan2(dir.x, dir.z) * Mathf.Rad2Deg;
             var clampedYAngle = Mathf.Clamp(targetYAngle, -45f, 45f);
 
+            var childTransform = _playerTransform.GetChild(0);
             Quaternion targetRotation = Quaternion.Euler(0f, clampedYAngle, 0f);
-            playerRb.MovePosition(new Vector3(turretStandPoint.position.x,
-                _playerTransform.position.y, turretStandPoint.position.z));
-            playerRb.MoveRotation(targetRotation);
+            var lookPosition = new Vector3(turretStandPoint.position.x,
+                playerRb.transform.position.y, turretStandPoint.position.z);
+            playerRb.position = Vector3.Slerp(childTransform.position, lookPosition,Time.fixedDeltaTime * _playerData.PlayerData.TurretMoveSpeed);
                
+            childTransform.rotation =  Quaternion.Slerp(
+                turretTransform.rotation,
+                targetRotation,
+                Time.fixedDeltaTime * _playerData.PlayerData.RotateSpeed
+            );
             turretTransform.rotation = Quaternion.Slerp(
                 turretTransform.rotation,
                 targetRotation,
