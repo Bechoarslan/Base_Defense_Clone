@@ -39,6 +39,7 @@ namespace Runtime.Controllers.Player
                 case "Turret":
                     playerManager.OnStateChanged(PlayerState.Turret);
                     GameSignals.Instance.onTurretStateChange?.Invoke(TurretState.PlayerIn);
+                    playerManager.OnSetTurretPos(other);
 
                     if (stackHolder.childCount > 0)
                     {

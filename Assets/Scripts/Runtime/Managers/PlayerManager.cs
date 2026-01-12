@@ -131,7 +131,7 @@ namespace Runtime.Managers
                 case PlayerState.Turret:
                     playerAnimationController.OnChangeAnimBool(true,PlayerAnimState.IsHolding);
                     playerAnimationController.OnTriggerAnimation(PlayerAnimState.Hold);
-                    playerMovementController.OnSetTurretPos();
+                  
                  
                     break;
                 case PlayerState.Shooting:
@@ -157,6 +157,10 @@ namespace Runtime.Managers
             GameSignals.Instance.onSendMoneyStackToHolder?.Invoke(stackHolder, moneyObj, playerData.PlayerData.StackLimit);
         }
 
-       
+
+        public void OnSetTurretPos(Collider other)
+        {
+            playerMovementController.OnSetTurretPos(other.gameObject);
+        }
     }
 }

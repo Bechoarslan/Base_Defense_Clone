@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -13,11 +14,11 @@ namespace Runtime.Controllers
     {
         #region Self Variables
 
+        public Transform  standPoint;
         #region Serialized Variables
 
         [Header("Transforms")]
         [SerializeField] private Transform turret;
-        [SerializeField] private Transform standPoint;
         [SerializeField] private Transform firePoint;
         [SerializeField] private Transform ammoHolder;
 
@@ -34,6 +35,11 @@ namespace Runtime.Controllers
 
         #endregion
 
+        private void Start()
+        {
+            GameSignals.Instance.onSendAmmoStackHolderTransform?.Invoke(ammoHolder);
+        }
+
         private void OnEnable()
         {
             SubscribeEvents();
@@ -42,10 +48,10 @@ namespace Runtime.Controllers
         private void SubscribeEvents()
         {
             PlayerSignals.Instance.onEnemyDiedClearFromList += turretController.OnEnemyDiedClearFromList;
-            GameSignals.Instance.onGetTurretStandPointAndTurretTransform += OnGetTurretStandPoint;
-            GameSignals.Instance.onGetTurretHolderTransform += OnGetHolderTransform;
             GameSignals.Instance.onTurretStateChange += OnTurretStateChange;
         }
+
+        
 
         public void OnTurretStateChange(TurretState turretState)
         {
@@ -81,19 +87,14 @@ namespace Runtime.Controllers
                 
             }
         }
-        private Transform OnGetHolderTransform() => ammoHolder;
+  
        
         
 
-        private (Transform ,Transform) OnGetTurretStandPoint() =>(turret, standPoint);
-
-
-       
 
         private void UnSubscribeEvents()
         {
-            GameSignals.Instance.onGetTurretStandPointAndTurretTransform -= OnGetTurretStandPoint; 
-            GameSignals.Instance.onGetTurretHolderTransform -= OnGetHolderTransform;
+            
             GameSignals.Instance.onTurretStateChange -= OnTurretStateChange;
         }
 

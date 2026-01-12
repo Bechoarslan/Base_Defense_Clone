@@ -33,7 +33,7 @@ namespace Runtime.Managers
 
         private void Awake()
         {
-            _resourcesKeys = new ResourcesKeys(999,100);
+            _resourcesKeys = new ResourcesKeys(999,999);
         }
 
         private void Start()

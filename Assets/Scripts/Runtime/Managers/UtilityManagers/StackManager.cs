@@ -9,6 +9,7 @@ using Runtime.Keys;
 using Runtime.Signals;
 using Sirenix.OdinInspector;
 using UnityEngine;
+using Random = System.Random;
 
 namespace Runtime.Managers
 {
@@ -31,6 +32,7 @@ namespace Runtime.Managers
         private StackSendObjectToArea _stackSendObjectToArea;
         private CD_StackData _emptyStackData;
         private List<GameObject> _droppedMoneyList = new List<GameObject>();
+       [SerializeField] private List<Transform> _turretAmmoHolderList = new List<Transform>();
         #endregion
 
         #endregion
@@ -56,6 +58,28 @@ namespace Runtime.Managers
             GameSignals.Instance.onSendMoneyStackToHolder += OnSendMoneyStackToHolder;
             GameSignals.Instance.onAddListDroppedMoneyFromEnemy += OnAddListDroppedMoneyFromEnemy;
             GameSignals.Instance.onGetMoneyStackList += OnGetMoneyStackList;
+            GameSignals.Instance.onSendAmmoStackHolderTransform += OnSendTurretHolderTransform;
+            GameSignals.Instance.onGetTurretHolderTransform += OnGetTurretHolderTransform;
+        }
+
+        private Transform OnGetTurretHolderTransform()
+        {
+            foreach (var holder in _turretAmmoHolderList)
+            {
+                if (holder.childCount <= ammoData.stackData.StackLimit)
+                {
+                    return holder;
+                }
+                
+            }
+
+            return null;
+        }
+
+        private void OnSendTurretHolderTransform(Transform turretStackHolder)
+        {
+            if (_turretAmmoHolderList.Contains(turretStackHolder)) return;
+            _turretAmmoHolderList.Add(turretStackHolder);
         }
 
         private List<GameObject> OnGetMoneyStackList() => _droppedMoneyList;
@@ -164,7 +188,7 @@ namespace Runtime.Managers
                 var obj = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Ammo);
                 if (obj is null) break;
                 SetObjectPosition(obj,areaHolder, stackHolder, stackType);
-                Debug.Log("Stack Object Sending To Holder");
+           
                 yield return waiter;
             }
            

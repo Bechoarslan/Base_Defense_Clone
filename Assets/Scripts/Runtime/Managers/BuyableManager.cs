@@ -104,6 +104,7 @@ namespace Runtime.Managers
             {
                 case BuyableType.NPCAmmoCarrier:
                     var bulletCarrier = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.NPCBulletCarrier);
+                    bulletCarrier.transform.SetParent(defaultTransform);
                     bulletCarrier.transform.position = transform.position;
                     bulletCarrier.SetActive(true);
                     break;
@@ -121,6 +122,14 @@ namespace Runtime.Managers
                     break;
                 case BuyableType.LevelWall:
                     defaultTransform.gameObject.SetActive(false);
+                    break;
+                case BuyableType.LeftTurretWall:
+                    gameObject.SetActive(false);
+                    defaultTransform.transform.gameObject.SetActive(true);
+                    break;
+                case BuyableType.RightTurretWall:
+                    gameObject.SetActive(false);
+                    defaultTransform.transform.gameObject.SetActive(true);
                     break;
             }
         }

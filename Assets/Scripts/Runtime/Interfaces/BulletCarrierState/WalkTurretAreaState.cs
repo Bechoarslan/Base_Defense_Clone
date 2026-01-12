@@ -20,10 +20,11 @@ namespace Runtime.Interfaces.BulletCarrirerState
         public void EnterState()
         { 
             Manager.OnSetTriggerAnim("Run");
-            var turretTransform = GameSignals.Instance.onGetTurretHolderTransform?.Invoke();
-            if (turretTransform == null) return;
+            
+            Manager.holder = GameSignals.Instance.onGetTurretHolderTransform?.Invoke();
+            if (Manager.holder == null) return;
             Agent.isStopped = false;
-            Agent.SetDestination(turretTransform.position);
+            Agent.SetDestination(Manager.holder.position);
         }
 
         public void UpdateState()

@@ -6,5 +6,7 @@ namespace Runtime.Enums
         NPCMoneyCollector,
         NPCTurretController,
         LevelWall,
+        LeftTurretWall,
+        RightTurretWall,
     }
 }

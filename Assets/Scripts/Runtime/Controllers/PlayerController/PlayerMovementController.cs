@@ -116,9 +116,10 @@ namespace Runtime.Controllers.Player
         
         public void OnInputChanged(InputParamsKeys inputParams) => _inputParamsKeys = inputParams;
         
-        public void OnSetTurretPos()
+        public void OnSetTurretPos(GameObject turret)
         {
-            (_turretTransform, _turretStandPoint) = Signals.GameSignals.Instance.onGetTurretStandPointAndTurretTransform();
+            _turretStandPoint = turret.GetComponent<TurretManager>().standPoint;
+            _turretTransform = _turretStandPoint.parent.transform;
                     
             var newPos = new Vector3(_turretStandPoint.position.x,transform.position.y, _turretStandPoint.position.z);
             transform.localPosition = newPos;

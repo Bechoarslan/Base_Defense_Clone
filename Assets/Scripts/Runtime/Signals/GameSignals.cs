@@ -30,7 +30,7 @@ namespace Runtime.Signals
         #region Turret Signals
 
         public Action<TurretState> onTurretStateChange = delegate { };
-        public Func<(Transform, Transform)> onGetTurretStandPointAndTurretTransform = () => (null, null);
+        public Action<Transform> onSendAmmoStackHolderTransform = delegate { };
         public Func<Transform> onGetTurretHolderTransform = () => null;
         
 

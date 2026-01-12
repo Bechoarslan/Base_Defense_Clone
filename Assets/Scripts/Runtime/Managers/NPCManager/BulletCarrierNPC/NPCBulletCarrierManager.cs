@@ -15,6 +15,7 @@ namespace Runtime.Managers.NPCManager.Hostage
     {
         #region Self Variables
 
+        public Transform holder;
         #region Public Variables
 
         public IStateMachine CurrentState;
