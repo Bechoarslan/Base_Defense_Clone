@@ -38,7 +38,7 @@ namespace Runtime.Interfaces.EnemyState
             if (Agent.remainingDistance <= Agent.stoppingDistance)
             {
               
-                Debug.Log("Enemy reached walk point and switching Attack State");
+            
                 Manager.OnEnemyChangeState(EnemyStateType.AttackWall);
             }
 
@@ -50,7 +50,7 @@ namespace Runtime.Interfaces.EnemyState
             if (other.CompareTag(("EnemyChecker")) && other.gameObject.layer == LayerMask.NameToLayer("Targetable"))
             {
                 Manager.Target = other.transform.root.gameObject.transform;
-                Debug.Log(("Walk state to Running State"));
+         
                 Manager.OnEnemyChangeState(EnemyStateType.Run);
             }
         }

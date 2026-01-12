@@ -43,7 +43,7 @@ namespace Runtime.Controllers
                 
                 if (ammoHolder.childCount <= 0 || enteredEnemies.Count <= 0 )
                 {
-                    Debug.Log("Shooting Coroutine Active");
+                    
                     yield return waiter;
                     continue;
                 }

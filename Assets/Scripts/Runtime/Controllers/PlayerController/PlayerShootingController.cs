@@ -34,6 +34,7 @@ namespace Runtime.Controllers.Player
         private PlayerState _playerState;
         private IDamageable _currentDamageable;
         private PlayerData _playerData;
+        private int _projectileCount = 5;
         #endregion
 
         #endregion
@@ -64,19 +65,25 @@ namespace Runtime.Controllers.Player
 
         private void Fire()
         {
-            var bullet = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Bullet);
-            if (bullet != null && EnemyTarget != null)
+            
+            
+            if ( EnemyTarget != null)
             {
+                for (var i = 0; i < _projectileCount; i++)
+                { var bullet = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.Bullet);
+                    bullet.transform.SetParent(firePoint);
+                    bullet.transform.localPosition = Vector3.zero;
+                    bullet.SetActive(true);
+                    var rb = bullet.GetComponent<Rigidbody>();
+                    Vector3 direction = (EnemyTarget.position - firePoint.position);
+                    direction.x += i * 0.2f - (_projectileCount - 1) * 0.1f; // Yatay saçılma efekti
+                    direction.y = 0;
+                    direction.Normalize();
+                    rb.velocity =  direction * 50; // Merminin hızı
+                    bullet.transform.SetParent(null);
+                }
              
-                bullet.transform.SetParent(firePoint);
-                bullet.transform.localPosition = Vector3.zero;
-                bullet.SetActive(true);
-                var rb = bullet.GetComponent<Rigidbody>();
-                Vector3 direction = (EnemyTarget.position - firePoint.position);
-                direction.y = 0;
-                direction.Normalize();
-                rb.velocity =  direction * 50; // Merminin hızı
-                bullet.transform.SetParent(null);
+                
 
             }
          
@@ -166,6 +173,17 @@ namespace Runtime.Controllers.Player
         }
 
 
-      
+        public void OnChangeGun(GunType obj)
+        {
+            switch (obj)
+            {
+                case GunType.Shotgun:
+                    _projectileCount = 5;
+                    break;
+                case GunType.Pistol:
+                    _projectileCount = 1;
+                    break;
+            }
+        }
     }
 }

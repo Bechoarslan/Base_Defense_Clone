@@ -60,6 +60,16 @@ namespace Runtime.Managers.EnemyManager
         private void OnEnable()
         {
             OnEnemyChangeState(_currentStateType);
+            PlayerSignals.Instance.onPlayerEnteredSafeZone += OnPlayerEnteredSafeZone;
+        }
+
+        private void OnPlayerEnteredSafeZone()
+        {
+            if (Target != null && _currentStateType == EnemyStateType.Run)
+            {
+                Target = null;
+                OnEnemyChangeState(EnemyStateType.Move);
+            } 
         }
 
         private void GetReferences()

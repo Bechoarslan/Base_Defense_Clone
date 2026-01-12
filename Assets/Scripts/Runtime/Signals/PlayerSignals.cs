@@ -17,6 +17,10 @@ namespace Runtime.Signals
         public Action<GameObject,Transform> onPlayerEnteredBuyArea = delegate { };
         public Action onPlayerExitedBuyArea = delegate { };
         public Action<GameObject> onEnemyDiedClearFromList = delegate { };
+        
+        public Action onPlayerEnteredSafeZone = delegate { };
+        
+        public Action<GunType> onChangeGun = delegate { };
         #region Animation Events
 
         public Action<PlayerAnimState> onTriggerAnimState = delegate { };

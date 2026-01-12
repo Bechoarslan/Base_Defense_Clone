@@ -71,7 +71,7 @@
 
             {
 
-                Debug.Log("Attacked Player");
+            
                 AnimationController.OnSetTriggerAnimation(EnemyStateType.Attack);
 
             }

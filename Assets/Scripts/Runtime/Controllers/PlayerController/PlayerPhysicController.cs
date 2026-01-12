@@ -98,6 +98,10 @@ namespace Runtime.Controllers.Player
                 case "BuyableArea":
                    PlayerSignals.Instance.onPlayerEnteredBuyArea?.Invoke(other.gameObject,playerManager.transform);
                     break;
+                case "GunShop":
+                    InputSignals.Instance.onInputReadyToPlay?.Invoke(false);
+                    UISignals.Instance.onOpenUIPanel?.Invoke(UIType.GunShop);
+                    break;
             }
             
           
@@ -119,7 +123,7 @@ namespace Runtime.Controllers.Player
             }
             else
             {
-                
+                PlayerSignals.Instance.onPlayerEnteredSafeZone?.Invoke();
                 playerManager.OnStateChanged(PlayerState.Idle);
                 enemyColliderChecker.layer = LayerMask.NameToLayer("Player");
                 playerManager.SetHealthVisible(false);
@@ -148,6 +152,9 @@ namespace Runtime.Controllers.Player
                     break;
                 case "BuyableArea":
                     PlayerSignals.Instance.onPlayerExitedBuyArea?.Invoke();
+                    break;
+                case "GunShop":
+                    UISignals.Instance.onCloseUIPanel?.Invoke(UIType.GunShop);
                     break;
             }
             

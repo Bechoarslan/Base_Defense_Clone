@@ -83,6 +83,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &889762912360737790
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 498190155724858934}
+  m_Layer: 0
+  m_Name: WalkPoint2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &498190155724858934
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 889762912360737790}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.49, y: 0, z: -1.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3290596011906095546}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1606428785146123647
 GameObject:
   m_ObjectHideFlags: 0
@@ -303,6 +334,7 @@ Transform:
   - {fileID: 2376056847877679792}
   - {fileID: 5069553140125842411}
   - {fileID: 4720301079682287141}
+  - {fileID: 3290596011906095546}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &121886393664704337
@@ -317,10 +349,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b7d74c0919d746b2b3bd2c4d10ff032d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  turret: {fileID: 7878368859107647754}
   standPoint: {fileID: 624088613325181313}
+  turret: {fileID: 7878368859107647754}
   firePoint: {fileID: 8261796215349914184}
   ammoHolder: {fileID: 2376056847877679792}
+  enemyWalkPoints:
+  - {fileID: 7800228201521400076}
+  - {fileID: 498190155724858934}
+  - {fileID: 2859322869589994453}
   turretController: {fileID: 4464853239960496740}
   _turretState: 2
 --- !u!114 &4464853239960496740
@@ -427,6 +463,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.65993, y: 1, z: 1.2408497}
   m_Center: {x: -0.01157558, y: 0, z: -0.09673762}
+--- !u!1 &3381529925481766078
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7800228201521400076}
+  m_Layer: 0
+  m_Name: WalkPoint1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7800228201521400076
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3381529925481766078}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.66, y: 0, z: -1.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3290596011906095546}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4500342041060808812
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,6 +642,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1107422937620725090}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
+--- !u!1 &6528903797092403231
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2859322869589994453}
+  m_Layer: 0
+  m_Name: WalkPoint3
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2859322869589994453
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6528903797092403231}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -2.51, y: 0, z: -1.6}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3290596011906095546}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7045599147908686478
 GameObject:
   m_ObjectHideFlags: 0
@@ -608,6 +706,40 @@ Transform:
   - {fileID: 624088613325181313}
   m_Father: {fileID: 4764887702916800735}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &8972517538823875867
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3290596011906095546}
+  m_Layer: 0
+  m_Name: EnemyWalkPoints
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3290596011906095546
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8972517538823875867}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 3.46}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7800228201521400076}
+  - {fileID: 498190155724858934}
+  - {fileID: 2859322869589994453}
+  m_Father: {fileID: 4764887702916800735}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &6073396052933558743
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -616,6 +748,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4764887702916800735}
     m_Modifications:
+    - target: {fileID: 431455357732223413, guid: 0d419e6e5edf74cbcb3b52914efbf7f8,
+        type: 3}
+      propertyPath: Price
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 431455357732223413, guid: 0d419e6e5edf74cbcb3b52914efbf7f8,
         type: 3}
       propertyPath: buyableType

@@ -22,6 +22,8 @@ namespace Runtime.Controllers
         [SerializeField] private Transform firePoint;
         [SerializeField] private Transform ammoHolder;
 
+        [Header("Enemy Walk Points")] [SerializeField]
+        private List<Transform> enemyWalkPoints;
         [Header("Controllers")] 
         [SerializeField] private TurretController turretController;
         #endregion
@@ -37,6 +39,11 @@ namespace Runtime.Controllers
 
         private void Start()
         {
+            foreach (var x in enemyWalkPoints)
+            {
+                GameSignals.Instance.onAddNewEnemyWalkPoint?.Invoke(x);
+            }
+            
             GameSignals.Instance.onSendAmmoStackHolderTransform?.Invoke(ammoHolder);
         }
 
@@ -56,23 +63,8 @@ namespace Runtime.Controllers
         public void OnTurretStateChange(TurretState turretState)
         {
             
+            
             switch (turretState)
-            {
-                case TurretState.PlayerIn:
-                    StartCoroutine(turretController.EnemyShooting(ammoHolder));
-                    break;
-                case TurretState.AutoTurret:
-                    StartCoroutine(turretController.EnemyShooting(ammoHolder));
-                    StartCoroutine(turretController.RotateToEnemy());
-                    break;
-            }
-            _turretState = turretState;
-        }
-
-        [Button("Ready To Shoot") ]
-        public void ReadyToShoot()
-        {
-            switch (_turretState)
             {
                 case TurretState.PlayerIn:
                     StartCoroutine(turretController.EnemyShooting(ammoHolder));
@@ -84,9 +76,11 @@ namespace Runtime.Controllers
                 case TurretState.None:
                     StopAllCoroutines();
                     break;
-                
             }
+            _turretState = turretState;
         }
+
+        [Button("Ready To Shoot") ]
   
        
         
@@ -95,6 +89,7 @@ namespace Runtime.Controllers
         private void UnSubscribeEvents()
         {
             
+            PlayerSignals.Instance.onEnemyDiedClearFromList -= turretController.OnEnemyDiedClearFromList;
             GameSignals.Instance.onTurretStateChange -= OnTurretStateChange;
         }
 

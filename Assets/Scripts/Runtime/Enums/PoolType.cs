@@ -12,6 +12,7 @@ namespace Runtime.Enums
         NPCBulletCarrier,
         NPCMoneyCollector,
         NPCTurretController,
-        DecorativeGem
+        DecorativeGem,
+        NPCHostage,
     }
 }

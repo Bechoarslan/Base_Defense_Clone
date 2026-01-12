@@ -25,6 +25,10 @@ namespace Runtime.Managers
 
         [Header("NPC Money Collector Points")]
         [SerializeField] private Transform npcMoneyCollectorWalkPoint;
+
+
+        [Header("Hostage Spawn Points")] [SerializeField]
+        private List<Transform> _hostageSpawnPoint;
         #endregion
 
         #region Private Variables
@@ -42,7 +46,19 @@ namespace Runtime.Managers
 
         public void Start()
         {
+            SpawnHostages();
             StartCoroutine(StartSpawn());
+        }
+
+        private void SpawnHostages()
+        {
+            for (int i = 0; i < _hostageSpawnPoint.Count; i++)
+            {
+                var hostage = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.NPCHostage);
+                hostage.transform.SetParent(_hostageSpawnPoint[i]);
+                hostage.transform.position = _hostageSpawnPoint[i].position;
+                hostage.SetActive(true);
+            }
         }
 
         private void OnEnable()
@@ -54,6 +70,7 @@ namespace Runtime.Managers
         {
             GameSignals.Instance.onSendNPCMoneyCollectorWalkPoint += OnSendCollectorWaitPoint;
             GameSignals.Instance.onEnemyWalkPointTransform += SendEnemyWalkPoints;
+            GameSignals.Instance.onAddNewEnemyWalkPoint += OnAddNewEnemyWalkPoint;
          
             
         }
@@ -85,6 +102,14 @@ namespace Runtime.Managers
         private void UnSubscribeEvents()
         {
             GameSignals.Instance.onEnemyWalkPointTransform -= SendEnemyWalkPoints;
+            GameSignals.Instance.onAddNewEnemyWalkPoint -= OnAddNewEnemyWalkPoint;
+            GameSignals.Instance.onSendNPCMoneyCollectorWalkPoint -= OnSendCollectorWaitPoint;
+        }
+
+        private void OnAddNewEnemyWalkPoint(Transform arg0)
+        {
+            enemyWalkPoints.Add(arg0);
+            
         }
 
         private void OnDisable()

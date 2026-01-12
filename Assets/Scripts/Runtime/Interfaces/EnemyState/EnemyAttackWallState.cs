@@ -37,7 +37,7 @@ namespace Runtime.Interfaces.EnemyState
             if (other.CompareTag(("EnemyChecker")) && other.gameObject.layer == LayerMask.NameToLayer("Targetable"))
             {
                 Manager.Target = other.transform.root.gameObject.transform.GetChild(0);
-                Debug.Log("Enemy in Attack State to Walk State");
+           
                 Manager.OnEnemyChangeState(EnemyStateType.Run);
             }
         }

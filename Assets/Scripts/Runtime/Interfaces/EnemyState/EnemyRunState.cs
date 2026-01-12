@@ -25,7 +25,7 @@ namespace Runtime.Interfaces.EnemyState
 
         public void EnterState()
         {
-            Debug.Log(("Entered Run State"));
+         
            Agent.isStopped = false;
            AnimationController.OnSetTriggerAnimation(EnemyStateType.Run);
         }
@@ -43,7 +43,7 @@ namespace Runtime.Interfaces.EnemyState
            {
                
                _attackCoroutine = Manager.StartCoroutine(DamageToPlayer(other.gameObject.transform.root.gameObject));
-               Debug.Log("Attacked to Player");
+           
            }
         }
 
@@ -77,7 +77,7 @@ namespace Runtime.Interfaces.EnemyState
         public void OnExitState()
         {
             if(_attackCoroutine != null) Manager.OnStopCoroutine(_attackCoroutine);
-         Debug.Log("Exited Run State");   
+         
         }
     }
 }

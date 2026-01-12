@@ -43,6 +43,8 @@ namespace Runtime.Signals
         public Func<Transform> onSendNPCMoneyCollectorWalkPoint = () => null;
         
         public UnityAction<NPCMoneyCollectorManager> onSubscribeNPCMoneyCollectorManager = delegate { };
+        
+        public UnityAction<Transform> onAddNewEnemyWalkPoint = delegate { };
 
         #endregion
 

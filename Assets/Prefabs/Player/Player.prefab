@@ -962,7 +962,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1323082303354155248
 Transform:
   m_ObjectHideFlags: 0
@@ -1576,8 +1576,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b66d14ae78d14d0184dfa8b3c9203604, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LookAtTarget: {fileID: 0}
-  enemyList: []
+  EnemyTarget: {fileID: 0}
   firePoint: {fileID: 1298779967898227711}
 --- !u!136 &2799553306319219642
 CapsuleCollider:
@@ -1721,6 +1720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   EnemyList: []
+  HostageList: []
   playerMovementController: {fileID: 4639217158161898718}
   playerHealthController: {fileID: 1967853441497119397}
   playerShootingController: {fileID: 5387714078074458610}

@@ -62,6 +62,8 @@ namespace Runtime.Managers
         {
             
 
+            
+            PlayerSignals.Instance.onChangeGun += playerShootingController.OnChangeGun;
             PlayerSignals.Instance.onEnemyDiedClearFromList += playerShootingController.OnEnemyDiedClearFromDic;
             PlayerSignals.Instance.onChangeAnimBool += playerAnimationController.OnChangeAnimBool;
             PlayerSignals.Instance.onTriggerAnimState += playerAnimationController.OnTriggerAnimation;
@@ -83,6 +85,7 @@ namespace Runtime.Managers
         private void UnSubscribeEvents()
         {
 
+            PlayerSignals.Instance.onChangeGun -= playerShootingController.OnChangeGun;
             PlayerSignals.Instance.onChangeAnimBool -= playerAnimationController.OnChangeAnimBool;
             PlayerSignals.Instance.onTriggerAnimState -= playerAnimationController.OnTriggerAnimation;
             PlayerSignals.Instance.onChangeAnimFloat -= playerAnimationController.OnChangeSetAnimFloat;

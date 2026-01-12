@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Runtime.Enums;
 using Runtime.Keys;
 using Runtime.Signals;
 using UnityEngine;
@@ -39,14 +40,34 @@ public class InputManager : MonoBehaviour
     private void SubscribeEvents()
     {
         InputSignals.Instance.onInputReadyToPlay += OnInputReadyToPlay;
+       
     }
 
-    private void OnInputReadyToPlay(bool value) => _isReadyToPlay = value;
   
+
+    private void OnInputReadyToPlay(bool value)
+    {
+        _isReadyToPlay = value;
+        if (_isReadyToPlay)
+        { 
+            _floatingJoystick.gameObject.SetActive(true);
+            
+        }
+        else
+        {
+            _inputParamsKeys.InputParams.x = 0;
+            _inputParamsKeys.InputParams.y = 0;
+            _floatingJoystick.gameObject.SetActive(false);
+            InputSignals.Instance.onInputParamsChanged?.Invoke(_inputParamsKeys);
+        }
+        
+    }
+
 
     private void UnSubscribeEvents()
     {
         InputSignals.Instance.onInputReadyToPlay -= OnInputReadyToPlay;
+     
     }
 
     private void OnDisable()
