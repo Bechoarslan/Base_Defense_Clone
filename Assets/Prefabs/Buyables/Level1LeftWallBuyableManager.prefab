@@ -1173,6 +1173,7 @@ GameObject:
   - component: {fileID: 3514039257777546290}
   - component: {fileID: 6779452928118472627}
   - component: {fileID: 5488956153272280841}
+  - component: {fileID: 6233253871592454694}
   m_Layer: 0
   m_Name: Level1LeftWallBuyableManager
   m_TagString: BuyableArea
@@ -1212,6 +1213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effde0d32d4840c3ae7cc5f64087c190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueIDGenerator: {fileID: 6233253871592454694}
   Price: 100
   Renderer: {fileID: 2096723268808870796}
   TextMeshPro: {fileID: 4716906208648933416}
@@ -1239,6 +1241,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.6540761, y: 7.720566, z: 1.662817}
   m_Center: {x: 0.012458086, y: 3.360281, z: -0.044617653}
+--- !u!114 &6233253871592454694
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5486677737598189402}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10c17aa9bbcf436ea465b042e1414f65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 90137f3f-f157-4178-9284-443a1be559a3
 --- !u!1 &6751598707055987259
 GameObject:
   m_ObjectHideFlags: 0

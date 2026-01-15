@@ -14,7 +14,7 @@ namespace Runtime.Managers
     public class PlayerManager : MonoBehaviour,IDamageable
     {
         #region Self Variables
-
+        public string SaveKey { get; } = "PlayerData";
         public List<GameObject> EnemyList = new List<GameObject>();
         public List<GameObject> HostageList = new List<GameObject>();
         public float Health { get; set; }
@@ -189,5 +189,9 @@ namespace Runtime.Managers
         {
             playerMovementController.OnSetTurretPos(other.gameObject);
         }
+
+      
+ 
+      
     }
 }

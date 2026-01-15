@@ -214,6 +214,7 @@ GameObject:
   - component: {fileID: 4272753048613397203}
   - component: {fileID: 6965863945199825648}
   - component: {fileID: 1299952146086356030}
+  - component: {fileID: 4872228619945928458}
   m_Layer: 0
   m_Name: MoneyCollectorBuyableManager
   m_TagString: BuyableArea
@@ -251,11 +252,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effde0d32d4840c3ae7cc5f64087c190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueIDGenerator: {fileID: 4872228619945928458}
   Price: 100
   Renderer: {fileID: 4817422822867890781}
   TextMeshPro: {fileID: 7920241075108148994}
   buyableType: 1
   buyType: 1
+  defaultTransform: {fileID: 0}
 --- !u!65 &1299952146086356030
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -277,6 +280,19 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.6540761, y: 7.720566, z: 1.662817}
   m_Center: {x: 0.012458086, y: 3.360281, z: -0.044617653}
+--- !u!114 &4872228619945928458
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2415992963814943824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10c17aa9bbcf436ea465b042e1414f65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 4a50d0b4-13e0-454d-afa8-e0857bda5ea7
 --- !u!1 &3731649047658268136
 GameObject:
   m_ObjectHideFlags: 0

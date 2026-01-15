@@ -1,4 +1,5 @@
 
+using System.Xml;
 using Runtime.Enums;
 using Runtime.Interfaces;
 using Runtime.Signals;
@@ -7,9 +8,11 @@ using UnityEngine;
 
 namespace Runtime.Managers
 {
-    public class BuyableManager : MonoBehaviour,IBuyable
+    public class BuyableManager : MonoBehaviour,IBuyable,ISaveable
     {
         #region Self Variables
+        [SerializeField] private UniqueIDGenerator uniqueIDGenerator;
+        public string SaveKey  => $"{uniqueIDGenerator.ID}";
 
         #region Public Variables
 
@@ -29,7 +32,7 @@ namespace Runtime.Managers
         #region Private Variables
 
         private float _currentFill;
-       
+        [SerializeField] private int _counter = 0;
         
         #endregion
 
@@ -37,6 +40,7 @@ namespace Runtime.Managers
 
         private void Awake()
         {
+            
             SetPriceText();
             _currentFill = 1 / Price;
             
@@ -132,7 +136,10 @@ namespace Runtime.Managers
                     gameObject.SetActive(false);
                     defaultTransform.transform.gameObject.SetActive(true);
                     break;
+                
             }
+
+            _counter++;
         }
 
         public float GetPrice()
@@ -172,6 +179,18 @@ namespace Runtime.Managers
             {
                 TextMeshPro.color = Color.red;
             }
+        }
+
+  
+        public object CaptureState()
+        {
+            return _counter;
+        }
+
+        public void RestoreState(object state)
+        {
+            _counter = (int)state;
+            
         }
     }
 }

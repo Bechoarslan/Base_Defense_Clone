@@ -725,6 +725,7 @@ GameObject:
   - component: {fileID: 7624103650489674034}
   - component: {fileID: 8930046013565076933}
   - component: {fileID: 2966186783550395524}
+  - component: {fileID: 5361317915671135531}
   m_Layer: 0
   m_Name: AmmoCollectorBuyableManager
   m_TagString: BuyableArea
@@ -763,6 +764,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: effde0d32d4840c3ae7cc5f64087c190, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  uniqueIDGenerator: {fileID: 5361317915671135531}
   Price: 10
   Renderer: {fileID: 7387211180593610166}
   TextMeshPro: {fileID: 6652249984409081578}
@@ -790,3 +792,16 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.6540761, y: 7.720566, z: 1.662817}
   m_Center: {x: 0.012458086, y: 3.360281, z: -0.044617653}
+--- !u!114 &5361317915671135531
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9058873177438747418}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10c17aa9bbcf436ea465b042e1414f65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: cf8d6609-0575-4c52-8275-4fa4a4622892

@@ -13,8 +13,7 @@ namespace Runtime.Controllers.BulletController
             if (other.CompareTag("Enemy"))
             {
               
-     
-                // Burada düşmana hasar verme işlemi yapılabilir
+                
                 var idamageable = other.transform.parent.GetComponent<IDamageable>();
                 if (idamageable != null)
                 {
@@ -24,7 +23,7 @@ namespace Runtime.Controllers.BulletController
 
                 PoolSignals.Instance.onSendPoolObject?.Invoke(this.gameObject,PoolType.Bullet);
                 
-                // Mermiyi yok et
+                
                
             }
         }

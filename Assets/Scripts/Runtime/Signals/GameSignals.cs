@@ -77,5 +77,14 @@ namespace Runtime.Signals
         #endregion
         
         public Action<NPCPropertyType> onChangeNPCProperty = delegate { };
+
+
+        #region Save Signals
+        public Action onSaveGame = delegate { };
+        public Action onLoadGame = delegate { };
+
+        
+
+        #endregion
     }
 }
