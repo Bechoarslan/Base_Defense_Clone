@@ -6,5 +6,10 @@ namespace Runtime.Enums
         PistolPressed,
         RiflePressed,
         CloseUI,
+        PlayerMaxCapacity,
+        PlayerMoveSpeed,
+        PlayerHealth,
+        NPCMaxCapacity,
+        NPCMoveSpeed,
     }
 }

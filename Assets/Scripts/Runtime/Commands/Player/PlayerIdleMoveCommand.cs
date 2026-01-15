@@ -45,11 +45,9 @@ namespace Runtime.Commands.Player
             { 
                 _moveVector.Normalize(); 
             }
-            
             _targetVelocity = _moveVector * _playerData.MoveSpeed;
             _targetVelocity.y = _playerRb.velocity.y;
             _playerRb.velocity = Vector3.Lerp(_playerRb.velocity, _targetVelocity, Time.fixedDeltaTime * 15f);
-           
             return _moveVector;
         }
 

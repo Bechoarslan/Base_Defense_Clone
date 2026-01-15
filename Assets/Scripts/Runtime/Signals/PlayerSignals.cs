@@ -19,7 +19,7 @@ namespace Runtime.Signals
         public Action<GameObject> onEnemyDiedClearFromList = delegate { };
         
         public Action onPlayerEnteredSafeZone = delegate { };
-        
+        public Action<PlayerPropertyType> onChangePlayerPropertyType = delegate { };
         public Action<GunType> onChangeGun = delegate { };
         #region Animation Events
 

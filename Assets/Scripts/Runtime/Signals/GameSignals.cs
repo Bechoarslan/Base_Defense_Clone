@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Runtime.Enums;
+using Runtime.Enums.NPCState;
 using Runtime.Keys;
 using Runtime.Managers.NPCManager.NPCMoneyCollector;
 using RunTime.Utilities;
@@ -67,5 +68,14 @@ namespace Runtime.Signals
         public Func<ResourcesKeys> onGetResourceKeys = () => null;
 
         #endregion
+
+        #region Camera Signals
+
+        public Action onChangeCameraForTurret = delegate { };
+        public Action onChangeCameraToNormal = delegate { };
+
+        #endregion
+        
+        public Action<NPCPropertyType> onChangeNPCProperty = delegate { };
     }
 }

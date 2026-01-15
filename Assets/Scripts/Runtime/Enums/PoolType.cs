@@ -14,5 +14,7 @@ namespace Runtime.Enums
         NPCTurretController,
         DecorativeGem,
         NPCHostage,
+        Hitbox,
+        Grenade,
     }
 }

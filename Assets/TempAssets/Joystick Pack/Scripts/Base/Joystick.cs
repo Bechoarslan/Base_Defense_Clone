@@ -5,8 +5,18 @@ using UnityEngine.EventSystems;
 
 public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
-    public float Horizontal { get { return (snapX) ? SnapFloat(input.x, AxisOptions.Horizontal) : input.x; } }
-    public float Vertical { get { return (snapY) ? SnapFloat(input.y, AxisOptions.Vertical) : input.y; } }
+    public float Horizontal
+    {
+        get { return (snapX) ? SnapFloat(input.x, AxisOptions.Horizontal) : input.x; }
+        set =>  input.x = value;
+    }
+
+    public float Vertical
+    {
+        get { return (snapY) ? SnapFloat(input.y, AxisOptions.Vertical) : input.y; }
+        set => input.y = value;
+    }
+
     public Vector2 Direction { get { return new Vector2(Horizontal, Vertical); } }
 
     public float HandleRange

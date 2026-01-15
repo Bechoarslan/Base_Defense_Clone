@@ -7,7 +7,8 @@ namespace Runtime.Enums.EnemyStateType
         Run,
         Attack,
         Die,
-        AttackWall
-        
-    }
+        AttackWall,
+        Idle,
+        Throw,
+        }
 }

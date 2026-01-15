@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: CD_PlayerData
   m_EditorClassIdentifier: 
   PlayerData:
-    MoveSpeed: 5
+    MoveSpeed: 6
     RotateSpeed: 5
     TurretMoveSpeed: 20
     Health: 100
     FireRate: 0.5
-    StackLimit: 10
+    StackLimit: 5

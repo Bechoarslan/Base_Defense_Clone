@@ -1,5 +1,6 @@
 using System;
 using Runtime.Data.UnityObjects;
+using Runtime.Enums.NPCState;
 using Runtime.Enums.NPCState.MoneyCollector;
 using Runtime.Extensions;
 using Runtime.Interfaces;
@@ -67,11 +68,27 @@ namespace Runtime.Managers.NPCManager.NPCMoneyCollector
 
         private void SubscribeEvents()
         {
-         
+            GameSignals.Instance.onChangeNPCProperty += OnChangeProperty;
+        }
+
+        private void OnChangeProperty(NPCPropertyType property)
+        {
+            switch (property)
+            { 
+                case NPCPropertyType.MaxCapacity:
+                    npcData.Data.MaxStackCount += 5;
+                    break;
+                case NPCPropertyType.MaxSpeed:
+                    npcData.Data.MoveSpeed += 0.5f;
+                    navMeshAgent.speed = npcData.Data.MoveSpeed;
+                    break;
+                
+            }
         }
 
         private void UnSubscribeEvents()
         {
+            GameSignals.Instance.onChangeNPCProperty -= OnChangeProperty;
         }
         
         private void Update()

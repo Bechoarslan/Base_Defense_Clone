@@ -38,6 +38,7 @@ namespace Runtime.Controllers.Player
         private Transform _turretStandPoint;
         
         private bool _isInTurret;
+        private bool _isReadyToPlay = true;
         
 
         #region Ref Values
@@ -67,7 +68,14 @@ namespace Runtime.Controllers.Player
         {
             switch (_playerState)
             {
-                case PlayerState.Idle: 
+                case PlayerState.Idle:
+                    if (!_isReadyToPlay)
+                    {
+                        playerRb.velocity = Vector3.zero;
+                        _moveVector = Vector3.zero;
+                        PlayerSignals.Instance.onChangeAnimFloat?.Invoke(0,PlayerAnimState.Speed);
+                        return;
+                    }
                     _moveVector = _idleMoveCommand.Execute(_inputParamsKeys);
                    _idleMoveCommand.RotatePlayer(_moveVector);
                     break;
@@ -128,6 +136,10 @@ namespace Runtime.Controllers.Player
         }
 
         public void OnStateChanged(PlayerState playerState) => _playerState = playerState;
-        
+
+        public void OnInputReadyToPlay(bool value)
+        {
+            _isReadyToPlay = value;
+        }
     }
 }

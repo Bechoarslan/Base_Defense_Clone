@@ -23,6 +23,8 @@ TagManager:
   - Money
   - BuyableArea
   - GunShop
+  - PlayerUpgradeShop
+  - NPCUpgradeShop
   layers:
   - Default
   - TransparentFX

@@ -13,11 +13,12 @@ namespace Runtime.Controllers.BulletController
             if (other.CompareTag("Enemy"))
             {
               
-                
+     
                 // Burada düşmana hasar verme işlemi yapılabilir
                 var idamageable = other.transform.parent.GetComponent<IDamageable>();
                 if (idamageable != null)
                 {
+                  
                     idamageable.TakeDamage(20);
                 }
 

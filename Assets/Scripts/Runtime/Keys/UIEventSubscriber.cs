@@ -1,7 +1,9 @@
 using Runtime.Enums;
+using Runtime.Enums.NPCState;
 using Runtime.Signals;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 namespace Runtime.Keys
@@ -46,9 +48,34 @@ namespace Runtime.Keys
                 case UIEventSubscriberType.CloseUI:
                     button.onClick.AddListener(OnClickedCloseUI);
                     break;
+                case UIEventSubscriberType.PlayerMaxCapacity:
+                    button.onClick.AddListener(() =>ChangePlayerProperty(PlayerPropertyType.Capacity));
+                    break;
+                case UIEventSubscriberType.PlayerMoveSpeed:
+                    button.onClick.AddListener(() =>ChangePlayerProperty(PlayerPropertyType.MoveSpeed));
+                    break;
+                case UIEventSubscriberType.PlayerHealth:
+                    button.onClick.AddListener(() =>ChangePlayerProperty(PlayerPropertyType.Health));
+                    break;
+                case UIEventSubscriberType.NPCMaxCapacity:
+                    button.onClick.AddListener( () => ChangeNPCProperty(NPCPropertyType.MaxCapacity));
+                    break;
+                case UIEventSubscriberType.NPCMoveSpeed:
+                    button.onClick.AddListener( () => ChangeNPCProperty(NPCPropertyType.MaxSpeed));
+                    break;
                 
                 
             }
+        }
+
+        private void ChangeNPCProperty(NPCPropertyType propertyType)
+        {
+            GameSignals.Instance.onChangeNPCProperty?.Invoke(propertyType);
+        }
+
+        private void ChangePlayerProperty(PlayerPropertyType capacity)
+        {
+            PlayerSignals.Instance.onChangePlayerPropertyType?.Invoke(capacity);
         }
 
         private void OnClickedCloseUI()
@@ -77,6 +104,16 @@ namespace Runtime.Keys
                     button.onClick.RemoveListener(() => ChangeGunType(GunType.Rifle));
                     break;
                 case UIEventSubscriberType.CloseUI:
+                    button.onClick.RemoveListener(OnClickedCloseUI);
+                    break;
+                case UIEventSubscriberType.PlayerMaxCapacity:
+                    button.onClick.RemoveListener(() =>ChangePlayerProperty(PlayerPropertyType.Capacity));
+                    break;
+                case UIEventSubscriberType.PlayerMoveSpeed:
+                    button.onClick.RemoveListener(() =>ChangePlayerProperty(PlayerPropertyType.MoveSpeed));
+                    break;
+                case UIEventSubscriberType.PlayerHealth:
+                    button.onClick.RemoveListener(() =>ChangePlayerProperty(PlayerPropertyType.Health));
                     break;
                 
             }

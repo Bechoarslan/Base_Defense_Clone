@@ -51,12 +51,14 @@ public class InputManager : MonoBehaviour
         if (_isReadyToPlay)
         { 
             _floatingJoystick.gameObject.SetActive(true);
-            
+
         }
         else
         {
             _inputParamsKeys.InputParams.x = 0;
             _inputParamsKeys.InputParams.y = 0;
+            _floatingJoystick.Horizontal = 0;
+            _floatingJoystick.Vertical = 0;
             _floatingJoystick.gameObject.SetActive(false);
             InputSignals.Instance.onInputParamsChanged?.Invoke(_inputParamsKeys);
         }

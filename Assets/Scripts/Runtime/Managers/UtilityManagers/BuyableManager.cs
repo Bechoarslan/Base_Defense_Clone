@@ -107,6 +107,7 @@ namespace Runtime.Managers
                     bulletCarrier.transform.SetParent(defaultTransform);
                     bulletCarrier.transform.position = transform.position;
                     bulletCarrier.SetActive(true);
+                    defaultTransform.gameObject.SetActive(true);
                     break;
                 case BuyableType.NPCMoneyCollector:
                     var moneyCollector = PoolSignals.Instance.onGetPoolObject?.Invoke(PoolType.NPCMoneyCollector);

@@ -6,6 +6,7 @@ using Runtime.Enums;
 using Runtime.Enums.NPCState;
 using Runtime.Interfaces;
 using Runtime.Interfaces.HostageState;
+using Runtime.Signals;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -65,11 +66,27 @@ namespace Runtime.Managers.NPCManager.Hostage
         private void OnEnable()
         {
             SwitchState(_currentStateType);
+            GameSignals.Instance.onChangeNPCProperty += OnChangeProperty;
         }
 
+        private void OnChangeProperty(NPCPropertyType property)
+        {
+            switch (property)
+            { 
+                case NPCPropertyType.MaxCapacity:
+                    npcHostageData.Data.MaxStackCount += 5;
+                    break;
+                case NPCPropertyType.MaxSpeed:
+                    npcHostageData.Data.MoveSpeed += 0.5f;
+                    navMeshAgent.speed = npcHostageData.Data.MoveSpeed;
+                    break;
+
+            }
+        }
         private void OnDisable()
         {
             _currentState = _terrifiedState;
+            GameSignals.Instance.onChangeNPCProperty += OnChangeProperty;
         }
 
         private void Update()

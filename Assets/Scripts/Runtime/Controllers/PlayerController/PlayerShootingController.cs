@@ -23,9 +23,11 @@ namespace Runtime.Controllers.Player
         #endregion
         #region Serialized Variables
 
+        [SerializeField] private List<GameObject> _guns = new List<GameObject>();
         private Dictionary<GameObject,IDamageable> _enemyDictionary = new Dictionary<GameObject, IDamageable>();
         [SerializeField] private Transform firePoint;
 
+        [SerializeField] private GameObject currentGun;
         #endregion
 
         #region Private Variables
@@ -35,6 +37,7 @@ namespace Runtime.Controllers.Player
         private IDamageable _currentDamageable;
         private PlayerData _playerData;
         private int _projectileCount = 5;
+        
         #endregion
 
         #endregion
@@ -44,6 +47,7 @@ namespace Runtime.Controllers.Player
         public void GetPlayerData(CD_PlayerData playerData)
         {
             _playerData = playerData.PlayerData;
+         
         } 
        
 
@@ -175,12 +179,22 @@ namespace Runtime.Controllers.Player
 
         public void OnChangeGun(GunType obj)
         {
+            currentGun.SetActive(false);
+            currentGun = null;
+            currentGun = _guns[(int)obj];
+            currentGun.SetActive(true);
             switch (obj)
             {
                 case GunType.Shotgun:
+                    _playerData.FireRate = 3f;
                     _projectileCount = 5;
                     break;
                 case GunType.Pistol:
+                    _playerData.FireRate = 0.7f;
+                    _projectileCount = 1;
+                    break;
+                case GunType.Rifle:
+                    _playerData.FireRate = 1f;
                     _projectileCount = 1;
                     break;
             }

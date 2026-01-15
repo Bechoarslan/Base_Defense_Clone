@@ -44,6 +44,7 @@ namespace Runtime.Managers
             OnStateChanged(PlayerState.Idle);
             Health = playerData.PlayerData.Health;
             playerHealthController.SetHealth(Health);
+            playerShootingController.OnChangeGun(GunType.Pistol);
         }
 
         private void SendPlayerDataToControllers()
@@ -60,9 +61,10 @@ namespace Runtime.Managers
 
         private void SubscribeEvents()
         {
-            
 
-            
+
+            InputSignals.Instance.onInputReadyToPlay += playerMovementController.OnInputReadyToPlay;
+            PlayerSignals.Instance.onChangePlayerPropertyType += OnChangePlayerPropertyType;
             PlayerSignals.Instance.onChangeGun += playerShootingController.OnChangeGun;
             PlayerSignals.Instance.onEnemyDiedClearFromList += playerShootingController.OnEnemyDiedClearFromDic;
             PlayerSignals.Instance.onChangeAnimBool += playerAnimationController.OnChangeAnimBool;
@@ -76,7 +78,25 @@ namespace Runtime.Managers
             
         }
 
- 
+        private void OnChangePlayerPropertyType(PlayerPropertyType propertyType)
+        {
+            switch (propertyType)
+            {
+                case PlayerPropertyType.MoveSpeed:
+                    playerData.PlayerData.MoveSpeed += 1;
+                    break;
+                case PlayerPropertyType.Capacity:
+                    playerData.PlayerData.StackLimit += 5;
+                    break;
+                case PlayerPropertyType.Health:
+                    playerData.PlayerData.Health += 20;
+                    playerHealthController.SetHealth(playerData.PlayerData.Health);
+                    
+                    break;
+                
+            }
+        }
+
 
         private void OnInputParamsChanged(InputParamsKeys inputParams) 
             => playerMovementController.OnInputChanged(inputParams);
@@ -85,6 +105,9 @@ namespace Runtime.Managers
         private void UnSubscribeEvents()
         {
 
+            
+            InputSignals.Instance.onInputReadyToPlay -= playerMovementController.OnInputReadyToPlay;
+            PlayerSignals.Instance.onChangePlayerPropertyType -= OnChangePlayerPropertyType;
             PlayerSignals.Instance.onChangeGun -= playerShootingController.OnChangeGun;
             PlayerSignals.Instance.onChangeAnimBool -= playerAnimationController.OnChangeAnimBool;
             PlayerSignals.Instance.onTriggerAnimState -= playerAnimationController.OnTriggerAnimation;
@@ -127,6 +150,7 @@ namespace Runtime.Managers
             {
                 case PlayerState.Idle:
                   
+                    playerHealthController.OnRegenateHealth();
                     playerAnimationController.OnChangeBaseLayer(1, 0);
                     PlayerSignals.Instance.onChangeAnimLayer?.Invoke(1,0);
                     playerShootingController.StopShootingCoroutineCaller();

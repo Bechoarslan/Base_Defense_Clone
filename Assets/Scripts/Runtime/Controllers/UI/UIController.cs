@@ -25,6 +25,7 @@ namespace Runtime.Controllers.UI
         {
             
             if (_uiPanelDictionary.ContainsKey(uiType)) return;
+            Debug.Log(uiType);
             var panel = Resources.Load<GameObject>("UI/" + uiType.ToString());
             var instantiatedPanel = Instantiate(panel, transform);
             _uiPanelDictionary.Add(uiType, instantiatedPanel);

@@ -15,6 +15,7 @@ namespace Runtime.Controllers.Player
         [SerializeField] private Transform stackHolder;
         [SerializeField] private GameObject enemyColliderChecker;
         [SerializeField] private GameObject gunHolder;
+   
         private Transform _barrier;
         private bool _isOpen;
         private bool _isGun;
@@ -37,8 +38,10 @@ namespace Runtime.Controllers.Player
                     break;
 
                 case "Turret":
+                    
                     playerManager.OnStateChanged(PlayerState.Turret);
                     GameSignals.Instance.onTurretStateChange?.Invoke(TurretState.PlayerIn);
+                    GameSignals.Instance.onChangeCameraForTurret?.Invoke();
                     playerManager.OnSetTurretPos(other);
 
                     if (stackHolder.childCount > 0)
@@ -99,8 +102,23 @@ namespace Runtime.Controllers.Player
                    PlayerSignals.Instance.onPlayerEnteredBuyArea?.Invoke(other.gameObject,playerManager.transform);
                     break;
                 case "GunShop":
+                    if(stackHolder.childCount > 0)
+                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,_poolType);
                     InputSignals.Instance.onInputReadyToPlay?.Invoke(false);
                     UISignals.Instance.onOpenUIPanel?.Invoke(UIType.GunShop);
+                    break;
+                case "PlayerUpgradeShop":
+                    if(stackHolder.childCount > 0)
+                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,_poolType);
+                    InputSignals.Instance.onInputReadyToPlay?.Invoke(false);
+                    UISignals.Instance.onOpenUIPanel?.Invoke(UIType.PlayerUpgrade);
+                    break;
+                case "NPCUpgradeShop":
+                    if(stackHolder.childCount > 0)
+                        PlayerSignals.Instance.onSendStacksToHolder?.Invoke(stackHolder,_poolType); 
+                    
+                    InputSignals.Instance.onInputReadyToPlay?.Invoke(false);
+                    UISignals.Instance.onOpenUIPanel?.Invoke(UIType.NPCUpgradeShop);
                     break;
             }
             
@@ -145,6 +163,7 @@ namespace Runtime.Controllers.Player
                     break;
                 case "Turret":
                     GameSignals.Instance.onTurretStateChange?.Invoke(TurretState.None);
+                    GameSignals.Instance.onChangeCameraToNormal?.Invoke();
                     break;
                 case "InOutOfBase":
                     var block = GameObject.FindGameObjectWithTag("Barrier");
@@ -155,6 +174,9 @@ namespace Runtime.Controllers.Player
                     break;
                 case "GunShop":
                     UISignals.Instance.onCloseUIPanel?.Invoke(UIType.GunShop);
+                    break;
+                case "PlayerUpgradeShop":
+                   
                     break;
             }
             

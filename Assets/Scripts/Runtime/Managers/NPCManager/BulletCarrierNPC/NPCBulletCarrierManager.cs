@@ -6,6 +6,7 @@ using Runtime.Enums.NPCState;
 using Runtime.Interfaces;
 using Runtime.Interfaces.BulletCarrierState;
 using Runtime.Interfaces.BulletCarrirerState;
+using Runtime.Signals;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -52,6 +53,26 @@ namespace Runtime.Managers.NPCManager.Hostage
         private void OnEnable()
         {
             SwitchState(_bulletCarrierStateType);
+            GameSignals.Instance.onChangeNPCProperty += OnChangeProperty;
+        }
+
+        private void OnChangeProperty(NPCPropertyType property)
+        {
+            switch (property)
+            { 
+                case NPCPropertyType.MaxCapacity:
+                    npcData.Data.MaxStackCount += 5;
+                    break;
+                case NPCPropertyType.MaxSpeed:
+                    npcData.Data.MoveSpeed += 0.5f;
+                    navMeshAgent.speed = npcData.Data.MoveSpeed;
+                    break;
+                
+            }
+        }
+        private void OnDisable()
+        {
+            GameSignals.Instance.onChangeNPCProperty -= OnChangeProperty;
         }
 
         private void GetReferences()
